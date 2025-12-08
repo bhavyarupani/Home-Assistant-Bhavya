@@ -1,0 +1,532 @@
+- id: '1718898933157'
+  alias: leave home
+  description: ''
+  triggers:
+  - device_id: 548655786262b0cae080145002dcc799
+    domain: device_tracker
+    entity_id: 7ad8c9d494c3979602d0d32552516956
+    type: leaves
+    trigger: device
+    zone: zone.home
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 4
+      seconds: 0
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.bedroom_ceiling_light
+      - light.living_room_ceiling_light
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 5 }}
+
+          '
+      sequence:
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          temperature: 16
+    - conditions:
+      - condition: template
+        value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 12 }}
+
+          '
+      sequence:
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          temperature: 14
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) >= 12 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: 'off'
+    default: []
+  mode: single
+- id: '1727092481067'
+  alias: "Tag Party Beats \U0001F37B is scanned"
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 0e0ef5a5-d3f8-4be4-930d-e412f9b5c846
+  condition: []
+  action:
+  - service: media_player.volume_set
+    metadata: {}
+    data:
+      volume_level: 0.79
+    target:
+      device_id: e165b64fa102eb143672ed67e746fbb6
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.ytube_music_player_2
+    data:
+      media_content_id: PLlKU6nPJF78KwAQyS_oo9eXVNgPN913e0
+      media_content_type: playlist
+    metadata:
+      title: "Party Beats \U0001F37B"
+      thumbnail: https://yt3.googleusercontent.com/ssV88KySo_CDcbOT5Mwub26RZ8r3mvhRIJoCA17VleVMYpnNDPyzf96QlaRDIXBRwMSPFEyyrA=s576
+      media_class: playlist
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: library_playlists
+        media_content_id: ''
+  mode: single
+- id: '1727092490024'
+  alias: "Tag Party Beats \U0001F37B is scanned"
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 0e0ef5a5-d3f8-4be4-930d-e412f9b5c846
+  condition: []
+  action: []
+  mode: single
+- id: '1727092892686'
+  alias: Tag Travel Songs ✈️ is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: fd43f24e-c78a-416f-9f0c-a30f1f16aa71
+  condition: []
+  action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.ytube_music_player_2
+    data:
+      media_content_id: PLlKU6nPJF78IgCt1b_DgtBb618NiDtTeg
+      media_content_type: playlist
+    metadata:
+      title: "Bhajan\U0001F4FF"
+      thumbnail: https://yt3.googleusercontent.com/2rDSgO152aOqSd-bkuNgSKsu9lDqIZeAsE5gE52anRQ9nn5f4QuWReQadalC8tUAKF5sdD7OkjE=s576
+      media_class: playlist
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: library_playlists
+        media_content_id: ''
+  mode: single
+- id: '1727093154913'
+  alias: "Tag Love Notes \U0001F49E Radio Mode"
+  description: Starts the YouTube Music playlist in radio mode.
+  triggers:
+  - tag_id: 482ef38a-2270-4565-8adc-5e6f659a4fda
+    trigger: tag
+  actions:
+  - target:
+      device_id: e165b64fa102eb143672ed67e746fbb6
+    data:
+      volume_level: 0.43
+    action: media_player.volume_set
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.bedroom_display_3
+    data:
+      media_content_id: library://playlist/254
+      media_content_type: playlist
+    metadata:
+      title: "Love Notes \U0001F49E"
+      thumbnail:
+      media_class: playlist
+      children_media_class: track
+      navigateIds:
+      - {}
+      - media_content_type: music_assistant
+        media_content_id: playlists
+      - media_content_type: music
+        media_content_id: library://playlist/254
+  - action: ytube_music_player.start_radio
+    metadata: {}
+    data:
+      interrupt: false
+      entity_id: media_player.bedroom_display
+  mode: single
+- id: '1727354325302'
+  alias: Tag Kitchen songs is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: fc6a410c-d35c-407c-bb96-3cd299d991ef
+  condition: []
+  action:
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.spotify_bhavya_rupani
+    data:
+      media_content_id: 481ViFtp349NcNhu1ddoQc
+      media_content_type: Playlist
+    metadata: {}
+  mode: single
+- id: '1735853195591'
+  alias: Tag Working Desk is scanned
+  description: ''
+  triggers:
+  - trigger: tag
+    tag_id: 7b0fc1f7-2365-48d6-8fcf-d2e746e551de
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 9e8b5ede244364654e33e33ee1d0201f
+    entity_id: 57d68a6f0db79f63d13815fe93271e69
+    domain: switch
+  mode: single
+- id: '1735901593071'
+  alias: Turn off workstation
+  description: ''
+  triggers:
+  - type: power
+    device_id: 9e8b5ede244364654e33e33ee1d0201f
+    entity_id: 26d2ff0ac77b7a8e9a39f83791015b6e
+    domain: sensor
+    trigger: device
+    below: 60
+  conditions: []
+  actions:
+  - type: turn_off
+    device_id: 9e8b5ede244364654e33e33ee1d0201f
+    entity_id: 57d68a6f0db79f63d13815fe93271e69
+    domain: switch
+  mode: single
+- id: '1735950043073'
+  alias: 'Turn off when sleeping '
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.bhavyas_iphone_battery_state
+    to: Charging
+  conditions:
+  - condition: and
+    conditions:
+    - condition: zone
+      entity_id: device_tracker.bhavya_s_iphone
+      zone: zone.home
+    - condition: time
+      after: 00:00:00
+      before: 03:00:00
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+      - sat
+      - sun
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      area_id: bedroom
+  mode: single
+- id: '1736036527708'
+  alias: Back to home
+  description: ''
+  triggers:
+  - device_id: d70ac253d271460a0df2c2c48c140f3a
+    domain: device_tracker
+    entity_id: f4e1a1ad30fd081b76fc2c9ac335dedd
+    type: enters
+    trigger: device
+    zone: zone.home_2
+  conditions: []
+  actions:
+  - type: turn_on
+    device_id: 883555eec0c05f02955a414a1fde9038
+    entity_id: 90dbdb36eb784a7f1151a88123778d99
+    domain: light
+  - type: turn_on
+    device_id: 31e5add0324f47e270192cfdb0bfc8eb
+    entity_id: 1f0093fae46637c1ad8f864d9ceb66be
+    domain: light
+  - type: turn_on
+    device_id: 1a553c8904a9050d46fa1340219cefb8
+    entity_id: 6e6c0f56a04e1424cc5c08323f4a7920
+    domain: light
+  - type: turn_on
+    device_id: d5f46772a7406ac049782c41b2b5ed58
+    entity_id: 2becd39d2f4c0339c6717f1b68f1aecb
+    domain: light
+  mode: single
+- id: '1765133751336'
+  alias: Living Room Ceiling – Auto Cool White
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - light.living_room_ceiling_light
+    from: 'off'
+    to: 'on'
+  conditions: []
+  actions:
+  - action: light.turn_on
+    target:
+      entity_id: light.living_room_ceiling_light
+    data:
+      kelvin: 6500
+      brightness_pct: 100
+  mode: single
+- id: '1765220746096'
+  alias: 'leaving uhingen '
+  description: Fully turn off heaters when I go away from Uhingen
+  triggers:
+  - device_id: 548655786262b0cae080145002dcc799
+    domain: device_tracker
+    entity_id: 7ad8c9d494c3979602d0d32552516956
+    type: leaves
+    trigger: device
+    zone: zone.uhingen_area
+  conditions: []
+  actions:
+  - device_id: aadaa02687bc65225377ded5deb58aad
+    domain: climate
+    entity_id: 0ebc9602189e45a63a3038617580e463
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  - device_id: 56723f292a6a80db78420d50349d2522
+    domain: climate
+    entity_id: a3ec1e307db15ccf2dc5b2727ef8bd38
+    type: set_hvac_mode
+    hvac_mode: 'off'
+  mode: single
+- id: '1765220899463'
+  alias: on my way home - enter uhingen - preheat
+  description: Preheat heaters based on outside temperature when I enter Uhingen area
+  triggers:
+  - device_id: 548655786262b0cae080145002dcc799
+    domain: device_tracker
+    entity_id: 7ad8c9d494c3979602d0d32552516956
+    type: enters
+    trigger: device
+    zone: zone.uhingen_area
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 5 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: heat
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          temperature: 20
+    - conditions:
+      - condition: template
+        value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 12 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: heat
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          temperature: 18
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) >= 12 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: 'off'
+    default: []
+  mode: single
+- id: '1765221110611'
+  alias: arrive home
+  description: Set heaters to comfortable temperature when I arrive home
+  triggers:
+  - device_id: 548655786262b0cae080145002dcc799
+    domain: device_tracker
+    entity_id: 7ad8c9d494c3979602d0d32552516956
+    type: enters
+    trigger: device
+    zone: zone.home
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 5 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: heat
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          temperature: 21
+    - conditions:
+      - condition: template
+        value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 12 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: heat
+      - action: climate.set_temperature
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          temperature: 19
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) >= 12 }}
+
+          '
+      sequence:
+      - action: climate.set_hvac_mode
+        metadata: {}
+        target:
+          entity_id:
+          - climate.bedroom_heater
+          - climate.office_heater
+        data:
+          hvac_mode: 'off'
+    default: []
+  mode: single
+- id: '1765222226467'
+  alias: bedroom - motion - comfort heat
+  description: When there is motion in bedroom and I am home, set bedroom heater to
+    comfort temp based on outside
+  triggers:
+  - entity_id: binary_sensor.bedroom_motion_sensor
+    from: 'off'
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: person.bhavya
+    state: home
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 5 }}
+
+          '
+      sequence:
+      - target:
+          entity_id: climate.bedroom_heater
+        data:
+          hvac_mode: heat
+        action: climate.set_hvac_mode
+      - target:
+          entity_id: climate.bedroom_heater
+        data:
+          temperature: 21
+        action: climate.set_temperature
+    - conditions:
+      - condition: template
+        value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) < 12 }}
+
+          '
+      sequence:
+      - target:
+          entity_id: climate.bedroom_heater
+        data:
+          hvac_mode: heat
+        action: climate.set_hvac_mode
+      - target:
+          entity_id: climate.bedroom_heater
+        data:
+          temperature: 19
+        action: climate.set_temperature
+    - conditions:
+      - condition: template
+        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+          | float(20)) >= 12 }}
+
+          '
+      sequence:
+      - target:
+          entity_id: climate.bedroom_heater
+        data:
+          hvac_mode: 'off'
+        action: climate.set_hvac_mode
+    default: []
+  mode: single

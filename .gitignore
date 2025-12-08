@@ -1,0 +1,13 @@
+≈# Home Assistant should not track these
+home-assistant_v2.db*
+*.db-shm
+*.db-wal
+.core/
+.storage/
+.cloud/
+deps/
+tts/
+.git/
+Git Clones/
+secrets.yaml
+

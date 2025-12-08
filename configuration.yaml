@@ -1,0 +1,51 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+emulated_hue:
+  listen_port: 80
+  host_ip: 192.168.1.186
+  expose_by_default: false
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+
+bluetooth:
+device_tracker:
+  - platform: bluetooth_le_tracker
+  - platform: xiaomi
+    host: 192.168.0.243
+    password: KashtbhanjanDev
+tts:
+  - platform: google_translate
+    language: "en" # Set your preferred language (e.g., 'de' for German, 'fr' for French)
+    cache: true
+    cache_dir: /config/tts
+    time_memory: 300
+
+sensor:
+  - platform: template
+    sensors:
+      day_en:
+        value_template: "{{ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][now().weekday()] }}"
+      date_en:
+        value_template: "{% set months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
+
+resources:
+  - url: /local/mini-graph-card-bundle.js?v=0.12.1
+    type: module
+
+mobile_app:
+
+template: !include sidebar.yaml

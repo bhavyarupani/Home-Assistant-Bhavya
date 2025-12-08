@@ -1,0 +1,1497 @@
+2025-12-07 18:36:48.515 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-07 18:36:48.516 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration mass which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-07 18:36:48.517 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration bosch which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-07 18:36:48.518 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration ytube_music_player which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-07 18:36:48.518 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-07 18:36:48.519 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration alexa_media which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-07 18:36:49.242 WARNING (MainThread) [homeassistant.helpers.translation] Failed to load integration for translation: Integration 'resources' not found.
+2025-12-07 18:36:49.384 WARNING (Recorder) [homeassistant.components.recorder.util] The system could not validate that the sqlite3 database at //config/home-assistant_v2.db was shutdown cleanly
+2025-12-07 18:36:49.408 WARNING (Recorder) [homeassistant.components.recorder.util] Ended unfinished session (id=88 from 2025-12-07 17:08:30.927791)
+2025-12-07 18:36:52.586 ERROR (MainThread) [homeassistant.setup] Setup failed for 'resources': Integration not found.
+2025-12-07 18:36:52.989 CRITICAL (MainThread) [custom_components.hacs] <HacsData restore> [The repo id for rsnodgrass/hass-adtpulse is already set to 1016273752] Restore Failed!
+Traceback (most recent call last):
+  File "/config/custom_components/hacs/utils/data.py", line 222, in restore
+    self.async_restore_repository(entry, repo_data)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/config/custom_components/hacs/utils/data.py", line 270, in async_restore_repository
+    self.hacs.repositories.set_repository_id(repository, entry)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/config/custom_components/hacs/base.py", line 290, in set_repository_id
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: The repo id for rsnodgrass/hass-adtpulse is already set to 1016273752
+2025-12-07 18:36:52.995 ERROR (MainThread) [custom_components.hacs] HACS is disabled - restore
+2025-12-07 18:36:53.433 WARNING (MainThread) [homeassistant.config_entries] Config entry 'bhavyarupani@gmail.com' for tuya integration could not authenticate: Authentication failed. Please re-authenticate
+2025-12-07 18:36:54.980 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-07 18:36:54.981 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-07 18:37:49.637 WARNING (MainThread) [homeassistant.bootstrap] Waiting on integrations to complete setup: {('mobile_app', '01J8T1AZDM2V7JD5T74GHFTM1Y'): 62.287870612, ('mobile_app', '01J9XPNCTDP5B9WE99CBSEJ24B'): 62.289642339, ('mobile_app', '01JCN5C4SARP3Z8ZB2E9GDVH2B'): 62.290989418, ('mobile_app', '01JFBA7S01KA69D7CDFRFKZVYW'): 62.292309473, ('mobile_app', '01JFBAD3X26VDVM7KN1SW10R38'): 62.297170923, ('mobile_app', '01KBWY1HXVKAS1R7AHY336E943'): 62.298255572}
+2025-12-07 18:38:49.693 WARNING (MainThread) [homeassistant.bootstrap] Waiting on integrations to complete setup: {('mobile_app', '01J8T1AZDM2V7JD5T74GHFTM1Y'): 62.287870612, ('mobile_app', '01J9XPNCTDP5B9WE99CBSEJ24B'): 62.289642339, ('mobile_app', '01JCN5C4SARP3Z8ZB2E9GDVH2B'): 62.290989418, ('mobile_app', '01JFBA7S01KA69D7CDFRFKZVYW'): 62.292309473, ('mobile_app', '01JFBAD3X26VDVM7KN1SW10R38'): 62.297170923, ('mobile_app', '01KBWY1HXVKAS1R7AHY336E943'): 62.298255572}
+2025-12-07 18:39:33.899 WARNING (MainThread) [homeassistant.components.bluetooth_le_tracker.device_tracker] No Bluetooth LE devices to track!
+2025-12-07 18:39:33.899 ERROR (MainThread) [homeassistant.components.device_tracker] Error setting up platform legacy bluetooth_le_tracker
+2025-12-07 18:39:38.709 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template<template=(<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'] %}
+  {{ days[now().weekday()] }}<br>
+  {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+{% endif %} </b></font>) renders=2>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2225, in strptime
+    return datetime.strptime(string, fmt)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 676, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 455, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data 'unknown' does not match format '%Y-%m-%d'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 643, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2745, in _render_with_context
+    return template.render(**kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/local/lib/python3.13/site-packages/jinja2/sandbox.py", line 401, in call
+    return __context.call(__obj, *args, **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2228, in strptime
+    raise_no_default("strptime", string)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1921, in raise_no_default
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Template error: strptime got invalid input 'unknown' when rendering template '<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'] %}
+  {{ days[now().weekday()] }}<br>
+  {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+{% endif %} </b></font>' but no default was specified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 760, in async_render_to_info
+    render_info._result = self.async_render(  # noqa: SLF001
+                          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+        variables, strict=strict, log_fn=log_fn, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 645, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: ValueError: Template error: strptime got invalid input 'unknown' when rendering template '<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'] %}
+  {{ days[now().weekday()] }}<br>
+  {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+{% endif %} </b></font>' but no default was specified
+2025-12-07 18:39:38.717 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.718 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template<template=({% set entity = 'weather.smhi_home' %} {% if not is_state(entity, 'unknown') %}
+  {% set temp = state_attr(entity, 'temperature') | round %}
+  {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
+    Känns som {{ temp }}° med {{ 'ingen risk för regn' if precip == 0
+    else precip | string + 'mm regn \u2614\uFE0F' }}
+{% else %}
+  Kan inte läsa in väder...
+{% endif %}) renders=2>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1940, in forgiving_round
+    value = round(float(value), precision)
+                  ~~~~~^^^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 643, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2745, in _render_with_context
+    return template.render(**kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 2, in top-level template code
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1945, in forgiving_round
+    raise_no_default("round", value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1921, in raise_no_default
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Template error: round got invalid input 'None' when rendering template '{% set entity = 'weather.smhi_home' %} {% if not is_state(entity, 'unknown') %}
+  {% set temp = state_attr(entity, 'temperature') | round %}
+  {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
+    Känns som {{ temp }}° med {{ 'ingen risk för regn' if precip == 0
+    else precip | string + 'mm regn \u2614\uFE0F' }}
+{% else %}
+  Kan inte läsa in väder...
+{% endif %}' but no default was specified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 760, in async_render_to_info
+    render_info._result = self.async_render(  # noqa: SLF001
+                          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+        variables, strict=strict, log_fn=log_fn, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 645, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: ValueError: Template error: round got invalid input 'None' when rendering template '{% set entity = 'weather.smhi_home' %} {% if not is_state(entity, 'unknown') %}
+  {% set temp = state_attr(entity, 'temperature') | round %}
+  {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
+    Känns som {{ temp }}° med {{ 'ingen risk för regn' if precip == 0
+    else precip | string + 'mm regn \u2614\uFE0F' }}
+{% else %}
+  Kan inte läsa in väder...
+{% endif %}' but no default was specified
+2025-12-07 18:39:38.722 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template<template=({% set date_data = state_attr('sensor.laundry_data', 'date') | as_datetime %} {% set time_data = state_attr('sensor.laundry_data', 'time') %} {% set number_data = state_attr('sensor.laundry_data', 'number') %} {% set start_time = date_data.strftime('%Y-%m-%d %H:%M:%S') %} {% if start_time != None %}
+  {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
+  {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
+  {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
+  {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
+  | replace('Monday', 'Måndag')
+  | replace('Tuesday', 'Tisdag')
+  | replace('Wednesday', 'Onsdag')
+  | replace('Thursday', 'Torsdag')
+  | replace('Friday', 'Fredag')
+  | replace('Saturday', 'Lördag')
+  | replace('Sunday', 'Söndag') %}
+  {% if count <= 0.0 %}
+    {{'\U0001F4A6'}} Tvätt idag {{ time_data }}, Tvättstuga {{ number_data }}
+  {% elif count <= 1.0 %}
+    Tvätt imorgon klockan {{ time }}
+  {% elif count <= 2.0 %}
+    Tvätt i övermorgon klockan {{ time }}
+  {% else %}
+    Tvätt om {{ (count + hours) | round }} dagar på {{ day }} kl {{ time }}
+  {% endif %}
+{% endif %}) renders=2>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2144, in as_datetime
+    timestamp = float(value)
+TypeError: float() argument must be a string or a real number, not 'NoneType'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2149, in as_datetime
+    return dt_util.parse_datetime(value, raise_on_error=True)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/util/dt.py", line 230, in parse_datetime
+    return ciso8601.parse_datetime(dt_str)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+TypeError: argument must be str
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 643, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2745, in _render_with_context
+    return template.render(**kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/jinja2/environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/site-packages/jinja2/environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 2156, in as_datetime
+    raise_no_default("as_datetime", value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1921, in raise_no_default
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Template error: as_datetime got invalid input 'None' when rendering template '{% set date_data = state_attr('sensor.laundry_data', 'date') | as_datetime %} {% set time_data = state_attr('sensor.laundry_data', 'time') %} {% set number_data = state_attr('sensor.laundry_data', 'number') %} {% set start_time = date_data.strftime('%Y-%m-%d %H:%M:%S') %} {% if start_time != None %}
+  {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
+  {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
+  {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
+  {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
+  | replace('Monday', 'Måndag')
+  | replace('Tuesday', 'Tisdag')
+  | replace('Wednesday', 'Onsdag')
+  | replace('Thursday', 'Torsdag')
+  | replace('Friday', 'Fredag')
+  | replace('Saturday', 'Lördag')
+  | replace('Sunday', 'Söndag') %}
+  {% if count <= 0.0 %}
+    {{'\U0001F4A6'}} Tvätt idag {{ time_data }}, Tvättstuga {{ number_data }}
+  {% elif count <= 1.0 %}
+    Tvätt imorgon klockan {{ time }}
+  {% elif count <= 2.0 %}
+    Tvätt i övermorgon klockan {{ time }}
+  {% else %}
+    Tvätt om {{ (count + hours) | round }} dagar på {{ day }} kl {{ time }}
+  {% endif %}
+{% endif %}' but no default was specified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 760, in async_render_to_info
+    render_info._result = self.async_render(  # noqa: SLF001
+                          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+        variables, strict=strict, log_fn=log_fn, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 645, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: ValueError: Template error: as_datetime got invalid input 'None' when rendering template '{% set date_data = state_attr('sensor.laundry_data', 'date') | as_datetime %} {% set time_data = state_attr('sensor.laundry_data', 'time') %} {% set number_data = state_attr('sensor.laundry_data', 'number') %} {% set start_time = date_data.strftime('%Y-%m-%d %H:%M:%S') %} {% if start_time != None %}
+  {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
+  {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
+  {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
+  {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
+  | replace('Monday', 'Måndag')
+  | replace('Tuesday', 'Tisdag')
+  | replace('Wednesday', 'Onsdag')
+  | replace('Thursday', 'Torsdag')
+  | replace('Friday', 'Fredag')
+  | replace('Saturday', 'Lördag')
+  | replace('Sunday', 'Söndag') %}
+  {% if count <= 0.0 %}
+    {{'\U0001F4A6'}} Tvätt idag {{ time_data }}, Tvättstuga {{ number_data }}
+  {% elif count <= 1.0 %}
+    Tvätt imorgon klockan {{ time }}
+  {% elif count <= 2.0 %}
+    Tvätt i övermorgon klockan {{ time }}
+  {% else %}
+    Tvätt om {{ (count + hours) | round }} dagar på {{ day }} kl {{ time }}
+  {% endif %}
+{% endif %}' but no default was specified
+2025-12-07 18:39:38.728 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.729 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.729 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.729 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.729 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.729 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.729 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'None' has no attribute 'state' when rendering '<b> {% set lights = [
+  states.light.vardagsrum_tv,
+  states.light.vardagsrum_golv,
+  states.light.vardagsrum_horna,
+  states.light.studio_dator,
+  states.light.badrum_vask_2,
+  states.light.badrum_vask_1,
+  states.light.sovrum_tv,
+  states.light.garderob_lampa,
+  states.light.hall_spot_1,
+  states.light.hall_spot_2,
+  states.light.hall_spot_3,
+  states.light.sovrum_mattias,
+  states.light.sovrum_sanja,
+  states.light.studio_spot_1,
+  states.light.studio_spot_2,
+  states.switch.deltaco_sh_p01_socket
+] %}
+{% set devices = [
+  states.switch.imac,
+  states.switch.ps5_635_power,
+  states.switch.gosund_monitors_switch,
+  states.switch.gosund_fan_switch,
+  states.media_player.samsung,
+  states.media_player.sony_bravia_tv,
+  states.climate.ac
+] %}
+{% set lights_on = lights | selectattr('state','eq','on') | list %} {% set lights_name = lights | selectattr('state','eq','on') | map(attribute='name') | join(', ') %}
+{% set devices_on = devices | selectattr('state','search','(on|cool|fan_only|playing)') | list %} {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
+{% if (lights_on | length == 0) and (devices_on | length > 0) %}
+  {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 1) %}
+  {{ lights_name }} och {{devices_name }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length > 1) %}
+  {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 1) %}
+  {{ lights_on | length }} lampor och {{ devices_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length > 1) %}
+  {{ lights_on | length }} lampor, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} är på
+
+{% elif (lights_on | length == 1) and (devices_on | length == 0) %}
+  {{ lights_name }} är på
+
+{% elif (lights_on | length > 1) and (devices_on | length == 0) %}
+  {{ lights_on | length }} lampor är på
+
+{% else %}
+  <font color='#6a7377'>Allt är avstängt</font>
+{% endif %} </b>'
+2025-12-07 18:39:38.730 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('ValueError: Template error: strptime got invalid input 'unknown' when rendering template '<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'] %}
+  {{ days[now().weekday()] }}<br>
+  {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+{% endif %} </b></font>' but no default was specified') while processing template 'Template<template=(<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'] %}
+  {{ days[now().weekday()] }}<br>
+  {{ strptime(states('sensor.date'), '%Y-%m-%d').day }} {{ months[now().month-1] }}
+{% endif %} </b></font>) renders=4>' for attribute 'date' in entity 'sensor.template_sidebar'
+2025-12-07 18:39:38.730 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('ValueError: Template error: round got invalid input 'None' when rendering template '{% set entity = 'weather.smhi_home' %} {% if not is_state(entity, 'unknown') %}
+  {% set temp = state_attr(entity, 'temperature') | round %}
+  {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
+    Känns som {{ temp }}° med {{ 'ingen risk för regn' if precip == 0
+    else precip | string + 'mm regn \u2614\uFE0F' }}
+{% else %}
+  Kan inte läsa in väder...
+{% endif %}' but no default was specified') while processing template 'Template<template=({% set entity = 'weather.smhi_home' %} {% if not is_state(entity, 'unknown') %}
+  {% set temp = state_attr(entity, 'temperature') | round %}
+  {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
+    Känns som {{ temp }}° med {{ 'ingen risk för regn' if precip == 0
+    else precip | string + 'mm regn \u2614\uFE0F' }}
+{% else %}
+  Kan inte läsa in väder...
+{% endif %}) renders=4>' for attribute 'weather' in entity 'sensor.template_sidebar'
+2025-12-07 18:39:38.731 ERROR (MainThread) [homeassistant.components.template.template_entity] TemplateError('ValueError: Template error: as_datetime got invalid input 'None' when rendering template '{% set date_data = state_attr('sensor.laundry_data', 'date') | as_datetime %} {% set time_data = state_attr('sensor.laundry_data', 'time') %} {% set number_data = state_attr('sensor.laundry_data', 'number') %} {% set start_time = date_data.strftime('%Y-%m-%d %H:%M:%S') %} {% if start_time != None %}
+  {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
+  {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
+  {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
+  {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
+  | replace('Monday', 'Måndag')
+  | replace('Tuesday', 'Tisdag')
+  | replace('Wednesday', 'Onsdag')
+  | replace('Thursday', 'Torsdag')
+  | replace('Friday', 'Fredag')
+  | replace('Saturday', 'Lördag')
+  | replace('Sunday', 'Söndag') %}
+  {% if count <= 0.0 %}
+    {{'\U0001F4A6'}} Tvätt idag {{ time_data }}, Tvättstuga {{ number_data }}
+  {% elif count <= 1.0 %}
+    Tvätt imorgon klockan {{ time }}
+  {% elif count <= 2.0 %}
+    Tvätt i övermorgon klockan {{ time }}
+  {% else %}
+    Tvätt om {{ (count + hours) | round }} dagar på {{ day }} kl {{ time }}
+  {% endif %}
+{% endif %}' but no default was specified') while processing template 'Template<template=({% set date_data = state_attr('sensor.laundry_data', 'date') | as_datetime %} {% set time_data = state_attr('sensor.laundry_data', 'time') %} {% set number_data = state_attr('sensor.laundry_data', 'number') %} {% set start_time = date_data.strftime('%Y-%m-%d %H:%M:%S') %} {% if start_time != None %}
+  {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
+  {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
+  {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
+  {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
+  | replace('Monday', 'Måndag')
+  | replace('Tuesday', 'Tisdag')
+  | replace('Wednesday', 'Onsdag')
+  | replace('Thursday', 'Torsdag')
+  | replace('Friday', 'Fredag')
+  | replace('Saturday', 'Lördag')
+  | replace('Sunday', 'Söndag') %}
+  {% if count <= 0.0 %}
+    {{'\U0001F4A6'}} Tvätt idag {{ time_data }}, Tvättstuga {{ number_data }}
+  {% elif count <= 1.0 %}
+    Tvätt imorgon klockan {{ time }}
+  {% elif count <= 2.0 %}
+    Tvätt i övermorgon klockan {{ time }}
+  {% else %}
+    Tvätt om {{ (count + hours) | round }} dagar på {{ day }} kl {{ time }}
+  {% endif %}
+{% endif %}) renders=4>' for attribute 'laundry' in entity 'sensor.template_sidebar'
+2025-12-07 18:39:41.265 ERROR (MainThread) [custom_components.ytube_music_player.media_player] async_get_cipher failed
+2025-12-07 18:39:41.265 ERROR (MainThread) [custom_components.ytube_music_player.media_player] can't find header file at /config/.storage/header_YouTube_Music_Player.json
+2025-12-07 18:39:41.271 WARNING (MainThread) [homeassistant.components.homeassistant.triggers.numeric_state] Error initializing 'Phone Charge Reminder' trigger: In 'numeric_state' condition: unknown entity sensor.bhavya_s_iphone_battery_level
+2025-12-07 18:39:41.271 WARNING (MainThread) [homeassistant.components.homeassistant.triggers.numeric_state] Error initializing 'Phone Charge Reminder' trigger: In 'numeric_state' condition: unknown entity sensor.bhavya_s_iphone_battery_level
+2025-12-07 18:39:41.279 ERROR (Recorder) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/emulated_hue/__init__.py", line 155, in _start
+    await start_emulated_hue_bridge(hass, config, app)
+  File "/usr/src/homeassistant/homeassistant/components/emulated_hue/__init__.py", line 98, in start_emulated_hue_bridge
+    protocol = await async_create_upnp_datagram_endpoint(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/components/emulated_hue/upnp.py", line 162, in async_create_upnp_datagram_endpoint
+    ssdp_socket.setsockopt(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        socket.SOL_IP, socket.IP_MULTICAST_IF, socket.inet_aton(host_ip_addr)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+OSError: [Errno 99] Address not available
+2025-12-07 18:39:41.330 ERROR (MainThread) [homeassistant.components.homekit.util] media_player.xbox does not support any media_player features
+2025-12-07 18:39:41.331 ERROR (MainThread) [homeassistant.components.homekit.util] media_player.spotify_bhavya_rupani does not support any media_player features
+2025-12-07 18:44:09.525 WARNING (MainThread) [homeassistant.helpers.frame] Detected that custom integration 'hacs' sets option flow config_entry explicitly, which is deprecated at custom_components/hacs/config_flow.py, line 199: self.config_entry = config_entry. This will stop working in Home Assistant 2025.12, please create a bug report at https://github.com/hacs/integration/issues
+2025-12-07 18:44:11.297 ERROR (MainThread) [homeassistant.config_entries] Error unloading entry  for switch
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/config_entries.py", line 855, in async_unload
+    result = await component.async_unload_entry(hass, self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/switch/__init__.py", line 84, in async_unload_entry
+    return await hass.data[DATA_COMPONENT].async_unload_entry(entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_component.py", line 204, in async_unload_entry
+    raise ValueError("Config entry was never loaded!")
+ValueError: Config entry was never loaded!
+2025-12-07 18:44:11.300 ERROR (MainThread) [homeassistant.config_entries] Error unloading entry  for update
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/config_entries.py", line 855, in async_unload
+    result = await component.async_unload_entry(hass, self)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 124, in async_unload_entry
+    return await hass.data[DATA_COMPONENT].async_unload_entry(entry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_component.py", line 204, in async_unload_entry
+    raise ValueError("Config entry was never loaded!")
+ValueError: Config entry was never loaded!
+2025-12-07 18:51:53.008 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
+Traceback (most recent call last):
+  File "/config/custom_components/hacs/__init__.py", line 161, in async_try_startup
+    startup_result = await async_startup()
+                     ^^^^^^^^^^^^^^^^^^^^^
+  File "/config/custom_components/hacs/__init__.py", line 144, in async_startup
+    await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
+  File "/usr/src/homeassistant/homeassistant/config_entries.py", line 2283, in async_forward_entry_setups
+    raise OperationNotAllowed(
+    ...<4 lines>...
+    )
+homeassistant.config_entries.OperationNotAllowed: The config entry '' (hacs) with entry_id 'c0ebcfd3a030fce3d5489a1cdcc45e38' cannot forward setup for [<Platform.SWITCH: 'switch'>, <Platform.UPDATE: 'update'>] because it is in state ConfigEntryState.NOT_LOADED, but needs to be in the ConfigEntryState.LOADED state
+2025-12-07 19:21:48.988 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `climate.bedroom` to `climate.bedroom_heater_thermostat` because the new entity_id is already in use
+2025-12-07 19:21:48.997 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.bedroom_battery` to `sensor.bedroom_heater_thermostat_battery` because the new entity_id is already in use
+2025-12-07 19:21:49.002 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.bedroom_child_lock` to `switch.bedroom_heater_thermostat_child_lock` because the new entity_id is already in use
+2025-12-07 19:21:49.006 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.bedroom_open_window_detection` to `switch.bedroom_heater_thermostat_open_window_detection` because the new entity_id is already in use
+2025-12-07 19:21:49.010 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `binary_sensor.bedroom_window` to `binary_sensor.bedroom_heater_thermostat_window` because the new entity_id is already in use
+2025-12-07 19:24:57.067 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `climate.bedroom_heater_thermostat` to `climate.bedroom_heater` because the new entity_id is already in use
+2025-12-07 19:24:57.076 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.bedroom_heater_thermostat_battery` to `sensor.bedroom_heater_battery` because the new entity_id is already in use
+2025-12-07 19:24:57.083 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.bedroom_heater_thermostat_child_lock` to `switch.bedroom_heater_child_lock` because the new entity_id is already in use
+2025-12-07 19:24:57.088 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.bedroom_heater_thermostat_open_window_detection` to `switch.bedroom_heater_open_window_detection` because the new entity_id is already in use
+2025-12-07 19:24:57.093 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `binary_sensor.bedroom_heater_thermostat_window` to `binary_sensor.bedroom_heater_window` because the new entity_id is already in use
+2025-12-07 19:25:30.050 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `climate.office_smart_radiator_thermostat` to `climate.office_heater` because the new entity_id is already in use
+2025-12-07 19:25:30.058 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.office_smart_radiator_thermostat_battery` to `sensor.office_heater_battery` because the new entity_id is already in use
+2025-12-07 19:25:30.063 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.office_smart_radiator_thermostat_child_lock` to `switch.office_heater_child_lock` because the new entity_id is already in use
+2025-12-07 19:25:30.072 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.office_smart_radiator_thermostat_open_window_detection` to `switch.office_heater_open_window_detection` because the new entity_id is already in use
+2025-12-07 19:25:30.077 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `binary_sensor.office_smart_radiator_thermostat_window` to `binary_sensor.office_heater_window` because the new entity_id is already in use
+2025-12-07 19:35:04.650 ERROR (MainThread) [homeassistant.components.websocket_api.http.connection] [140422460719168] Unexpected exception
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/hassio/update.py", line 214, in async_install
+    await self.coordinator.supervisor_client.os.update(
+        OSUpdate(version=version)
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/os.py", line 28, in update
+    await self._client.post(
+        "os/update", json=options.to_dict() if options else None, timeout=None
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 182, in post
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 129, in _request
+    await self._raise_on_status(response)
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 76, in _raise_on_status
+    raise exc_type(result.message, result.job_id)
+aiohasupervisor.exceptions.SupervisorBadRequestError: Can't fetch OTA update from https://os-artifacts.home-assistant.io/15.2/haos_generic-x86-64-15.2.raucb: Response payload is not completed: <ContentLengthError: 400, message='Not enough data to satisfy content length header.'>
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/websocket_api/commands.py", line 245, in handle_call_service
+    response = await hass.services.async_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2795, in async_call
+    response_data = await coro
+                    ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2838, in _execute_service
+    return await target(service_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1006, in entity_service_call
+    single_response = await _handle_entity_call(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        hass, entity, func, data, call.context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1078, in _handle_entity_call
+    result = await task
+             ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 157, in async_install
+    await entity.async_install_with_progress(version, backup)
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 489, in async_install_with_progress
+    await self.async_install(version, backup)
+  File "/usr/src/homeassistant/homeassistant/components/hassio/update.py", line 218, in async_install
+    raise HomeAssistantError(
+        f"Error updating Home Assistant Operating System: {err}"
+    ) from err
+homeassistant.exceptions.HomeAssistantError: Error updating Home Assistant Operating System: Can't fetch OTA update from https://os-artifacts.home-assistant.io/15.2/haos_generic-x86-64-15.2.raucb: Response payload is not completed: <ContentLengthError: 400, message='Not enough data to satisfy content length header.'>
+2025-12-07 19:40:11.507 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `light.main_bedroom_light_4` to `light.living_room_ceiling_light_bulb_1` because the new entity_id is already in use
+2025-12-07 19:40:11.516 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `number.main_bedroom_light_4_effect_speed` to `number.living_room_ceiling_light_bulb_1_effect_speed` because the new entity_id is already in use
+2025-12-07 19:40:11.522 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.main_bedroom_light_4_power` to `sensor.living_room_ceiling_light_bulb_1_power` because the new entity_id is already in use
+2025-12-07 19:40:55.450 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `light.main_bedroom_light_2` to `light.living_room_ceiling_light_bulb_3` because the new entity_id is already in use
+2025-12-07 19:40:55.459 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `number.main_bedroom_light_2_effect_speed` to `number.living_room_ceiling_light_bulb_3_effect_speed` because the new entity_id is already in use
+2025-12-07 19:40:55.466 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.main_bedroom_light_2_power` to `sensor.living_room_ceiling_light_bulb_3_power` because the new entity_id is already in use
+2025-12-07 19:41:29.240 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `light.main_bedroom_light_3` to `light.living_room_ceiling_light_bulb_2` because the new entity_id is already in use
+2025-12-07 19:41:29.251 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `number.main_bedroom_light_3_effect_speed` to `number.living_room_ceiling_light_bulb_2_effect_speed` because the new entity_id is already in use
+2025-12-07 19:41:29.260 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.main_bedroom_light_3_power` to `sensor.living_room_ceiling_light_bulb_2_power` because the new entity_id is already in use
+2025-12-07 19:42:12.897 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `light.main_bedroom_light_1` to `light.living_room_ceiling_light_bulb_4` because the new entity_id is already in use
+2025-12-07 19:42:12.905 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `number.main_bedroom_light_1_effect_speed` to `number.living_room_ceiling_light_bulb_4_effect_speed` because the new entity_id is already in use
+2025-12-07 19:42:12.911 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `sensor.main_bedroom_light_1_power` to `sensor.living_room_ceiling_light_bulb_4_power` because the new entity_id is already in use
+2025-12-07 19:56:34.351 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-07 19:56:34.351 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-07 19:58:12.631 WARNING (MainThread) [homeassistant.components.light] Got `kelvin` argument in `turn_on` service, which is deprecated and will break in Home Assistant 2026.1, please use `color_temp_kelvin` argument
+2025-12-07 20:00:14.433 WARNING (ImportExecutor_0) [py.warnings] /usr/local/lib/python3.13/site-packages/sleekxmppfs/thirdparty/mini_dateutil.py:163: SyntaxWarning: invalid escape sequence '\s'
+  _iso8601_parser = re.compile("""
+
+2025-12-07 20:04:38.182 WARNING (MainThread) [deebot_client.api_client] Device class "9eamof" not recognized. Please add support for it: {'did': '[REMOVED]', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 0, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {}}
+2025-12-07 20:04:38.182 WARNING (MainThread) [homeassistant.components.ecovacs.controller] Device "DEEBOT T80 OMNI" not supported. More information at https://github.com/DeebotUniverse/client.py/issues/612: {'did': '701ff3a3-45f1-4f9c-b8c8-c11dfe072185', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 0, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {}}
+2025-12-07 20:04:51.365 WARNING (MainThread) [deebot_client.api_client] Device class "9eamof" not recognized. Please add support for it: {'did': '[REMOVED]', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 0, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {}}
+2025-12-07 20:04:51.366 WARNING (MainThread) [homeassistant.components.ecovacs.controller] Device "DEEBOT T80 OMNI" not supported. More information at https://github.com/DeebotUniverse/client.py/issues/612: {'did': '701ff3a3-45f1-4f9c-b8c8-c11dfe072185', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 0, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {}}
+2025-12-07 20:06:53.695 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 4 data: Failed to update device at 192.168.31.110: 
+2025-12-07 20:07:03.094 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 2 data: Failed to update device at 192.168.31.155: 
+2025-12-07 20:07:12.069 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 1 data: Failed to update device at 192.168.31.90: 
+2025-12-07 20:07:12.204 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 3 data: Failed to update device at 192.168.31.165: 
+2025-12-07 20:11:56.390 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.office_bed_child_lock` to `switch.office_ambiance_plug_child_lock` because the new entity_id is already in use
+2025-12-07 20:11:56.395 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `select.office_bed_indicator_light_mode` to `select.office_ambiance_plug_indicator_light_mode` because the new entity_id is already in use
+2025-12-07 20:11:56.402 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `select.office_bed_power_on_behavior` to `select.office_ambiance_plug_power_on_behavior` because the new entity_id is already in use
+2025-12-07 20:11:56.409 WARNING (Recorder) [homeassistant.components.recorder.entity_registry] Cannot migrate history for entity_id `switch.office_bed_socket_1` to `switch.office_ambiance_plug_socket_1` because the new entity_id is already in use
+2025-12-07 20:21:48.495 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 4 data: Failed to update device at 192.168.31.110: 
+2025-12-07 20:21:52.108 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 1 data: Failed to update device at 192.168.31.90: 
+2025-12-07 20:21:52.236 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 3 data: Failed to update device at 192.168.31.165: 
+2025-12-07 20:22:03.131 ERROR (MainThread) [homeassistant.components.wiz] Error fetching Living Room Ceiling Light Bulb 2 data: Failed to update device at 192.168.31.155: 
+2025-12-07 21:17:39.571 ERROR (MainThread) [homeassistant.components.smartthings.config_flow] API error setting up the SmartApp: {'error': {'code': 'ConstraintViolationError', 'message': 'The request is malformed.', 'details': [{'code': 'TargetTimeoutError', 'target': 'https://homeassistant.local:8123/api/webhook/c0a4d9acb68a6c4d0389dc029a0b14a79b53f1bd603266835514dad2dca6b608', 'message': 'Upstream target timed out', 'details': []}]}}
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/smartthings/config_flow.py", line 138, in async_step_pat
+    app, client = await create_app(self.hass, self.api)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/smartthings/smartapp.py", line 146, in create_app
+    app, client = await api.create_app(app)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/smartthings.py", line 110, in create_app
+    entity = await self._service.create_app(app.to_data())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 171, in create_app
+    return await self.post(API_APPS, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 395, in post
+    return await self.request("post", self._api_base + resource, data=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 368, in request
+    raise APIResponseError(
+    ...<6 lines>...
+    )
+pysmartthings.errors.APIResponseError: Unprocessable Entity (422): {"error": {"code": "ConstraintViolationError", "message": "The request is malformed.", "details": [{"code": "TargetTimeoutError", "target": "https://homeassistant.local:8123/api/webhook/c0a4d9acb68a6c4d0389dc029a0b14a79b53f1bd603266835514dad2dca6b608", "message": "Upstream target timed out", "details": []}]}}
+2025-12-07 21:18:09.886 ERROR (MainThread) [homeassistant.components.smartthings.config_flow] API error setting up the SmartApp: {'error': {'code': 'ConstraintViolationError', 'message': 'The request is malformed.', 'details': [{'code': 'TargetTimeoutError', 'target': 'https://homeassistant.local:8123/api/webhook/c0a4d9acb68a6c4d0389dc029a0b14a79b53f1bd603266835514dad2dca6b608', 'message': 'Upstream target timed out', 'details': []}]}}
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/smartthings/config_flow.py", line 138, in async_step_pat
+    app, client = await create_app(self.hass, self.api)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/smartthings/smartapp.py", line 146, in create_app
+    app, client = await api.create_app(app)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/smartthings.py", line 110, in create_app
+    entity = await self._service.create_app(app.to_data())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 171, in create_app
+    return await self.post(API_APPS, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 395, in post
+    return await self.request("post", self._api_base + resource, data=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 368, in request
+    raise APIResponseError(
+    ...<6 lines>...
+    )
+pysmartthings.errors.APIResponseError: Unprocessable Entity (422): {"error": {"code": "ConstraintViolationError", "message": "The request is malformed.", "details": [{"code": "TargetTimeoutError", "target": "https://homeassistant.local:8123/api/webhook/c0a4d9acb68a6c4d0389dc029a0b14a79b53f1bd603266835514dad2dca6b608", "message": "Upstream target timed out", "details": []}]}}
+2025-12-07 21:18:19.926 ERROR (MainThread) [homeassistant.components.smartthings.config_flow] API error setting up the SmartApp: {'error': {'code': 'ConstraintViolationError', 'message': 'The request is malformed.', 'details': [{'code': 'TargetTimeoutError', 'target': 'https://homeassistant.local:8123/api/webhook/2a62cc7984f1d2cade452927d4b9aa4973515a24924bf6e359c127f35685896e', 'message': 'Upstream target timed out', 'details': []}]}}
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/smartthings/config_flow.py", line 138, in async_step_pat
+    app, client = await create_app(self.hass, self.api)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/smartthings/smartapp.py", line 146, in create_app
+    app, client = await api.create_app(app)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/smartthings.py", line 110, in create_app
+    entity = await self._service.create_app(app.to_data())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 171, in create_app
+    return await self.post(API_APPS, data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 395, in post
+    return await self.request("post", self._api_base + resource, data=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/pysmartthings/api.py", line 368, in request
+    raise APIResponseError(
+    ...<6 lines>...
+    )
+pysmartthings.errors.APIResponseError: Unprocessable Entity (422): {"error": {"code": "ConstraintViolationError", "message": "The request is malformed.", "details": [{"code": "TargetTimeoutError", "target": "https://homeassistant.local:8123/api/webhook/2a62cc7984f1d2cade452927d4b9aa4973515a24924bf6e359c127f35685896e", "message": "Upstream target timed out", "details": []}]}}
+2025-12-07 21:46:33.267 WARNING (MainThread) [homeassistant.components.webhook] Webhook 10b40e3a5a22038fb9a546813474c81954d7cad6e4cd0a58a241f71673e9d8e7 only supports POST,PUT methods but GET was received from 192.168.31.66
+2025-12-07 21:51:27.285 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-07 21:51:27.285 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-07 21:51:27.295 ERROR (MainThread) [homeassistant.components.websocket_api.http.connection] [140422318767360] Unexpected exception
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/websocket_api/commands.py", line 245, in handle_call_service
+    response = await hass.services.async_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2795, in async_call
+    response_data = await coro
+                    ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2838, in _execute_service
+    return await target(service_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1109, in _async_admin_handler
+    await result
+  File "/usr/src/homeassistant/homeassistant/components/homeassistant/__init__.py", line 213, in async_handle_core_service
+    await stop_handler(hass, True)
+  File "/usr/src/homeassistant/homeassistant/components/hassio/__init__.py", line 491, in _async_stop
+    await supervisor_client.homeassistant.restart()
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/homeassistant.py", line 40, in restart
+    await self._client.post(
+        "core/restart", json=options.to_dict() if options else None
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 182, in post
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 129, in _request
+    await self._raise_on_status(response)
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 76, in _raise_on_status
+    raise exc_type(result.message, result.job_id)
+aiohasupervisor.exceptions.SupervisorBadRequestError: Another job is running for job group home_assistant_core
+2025-12-07 21:51:50.108 WARNING (MainThread) [homeassistant.components.hassio] Can't read Supervisor data: System is not ready with state: shutdown
+2025-12-07 21:52:16.632 ERROR (MainThread) [homeassistant.components.youtube] Error fetching youtube data: Couldn't connect to YouTube
+2025-12-07 21:52:20.757 ERROR (MainThread) [homeassistant.components.websocket_api.http.connection] [140422460719168] Unexpected exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 120, in _request
+    response = await self.session.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client.py", line 730, in _request
+    await resp.start(conn)
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client_reqrep.py", line 1059, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/streams.py", line 671, in read
+    await self._waiter
+aiohttp.client_exceptions.ServerDisconnectedError: Server disconnected
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/hassio/update.py", line 167, in async_install
+    await self.coordinator.supervisor_client.store.update_addon(
+        self._addon_slug, StoreAddonUpdate(backup=backup)
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/store.py", line 56, in update_addon
+    await self._client.post(
+    ...<3 lines>...
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 182, in post
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 150, in _request
+    raise SupervisorConnectionError(
+        "Error occurred connecting to supervisor",
+    ) from err
+aiohasupervisor.exceptions.SupervisorConnectionError: Error occurred connecting to supervisor
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/websocket_api/commands.py", line 245, in handle_call_service
+    response = await hass.services.async_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2795, in async_call
+    response_data = await coro
+                    ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2838, in _execute_service
+    return await target(service_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1006, in entity_service_call
+    single_response = await _handle_entity_call(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        hass, entity, func, data, call.context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1078, in _handle_entity_call
+    result = await task
+             ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 157, in async_install
+    await entity.async_install_with_progress(version, backup)
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 489, in async_install_with_progress
+    await self.async_install(version, backup)
+  File "/usr/src/homeassistant/homeassistant/components/hassio/update.py", line 171, in async_install
+    raise HomeAssistantError(f"Error updating {self.title}: {err}") from err
+homeassistant.exceptions.HomeAssistantError: Error updating Studio Code Server: Error occurred connecting to supervisor
+2025-12-07 21:52:20.780 ERROR (MainThread) [homeassistant.components.websocket_api.http.connection] [140422460719168] Unexpected exception
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 120, in _request
+    response = await self.session.request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client.py", line 730, in _request
+    await resp.start(conn)
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/client_reqrep.py", line 1059, in start
+    message, payload = await protocol.read()  # type: ignore[union-attr]
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/aiohttp/streams.py", line 671, in read
+    await self._waiter
+aiohttp.client_exceptions.ServerDisconnectedError: Server disconnected
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/hassio/update.py", line 307, in async_install
+    await self.coordinator.supervisor_client.homeassistant.update(
+        HomeAssistantUpdateOptions(version=version, backup=backup)
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/homeassistant.py", line 34, in update
+    await self._client.post(
+        "core/update", json=options.to_dict() if options else None, timeout=None
+    )
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 182, in post
+    return await self._request(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/aiohasupervisor/client.py", line 150, in _request
+    raise SupervisorConnectionError(
+        "Error occurred connecting to supervisor",
+    ) from err
+aiohasupervisor.exceptions.SupervisorConnectionError: Error occurred connecting to supervisor
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/websocket_api/commands.py", line 245, in handle_call_service
+    response = await hass.services.async_call(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<7 lines>...
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2795, in async_call
+    response_data = await coro
+                    ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 2838, in _execute_service
+    return await target(service_call)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1006, in entity_service_call
+    single_response = await _handle_entity_call(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+        hass, entity, func, data, call.context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/src/homeassistant/homeassistant/helpers/service.py", line 1078, in _handle_entity_call
+    result = await task
+             ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 157, in async_install
+    await entity.async_install_with_progress(version, backup)
+  File "/usr/src/homeassistant/homeassistant/components/update/__init__.py", line 489, in async_install_with_progress
+    await self.async_install(version, backup)
+  File "/usr/src/homeassistant/homeassistant/components/hassio/update.py", line 311, in async_install
+    raise HomeAssistantError(
+        f"Error updating Home Assistant Core: {err}"
+    ) from err
+homeassistant.exceptions.HomeAssistantError: Error updating Home Assistant Core: Error occurred connecting to supervisor
+2025-12-07 21:52:22.138 ERROR (MainThread) [habluetooth.scanner] hci0 (30:16:9D:5D:92:5B): Error stopping scanner: [org.freedesktop.DBus.Error.NameHasNoOwner] Could not activate remote peer: activation request failed: unit is invalid.
+2025-12-07 21:52:23.227 WARNING (MainThread) [bluetooth_auto_recovery.recover] Bluetooth adapter hci0 [30:16:9D:5D:92:5B] successfully turned back ON
