@@ -245,35 +245,6 @@
     target:
       area_id: bedroom
   mode: single
-- id: '1736036527708'
-  alias: Back to home
-  description: ''
-  triggers:
-  - device_id: d70ac253d271460a0df2c2c48c140f3a
-    domain: device_tracker
-    entity_id: f4e1a1ad30fd081b76fc2c9ac335dedd
-    type: enters
-    trigger: device
-    zone: zone.home_2
-  conditions: []
-  actions:
-  - type: turn_on
-    device_id: 883555eec0c05f02955a414a1fde9038
-    entity_id: 90dbdb36eb784a7f1151a88123778d99
-    domain: light
-  - type: turn_on
-    device_id: 31e5add0324f47e270192cfdb0bfc8eb
-    entity_id: 1f0093fae46637c1ad8f864d9ceb66be
-    domain: light
-  - type: turn_on
-    device_id: 1a553c8904a9050d46fa1340219cefb8
-    entity_id: 6e6c0f56a04e1424cc5c08323f4a7920
-    domain: light
-  - type: turn_on
-    device_id: d5f46772a7406ac049782c41b2b5ed58
-    entity_id: 2becd39d2f4c0339c6717f1b68f1aecb
-    domain: light
-  mode: single
 - id: '1765133751336'
   alias: Living Room Ceiling – Auto Cool White
   description: ''
@@ -468,11 +439,177 @@
     default: []
   mode: single
 - id: '1765222226467'
-  alias: bedroom - motion - comfort heat
-  description: When there is motion in bedroom and I am home, set bedroom heater to
-    comfort temp based on outside
+  alias: bedroom - no motion - eco heat (day vs night)
+  description: Set bedroom heater to eco/off when there is no motion for a while,
+    with different rules for day and night
   triggers:
-  - entity_id: binary_sensor.bedroom_motion_sensor
+  - id: day
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 30
+    trigger: state
+  - id: night
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 60
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: person.bhavya
+    state: home
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''day'' and 8 <= now().hour < 23 }}
+
+          '
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+              | float(20)) < 5 }}
+
+              '
+          sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              hvac_mode: heat
+          - action: climate.set_temperature
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              temperature: 16
+        - conditions:
+          - condition: template
+            value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+              | float(20)) < 12 }}
+
+              '
+          sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              hvac_mode: heat
+          - action: climate.set_temperature
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              temperature: 14
+        - conditions:
+          - condition: template
+            value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+              | float(20)) >= 12 }}
+
+              '
+          sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              hvac_mode: 'off'
+        default: []
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.id == ''night'' and (now().hour >= 23 or now().hour
+          < 8) }}
+
+          '
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+              | float(20)) < 5 }}
+
+              '
+          sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              hvac_mode: heat
+          - action: climate.set_temperature
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              temperature: 16
+        - conditions:
+          - condition: template
+            value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+              | float(20)) < 12 }}
+
+              '
+          sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              hvac_mode: heat
+          - action: climate.set_temperature
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              temperature: 14
+        - conditions:
+          - condition: template
+            value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+              | float(20)) >= 12 }}
+
+              '
+          sequence:
+          - action: climate.set_hvac_mode
+            target:
+              entity_id: climate.bedroom_heater
+            data:
+              hvac_mode: 'off'
+        default: []
+    default: []
+  mode: single
+- id: '1765225254491'
+  alias: Daily Git Sync from Main
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:10:00
+  conditions: []
+  actions:
+  - action: shell_command.git_pull_config
+    data: {}
+  mode: single
+- id: '1765225624372'
+  alias: Git Publish
+  description: ''
+  triggers:
+  - trigger: webhook
+    allowed_methods:
+    - POST
+    - PUT
+    local_only: true
+    webhook_id: -s9ybENLvAeusUDZm4WrYXcyR
+  conditions: []
+  actions:
+  - action: shell_command.git_pull_config
+    data: {}
+  mode: single
+- id: '1765230315456'
+  alias: bedroom - motions - comfort heat (day vs night)
+  description: 'Only if there are 3 motion events within 5 minutes and I am home,
+    set bedroom heater to comfort temp based on outside & current room temp (day vs
+    night)
+
+    '
+  triggers:
+  - entity_id:
+    - binary_sensor.bedroom_motion_sensor_motion
     from: 'off'
     to: 'on'
     trigger: state
@@ -483,50 +620,301 @@
   actions:
   - choose:
     - conditions:
-      - condition: template
-        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
-          | float(20)) < 5 }}
-
-          '
+      - condition: state
+        entity_id: timer.bedroom_motion_window
+        state: idle
       sequence:
       - target:
-          entity_id: climate.bedroom_heater
-        data:
-          hvac_mode: heat
-        action: climate.set_hvac_mode
+          entity_id: counter.bedroom_motion_counter
+        action: counter.reset
+        data: {}
       - target:
-          entity_id: climate.bedroom_heater
-        data:
-          temperature: 21
-        action: climate.set_temperature
+          entity_id: counter.bedroom_motion_counter
+        action: counter.increment
+        data: {}
+      - target:
+          entity_id: timer.bedroom_motion_window
+        action: timer.start
+        data: {}
     - conditions:
-      - condition: template
-        value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
-          | float(20)) < 12 }}
-
-          '
+      - condition: state
+        entity_id: timer.bedroom_motion_window
+        state: active
       sequence:
       - target:
-          entity_id: climate.bedroom_heater
-        data:
-          hvac_mode: heat
-        action: climate.set_hvac_mode
-      - target:
-          entity_id: climate.bedroom_heater
-        data:
-          temperature: 19
-        action: climate.set_temperature
-    - conditions:
-      - condition: template
-        value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
-          | float(20)) >= 12 }}
+          entity_id: counter.bedroom_motion_counter
+        action: counter.increment
+        data: {}
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ states(''counter.bedroom_motion_counter'') | int(0)
+              >= 3 }}
 
-          '
-      sequence:
-      - target:
-          entity_id: climate.bedroom_heater
-        data:
-          hvac_mode: 'off'
-        action: climate.set_hvac_mode
+              '
+          sequence:
+          - target:
+              entity_id: timer.bedroom_motion_window
+            action: timer.cancel
+            data: {}
+          - target:
+              entity_id: counter.bedroom_motion_counter
+            action: counter.reset
+            data: {}
+          - choose:
+            - conditions:
+              - condition: template
+                value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+                  | float(20)) < 5 }}
+
+                  '
+              - condition: template
+                value_template: '{{ (state_attr(''climate.bedroom_heater'', ''current_temperature'')
+                  | float(20)) < 20.5 }}
+
+                  '
+              sequence:
+              - target:
+                  entity_id: climate.bedroom_heater
+                data:
+                  hvac_mode: heat
+                action: climate.set_hvac_mode
+              - target:
+                  entity_id: climate.bedroom_heater
+                action: climate.set_temperature
+                data:
+                  temperature: "{% if 8 <= now().hour < 23 %}\n  21\n{% else %}\n
+                    \ 19\n{% endif %}\n"
+            - conditions:
+              - condition: template
+                value_template: '{{ 5 <= (state_attr(''weather.forecast_home'', ''temperature'')
+                  | float(20)) < 12 }}
+
+                  '
+              - condition: template
+                value_template: '{{ (state_attr(''climate.bedroom_heater'', ''current_temperature'')
+                  | float(20)) < 18.5 }}
+
+                  '
+              sequence:
+              - target:
+                  entity_id: climate.bedroom_heater
+                data:
+                  hvac_mode: heat
+                action: climate.set_hvac_mode
+              - target:
+                  entity_id: climate.bedroom_heater
+                action: climate.set_temperature
+                data:
+                  temperature: "{% if 8 <= now().hour < 23 %}\n  19\n{% else %}\n
+                    \ 17\n{% endif %}\n"
+            - conditions:
+              - condition: template
+                value_template: '{{ (state_attr(''weather.forecast_home'', ''temperature'')
+                  | float(20)) >= 12 }}
+
+                  '
+              sequence:
+              - target:
+                  entity_id: climate.bedroom_heater
+                data:
+                  hvac_mode: 'off'
+                action: climate.set_hvac_mode
+        default: []
     default: []
   mode: single
+- id: '1765234997681'
+  alias: Bhavya - Sleep Mode Manager
+  description: Automatically set Bhavya sleep mode on/off based on time and iPhone
+    activity only.
+  triggers:
+  - id: maybe_sleep
+    entity_id: sensor.bhavyas_iphone_activity
+    to: stationary
+    for: 00:45:00
+    trigger: state
+  - id: phone_activity
+    entity_id: sensor.bhavyas_iphone_activity
+    trigger: state
+  - id: wake_time
+    at: 09:00:00
+    trigger: time
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: maybe_sleep
+      - condition: time
+        after: '22:30:00'
+        before: 09:00:00
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'off'
+      sequence:
+      - target:
+          entity_id: input_boolean.bhavya_sleep_mode
+        action: input_boolean.turn_on
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'on'
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: wake_time
+        - condition: and
+          conditions:
+          - condition: trigger
+            id: phone_activity
+          - condition: template
+            value_template: '{{ states(''sensor.bhavyas_iphone_activity'') not in
+              [''stationary'', ''unknown'', ''unavailable''] }}
+
+              '
+          - condition: time
+            after: 05:30:00
+      sequence:
+      - target:
+          entity_id: input_boolean.bhavya_sleep_mode
+        action: input_boolean.turn_off
+  mode: restart
+- id: '1765235434928'
+  alias: Bedroom - Smart Motion Lights (Bhavya)
+  description: Control bedroom ceiling light based on motion, natural light, Bhavya's
+    presence and sleep mode.
+  triggers:
+  - id: motion_on_raw
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'off'
+    to: 'on'
+    trigger: state
+  - id: motion_on_stable
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+    trigger: state
+  - id: motion_clear_10sec
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for: 00:00:10
+    trigger: state
+  - id: motion_clear_3min
+    entity_id:
+    - binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    trigger: state
+  - id: motion_clear_10min
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for: 00:10:00
+    trigger: state
+  - id: bhavya_left_home
+    entity_id: device_tracker.bhavyas_iphone
+    to: not_home
+    trigger: state
+  actions:
+  - variables:
+      light_level: "{% set s = states('sensor.bedroom_natural_light_level') %} {%
+        if s in ['bright', 'medium', 'dark'] %}\n  {{ s }}\n{% else %}\n  medium\n{%
+        endif %}\n"
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: motion_on_stable
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: home
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'on'
+      - condition: template
+        value_template: '{{ light_level == ''dark'' }}'
+      sequence:
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        data:
+          brightness_pct: 8
+        action: light.turn_on
+    - conditions:
+      - condition: trigger
+        id: motion_on_stable
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: home
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'off'
+      - condition: template
+        value_template: '{{ light_level != ''bright'' }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ light_level == ''medium'' }}'
+          sequence:
+          - target:
+              entity_id: light.bedroom_ceiling_light
+            data:
+              brightness_pct: 80
+            action: light.turn_on
+        - conditions:
+          - condition: template
+            value_template: '{{ light_level == ''dark'' }}'
+          sequence:
+          - target:
+              entity_id: light.bedroom_ceiling_light
+            data:
+              brightness_pct: 25
+            action: light.turn_on
+        default: []
+    - conditions:
+      - condition: trigger
+        id: motion_clear_10sec
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'on'
+      - condition: template
+        value_template: '{{ light_level == ''dark'' }}'
+      sequence:
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        action: light.turn_off
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: motion_clear_3min
+      - condition: template
+        value_template: '{{ light_level == ''dark'' }}'
+      sequence:
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        action: light.turn_off
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: motion_clear_10min
+      - condition: template
+        value_template: '{{ light_level in [''medium'', ''bright''] }}'
+      sequence:
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        action: light.turn_off
+        data: {}
+    - conditions:
+      - condition: trigger
+        id: bhavya_left_home
+      sequence:
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        action: light.turn_off
+        data: {}
+    default: []
+  mode: restart

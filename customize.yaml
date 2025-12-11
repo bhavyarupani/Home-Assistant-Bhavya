@@ -1,0 +1,8 @@
+light.bedroom_ceiling_light_bulb_1:
+  assumed_watt: 9
+
+light.bedroom_ceiling_light_bulb_2:
+  assumed_watt: 9
+
+light.bedroom_ceiling_light_bulb_3:
+  assumed_watt: 9

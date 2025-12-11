@@ -1,6 +1,9 @@
 # Loads default set of integrations. Do not remove.
 default_config:
 
+homeassistant:
+  customize: !include customize.yaml
+
 # Load frontend themes from the themes folder
 frontend:
   themes: !include_dir_merge_named themes
@@ -22,14 +25,16 @@ http:
     - 127.0.0.1
 
 bluetooth:
+
 device_tracker:
   - platform: bluetooth_le_tracker
   - platform: xiaomi
     host: 192.168.0.243
     password: KashtbhanjanDev
+
 tts:
   - platform: google_translate
-    language: "en" # Set your preferred language (e.g., 'de' for German, 'fr' for French)
+    language: "en"
     cache: true
     cache_dir: /config/tts
     time_memory: 300
@@ -39,13 +44,167 @@ sensor:
     sensors:
       day_en:
         value_template: "{{ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][now().weekday()] }}"
+
       date_en:
-        value_template: "{% set months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
+        value_template: >
+          {% set months = ['January', 'February', 'March', 'April', 'May', 'June',
+                           'July', 'August', 'September', 'October', 'November', 'December'] %}
+          {{ now().day | string + ' ' + months[now().month-1] }}
 
-resources:
-  - url: /local/mini-graph-card-bundle.js?v=0.12.1
-    type: module
+      virtual_electricity_power:
+        friendly_name: "Virtual Electricity Power"
+        unit_of_measurement: "W"
+        entity_id:
+          - light.energy_lights_no_power
+          - switch.energy_switches_no_power_sensor
+          - sensor.energy_real_power_sensors_w
+        value_template: >
+          {% set ns = namespace(total=0) %}
 
-mobile_app:
+          {# 1) Lights & switches without real power sensors (using assumed_watt) #}
+          {% for e in expand('light.energy_lights_no_power', 'switch.energy_switches_no_power_sensor') %}
+            {% set watt = state_attr(e.entity_id, 'assumed_watt') | float(0) %}
+            {% if e.state == 'on' %}
+              {% set ns.total = ns.total + watt %}
+            {% endif %}
+          {% endfor %}
 
-template: !include sidebar.yaml
+          {# 2) Devices with real power sensors (W) #}
+          {% for s in expand('sensor.energy_real_power_sensors_w') %}
+            {% set ns.total = ns.total + (s.state | float(0)) %}
+          {% endfor %}
+
+          {{ ns.total }}
+
+
+          
+  - platform: integration
+    source: sensor.virtual_electricity_power
+    name: "Virtual Electricity Energy"
+    unit_prefix: k
+    round: 3
+
+
+utility_meter:
+  virtual_electricity_daily:
+    source: sensor.virtual_electricity_energy
+    cycle: daily
+
+  virtual_electricity_weekly:
+    source: sensor.virtual_electricity_energy
+    cycle: weekly
+
+  virtual_electricity_monthly:
+    source: sensor.virtual_electricity_energy
+    cycle: monthly
+
+  virtual_electricity_yearly:
+    source: sensor.virtual_electricity_energy
+    cycle: yearly
+
+
+template:
+  - !include sidebar.yaml
+
+  - sensor:
+      # 🌤 Natural Light Level sensor
+      - name: "Bedroom Natural Light Level"
+        unique_id: bedroom_natural_light_level
+        state: >
+          {% set elevation = states('sensor.sun_solar_elevation') | float(0) %}
+          {% set azimuth = states('sensor.sun_solar_azimuth') | float(0) %}
+          {% set south_facing = 120 <= azimuth <= 240 %}
+
+          {% if elevation <= 0 %}
+            dark
+          {% elif elevation > 25 and south_facing %}
+            bright
+          {% elif elevation > 5 %}
+            medium
+          {% else %}
+            dark
+          {% endif %}
+
+      # 📈 Daily % Change
+      - name: "Virtual Electricity Daily Change"
+        unique_id: virtual_electricity_daily_change
+        unit_of_measurement: "%"
+        state: >
+          {% set today = states('sensor.virtual_electricity_daily')|float(0) %}
+          {% set yesterday = state_attr('sensor.virtual_electricity_daily', 'last_period')|float(0) %}
+          {% if yesterday == 0 %}
+            0
+          {% else %}
+            ((today - yesterday) / yesterday * 100) | round(1)
+          {% endif %}
+
+      # 🙂 Verdict text
+      - name: "Virtual Electricity Daily Verdict"
+        unique_id: virtual_electricity_daily_verdict
+        state: >
+          {% set change = states('sensor.virtual_electricity_daily_change')|float(0) %}
+          {% if change < -5 %}
+            Much better 👍
+          {% elif change < 0 %}
+            Slightly better 🙂
+          {% elif change < 5 %}
+            About the same 😐
+          {% else %}
+            Worse ⚠️
+          {% endif %}
+                # 📈 Weekly % Change
+      - name: "Virtual Electricity Weekly Change"
+        unique_id: virtual_electricity_weekly_change
+        unit_of_measurement: "%"
+        state: >
+          {% set this = states('sensor.virtual_electricity_weekly')|float(0) %}
+          {% set last = state_attr('sensor.virtual_electricity_weekly', 'last_period')|float(0) %}
+          {% if last == 0 %}
+            0
+          {% else %}
+            ((this - last) / last * 100) | round(1)
+          {% endif %}
+
+      # 🙂 Weekly verdict
+      - name: "Virtual Electricity Weekly Verdict"
+        unique_id: virtual_electricity_weekly_verdict
+        state: >
+          {% set change = states('sensor.virtual_electricity_weekly_change')|float(0) %}
+          {% if change < -5 %}
+            Much better 👍
+          {% elif change < 0 %}
+            Slightly better 🙂
+          {% elif change < 5 %}
+            About the same 😐
+          {% else %}
+            Worse ⚠️
+          {% endif %}
+
+      # 📈 Monthly % Change
+      - name: "Virtual Electricity Monthly Change"
+        unique_id: virtual_electricity_monthly_change
+        unit_of_measurement: "%"
+        state: >
+          {% set this = states('sensor.virtual_electricity_monthly')|float(0) %}
+          {% set last = state_attr('sensor.virtual_electricity_monthly', 'last_period')|float(0) %}
+          {% if last == 0 %}
+            0
+          {% else %}
+            ((this - last) / last * 100) | round(1)
+          {% endif %}
+
+      # 🙂 Monthly verdict
+      - name: "Virtual Electricity Monthly Verdict"
+        unique_id: virtual_electricity_monthly_verdict
+        state: >
+          {% set change = states('sensor.virtual_electricity_monthly_change')|float(0) %}
+          {% if change < -5 %}
+            Much better 👍
+          {% elif change < 0 %}
+            Slightly better 🙂
+          {% elif change < 5 %}
+            About the same 😐
+          {% else %}
+            Worse ⚠️
+          {% endif %}
+
