@@ -40,4 +40,4 @@ jobs:
             EOF
       
             # restart HA
-            sudo ha core restart
+            sudo ha core restart >/dev/null 2>&1 &
