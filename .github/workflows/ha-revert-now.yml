@@ -19,17 +19,15 @@ jobs:
           port: ${{ secrets.HA_SSH_PORT }}
           script: |
             set -e
-            cd /config
-            if [ ! -d ".git" ]; then
-              echo "ERROR: /config is not a git repo"
-              exit 1
-            fi
-
+          
+            cd /homeassistant
+            git config --global --add safe.directory /homeassistant
+          
             git fetch --all --prune
             git checkout master
             git reset --hard origin/master
-
-            # write build label file
+          
+            # write build label file (adjust path if needed)
             SHA="$(git rev-parse --short HEAD)"
             TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
             TS="$(date -Iseconds)"
@@ -40,6 +38,5 @@ jobs:
             sha=$SHA
             timestamp=$TS
             EOF
-
-            # restart HA
+          
             ha core restart
