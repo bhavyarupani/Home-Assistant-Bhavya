@@ -6,6 +6,7 @@ on:
 jobs:
   revert:
     name: Revert HA to master now
+    if: ${{ false }}
     runs-on: self-hosted
 
 
