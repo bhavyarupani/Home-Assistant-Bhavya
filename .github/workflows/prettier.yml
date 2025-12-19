@@ -6,6 +6,7 @@ on:
 
 jobs:
   prettier:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,4 +15,5 @@ jobs:
           node-version: "20"
       - run: npm i -g prettier
       - name: prettier --check
-        run: prettier --check "**/*.{yml,yaml,json,md}" --ignore-path .gitignore
+        run: |
+          prettier --check "**/*.{yml,yaml,json,md}" --ignore-path .gitignore

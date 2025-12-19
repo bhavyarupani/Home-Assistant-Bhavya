@@ -6,12 +6,11 @@ on:
 
 jobs:
   yamllint:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - run: pipx install yamllint
-
       - name: yamllint
         run: |
           yamllint -d "{extends: default, rules: {line-length: {max: 160, level: warning}}}" .

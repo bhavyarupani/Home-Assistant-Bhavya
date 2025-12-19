@@ -6,9 +6,27 @@ on:
 
 jobs:
   ha_config_check:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      # CI-only: create files that are referenced by config but not committed
+      - name: Create CI stubs (secrets + lovelace resources)
+        run: |
+          # secrets.yaml for !secret lookups
+          cat > secrets.yaml <<'EOF'
+          gmail_app_password: "dummy"
+          EOF
+
+          # create empty resources file if configuration references it
+          mkdir -p src/lovelace
+          if [ ! -f src/lovelace/resources.yaml ]; then
+            cat > src/lovelace/resources.yaml <<'EOF'
+            []
+            EOF
+          fi
+
       - name: Home Assistant configuration check
         uses: frenck/action-home-assistant@v1
         with:
