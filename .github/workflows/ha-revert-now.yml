@@ -6,7 +6,8 @@ on:
 jobs:
   revert:
     name: Revert HA to master now
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+
 
     steps:
       - name: SSH into Home Assistant and revert to master
