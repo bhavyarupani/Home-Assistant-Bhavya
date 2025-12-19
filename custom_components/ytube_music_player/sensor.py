@@ -45,7 +45,7 @@ class yTubeMusicSensor(Entity):
 			'manufacturer': "Google Inc.",
 			'model': DOMAIN
 		}
-		
+
 	@property
 	def name(self):
 		# Return the name of the sensor.

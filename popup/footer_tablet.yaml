@@ -11,7 +11,6 @@ browser_mod:
           card_mod:
             class: content
           entities:
-
             - entity: switch.galaxy_tab_a_screen
               secondary_info: last-changed
 
@@ -36,21 +35,20 @@ browser_mod:
               width: 55%
               height: 2em
               decimal: 0
-              unit_of_measurement: '%'
+              unit_of_measurement: "%"
               positions: &bar_card_positions
                 icon: outside
-                indicator: 'off'
+                indicator: "off"
                 name: outside
               severity:
-                - color: '#6d2525'
+                - color: "#6d2525"
                   from: 0
                   to: 89
-                - color: '#303435'
+                - color: "#303435"
                   from: 90
                   to: 999
               entity_row: true
               entities:
-
                 - entity: sensor.galaxy_tab_a_battery
                   icon: mdi:battery
                   tap_action:
@@ -63,15 +61,14 @@ browser_mod:
               width: 55%
               height: 2em
               decimal: 0
-              unit_of_measurement: '%'
+              unit_of_measurement: "%"
               positions: *bar_card_positions
               severity:
-                - color: '#6d2525'
+                - color: "#6d2525"
                   from: 90
                   to: 999
               entity_row: true
               entities:
-
                 - entity: sensor.template_fullykiosk_memory
                   name: Minne - 2GB
                   icon: mdi:memory

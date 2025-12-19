@@ -1,6 +1,6 @@
 debug_scan:
   description: >-
-    Run raw scan for Bosch. It will be available as bosch_scan.json in your www dir of Home Assistant. You can check url of the file in logs after it. It doesn't matter which entity you choose. It makes scan for whole your setup. Typically it is https://ha/local/bosch_scan.json?vX . 
+    Run raw scan for Bosch. It will be available as bosch_scan.json in your www dir of Home Assistant. You can check url of the file in logs after it. It doesn't matter which entity you choose. It makes scan for whole your setup. Typically it is https://ha/local/bosch_scan.json?vX .
     There will be notification in HA with url of the scan. It takes several minutes to finish. Be patient!
     Choose any entity or device of your bosch inegration, it will find UUID and make scan for your whole Bosch setup. You don't need to choose water heater and climate separately!
   target:
@@ -35,7 +35,7 @@ fetch_recordings_sensor_range:
     statistic_id:
       name: Statistic ID
       description: Statistic ID, you can find proper id in Developer tools -> Statistics in column Statistic id.
-      example: 'recording:recording'
+      example: "recording:recording"
       selector:
         text:
 move_old_statistic_data:
@@ -57,8 +57,8 @@ set_dhw_charge:
       description: Either start or stop
       select:
         options:
-          - 'start'
-          - 'stop'
+          - "start"
+          - "stop"
 send_custom_put_float:
   description: Send custom PUT command to your bosch gateway with Float value
   target:
@@ -88,7 +88,7 @@ send_custom_put_string:
         text:
     value:
       description: Value you want to send
-      example: '2022-05-17'
+      example: "2022-05-17"
       selector:
         text:
 send_custom_get:

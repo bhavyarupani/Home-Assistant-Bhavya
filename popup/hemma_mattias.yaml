@@ -33,7 +33,6 @@ browser_mod:
               }
           show_state: false
           entities:
-
             - entity: device_tracker.mattias_iphone_unifi
               name: Router
               icon: mdi:wifi

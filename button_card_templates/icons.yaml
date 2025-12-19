@@ -45,7 +45,7 @@ icon_play_pause:
         - width: 25%
         - height: 25%
         - position: absolute
-        - fill: '#dedede'
+        - fill: "#dedede"
   custom_fields:
     play_pause: >
       [[[
@@ -238,29 +238,29 @@ icon_tv:
           `;
         if (variables.state_on && variables.timeout < 2000) {
             return `
-              <svg viewBox="0 0 50 50"> ${style} ${gradient} 
+              <svg viewBox="0 0 50 50"> ${style} ${gradient}
                 <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
-                <path class="on" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+                <path class="on" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path}
               </svg>
             `;
         }
         if (variables.state_on && variables.timeout > 2000) {
             return `
-              <svg viewBox="0 0 50 50"> ${gradient} 
+              <svg viewBox="0 0 50 50"> ${gradient}
                 <path d="M2.9,8h44.3v29.9H2.9V8z" fill="#20262890"/>
-                <path class="on" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+                <path class="on" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path}
               </svg>
             `;
         }
         if (variables.state === 'off' && variables.timeout < 2000) {
             return `
-              <svg viewBox="0 0 50 50"> ${style} ${gradient} 
-                <path class="off" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path} 
+              <svg viewBox="0 0 50 50"> ${style} ${gradient}
+                <path class="off" d="M2.9,8h44.3v29.9H2.9V8z" fill="url(#A)"/> ${path}
               </svg>
             `;
         } else {
             return `
-              <svg viewBox="0 0 50 50"> ${style} 
+              <svg viewBox="0 0 50 50"> ${style}
                 ${path}
               </svg>
             `;
@@ -337,7 +337,7 @@ icon_spot:
         let state;
         if (variables.state_on && variables.timeout < 2000) {
             state = 'on';
-        } 
+        }
         if (variables.state === 'off' && variables.timeout < 2000) {
             state = 'off';
         }
@@ -611,7 +611,7 @@ icon_bathroom:
         let state;
         if (variables.state_on && variables.timeout < 2000) {
           state = 'on';
-        } 
+        }
         if (variables.state === 'off' && variables.timeout < 2000) {
           state = 'off';
         }

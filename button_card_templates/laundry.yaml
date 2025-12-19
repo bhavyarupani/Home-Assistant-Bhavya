@@ -29,9 +29,9 @@ laundry:
       ]]]
   styles:
     card:
-      - background: '#202a2f30'
+      - background: "#202a2f30"
       - border-radius: 0.7vw
-      - border: '0.2vw solid #292c2e'
+      - border: "0.2vw solid #292c2e"
     state:
       - font-size: 2.7vw
       - font-family: SF Mono, Roboto

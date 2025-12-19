@@ -1,13 +1,13 @@
 circle:
   styles:
     card:
-      - --c-stroke-color-on: '#b0b0b0'
+      - --c-stroke-color-on: "#b0b0b0"
       - --c-stroke-color-off: none
       - --c-fill-color-on: none
       - --c-fill-color-off: rgba(255,255,255,0.04)
       - --c-stroke-width: 2.3
       - --c-stroke-width-dragging: 4
-      - --c-font-color: '#97989c'
+      - --c-font-color: "#97989c"
       - --c-font-size: 14px
       - --c-unit-font-size: 10.5px
       - --c-font-weight: 700
@@ -117,7 +117,7 @@ circle:
                             // update stroke
                             circle_stroke.style.strokeDashoffset = c - this.value / 100 * c;
                             circle_stroke.style.strokeWidth = 'var(--c-stroke-width-dragging)';
-                            
+
                             // set cursor while dragging
                             if (event.type === 'mousedown' || event.type === 'input') {
                                 this.style.cursor = 'grabbing';

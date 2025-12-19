@@ -63,4 +63,4 @@ light:
                 : brightness
         }
       ]]]
-    circle_input_unit: '%'
+    circle_input_unit: "%"
