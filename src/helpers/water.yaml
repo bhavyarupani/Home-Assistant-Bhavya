@@ -1,0 +1,17 @@
+shower_flow_lpm:
+  name: Shower Flow (L/min)
+  min: 1
+  max: 15
+  step: 0.1
+  unit_of_measurement: "L/min"
+  icon: mdi:shower-head
+  initial: 6
+
+washing_machine_water_per_minute:
+  name: Washing Machine Water per Minute
+  min: 0.10
+  max: 1.00
+  step: 0.01
+  unit_of_measurement: "L/min"
+  icon: mdi:waves
+  initial: 0.28

@@ -1,0 +1,32 @@
+bedroom_heater_heating_minutes_daily:
+  source: sensor.bedroom_heater_heating_minutes
+  cycle: daily
+
+bedroom_heater_heating_minutes_weekly:
+  source: sensor.bedroom_heater_heating_minutes
+  cycle: weekly
+
+bedroom_heater_heating_minutes_monthly:
+  source: sensor.bedroom_heater_heating_minutes
+  cycle: monthly
+
+bedroom_heater_heating_minutes_yearly:
+  source: sensor.bedroom_heater_heating_minutes
+  cycle: yearly
+
+
+office_heater_heating_minutes_daily:
+  source: sensor.office_heater_heating_minutes
+  cycle: daily
+
+office_heater_heating_minutes_weekly:
+  source: sensor.office_heater_heating_minutes
+  cycle: weekly
+
+office_heater_heating_minutes_monthly:
+  source: sensor.office_heater_heating_minutes
+  cycle: monthly
+
+office_heater_heating_minutes_yearly:
+  source: sensor.office_heater_heating_minutes
+  cycle: yearly

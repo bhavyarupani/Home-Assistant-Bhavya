@@ -1,0 +1,31 @@
+living-room:
+  mode: yaml
+  title: Living Room
+  icon: mdi:sofa
+  show_in_sidebar: true
+  require_admin: false
+  filename: src/lovelace/living_room.yaml
+
+bedroom-dashboard:
+  mode: yaml
+  title: Bedroom
+  icon: mdi:bed
+  show_in_sidebar: true
+  require_admin: false
+  filename: src/lovelace/bedroom.yaml
+
+office-dashboard:
+  mode: yaml
+  title: Office
+  icon: mdi:desk
+  show_in_sidebar: true
+  require_admin: false
+  filename: src/lovelace/office.yaml
+
+mobile-dashboard:
+  mode: yaml
+  title: Mobile
+  icon: mdi:cellphone
+  show_in_sidebar: true
+  require_admin: false
+  filename: src/lovelace/mobile.yaml

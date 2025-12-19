@@ -1,0 +1,35 @@
+# UTILITY METERS – ELECTRICITY
+
+# Virtual electricity (all devices)
+virtual_electricity_daily:
+  source: sensor.virtual_electricity_energy
+  cycle: daily
+
+virtual_electricity_weekly:
+  source: sensor.virtual_electricity_energy
+  cycle: weekly
+
+virtual_electricity_monthly:
+  source: sensor.virtual_electricity_energy
+  cycle: monthly
+
+virtual_electricity_yearly:
+  source: sensor.virtual_electricity_energy
+  cycle: yearly
+
+# Real electricity (only real power sensors)
+real_electricity_daily:
+  source: sensor.real_electricity_energy
+  cycle: daily
+
+real_electricity_weekly:
+  source: sensor.real_electricity_energy
+  cycle: weekly
+
+real_electricity_monthly:
+  source: sensor.real_electricity_energy
+  cycle: monthly
+
+real_electricity_yearly:
+  source: sensor.real_electricity_energy
+  cycle: yearly

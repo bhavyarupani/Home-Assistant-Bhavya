@@ -1,0 +1,9 @@
+title: Bedroom
+views:
+  - title: Bedroom
+    path: bedroom
+    icon: mdi:bed
+    cards:
+      - type: markdown
+        content: |
+          ## Bedroom

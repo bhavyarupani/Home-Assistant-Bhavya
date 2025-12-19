@@ -1,0 +1,37 @@
+# SENSORS – WATER (BASED ON LEAK + VIBRATION)
+
+# Shower: time "on" (leak detected) today (hours)
+- platform: history_stats
+  name: Shower on today
+  entity_id: binary_sensor.bathroom_water_leak_sensor_moisture
+  state: "on"
+  type: time
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+
+# Shower: number of sessions today
+- platform: history_stats
+  name: Shower sessions today
+  entity_id: binary_sensor.bathroom_water_leak_sensor_moisture
+  state: "on"
+  type: count
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+
+# Washing machine: time vibrating (running) today (hours)
+- platform: history_stats
+  name: Washing machine on today
+  entity_id: binary_sensor.vibration_sensors_vibration
+  state: "on"
+  type: time
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"
+
+# Washing machine: cycles today
+- platform: history_stats
+  name: Washing machine cycles today
+  entity_id: binary_sensor.vibration_sensors_vibration
+  state: "on"
+  type: count
+  start: "{{ today_at() }}"
+  end: "{{ now() }}"

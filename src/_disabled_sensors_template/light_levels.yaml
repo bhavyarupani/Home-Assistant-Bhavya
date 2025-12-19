@@ -1,0 +1,108 @@
+# SENSORS – NATURAL LIGHT LEVEL PER ROOM (ONLY ROOMS WITH WINDOWS)
+
+- platform: template
+  sensors:
+    bedroom_natural_light_level:
+      friendly_name: "Bedroom Natural Light Level"
+      value_template: >
+        {% set elevation = states('sensor.sun_solar_elevation') | float(0) %}
+        {% set azimuth   = states('sensor.sun_solar_azimuth') | float(0) %}
+
+        {# Approx south-facing window range – adjust later #}
+        {% set window_min = 120 %}
+        {% set window_max = 240 %}
+        {% set facing = window_min <= azimuth <= window_max %}
+
+        {% if elevation <= 0 %}
+          dark
+        {% elif elevation > 25 and facing %}
+          bright
+        {% elif elevation > 5 %}
+          medium
+        {% else %}
+          dark
+        {% endif %}
+
+    office_natural_light_level:
+      friendly_name: "Office Natural Light Level"
+      value_template: >
+        {% set elevation = states('sensor.sun_solar_elevation') | float(0) %}
+        {% set azimuth   = states('sensor.sun_solar_azimuth') | float(0) %}
+
+        {# TODO: tune these for office window direction #}
+        {% set window_min = 120 %}
+        {% set window_max = 240 %}
+        {% set facing = window_min <= azimuth <= window_max %}
+
+        {% if elevation <= 0 %}
+          dark
+        {% elif elevation > 25 and facing %}
+          bright
+        {% elif elevation > 5 %}
+          medium
+        {% else %}
+          dark
+        {% endif %}
+
+    kitchen_natural_light_level:
+      friendly_name: "Kitchen Natural Light Level"
+      value_template: >
+        {% set elevation = states('sensor.sun_solar_elevation') | float(0) %}
+        {% set azimuth   = states('sensor.sun_solar_azimuth') | float(0) %}
+
+        {# TODO: tune these for kitchen window direction #}
+        {% set window_min = 120 %}
+        {% set window_max = 240 %}
+        {% set facing = window_min <= azimuth <= window_max %}
+
+        {% if elevation <= 0 %}
+          dark
+        {% elif elevation > 25 and facing %}
+          bright
+        {% elif elevation > 5 %}
+          medium
+        {% else %}
+          dark
+        {% endif %}
+
+    living_room_natural_light_level:
+      friendly_name: "Living Room Natural Light Level"
+      value_template: >
+        {% set elevation = states('sensor.sun_solar_elevation') | float(0) %}
+        {% set azimuth   = states('sensor.sun_solar_azimuth') | float(0) %}
+
+        {# TODO: tune these for living room window direction #}
+        {% set window_min = 120 %}
+        {% set window_max = 240 %}
+        {% set facing = window_min <= azimuth <= window_max %}
+
+        {% if elevation <= 0 %}
+          dark
+        {% elif elevation > 25 and facing %}
+          bright
+        {% elif elevation > 5 %}
+          medium
+        {% else %}
+          dark
+        {% endif %}
+
+    living_room_lobby_natural_light_level:
+      friendly_name: "Living Room Lobby Natural Light Level"
+      value_template: >
+        {% set elevation = states('sensor.sun_solar_elevation') | float(0) %}
+        {% set azimuth   = states('sensor.sun_solar_azimuth') | float(0) %}
+
+        {# TODO: tune these for lobby window direction #}
+        {% set window_min = 120 %}
+        {% set window_max = 240 %}
+        {% set facing = window_min <= azimuth <= window_max %}
+
+        {% if elevation <= 0 %}
+          dark
+        {% elif elevation > 25 and facing %}
+          bright
+        {% elif elevation > 5 %}
+          medium
+        {% else %}
+          dark
+        {% endif %}

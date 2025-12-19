@@ -1,0 +1,9 @@
+title: Living Room
+views:
+  - title: Living
+    path: living
+    icon: mdi:sofa
+    cards:
+      - type: markdown
+        content: |
+          ## Living Room

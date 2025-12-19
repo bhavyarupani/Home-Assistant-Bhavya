@@ -1,0 +1,10 @@
+title: Office
+views:
+  - title: Office
+    path: office
+    icon: mdi:desk
+    cards:
+      - type: markdown
+        content: |
+          ## Office
+          We will make this modern + animated next.

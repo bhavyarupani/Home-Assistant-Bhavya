@@ -999,3 +999,45 @@ c0_f8_53_af_0f_ef:
   icon:
   picture:
   track: true
+
+80_64_7c_de_d3_76:
+  name: 80_64_7c_de_d3_76
+  mac: 80:64:7C:DE:D3:76
+  icon:
+  picture:
+  track: true
+
+d8_c8_0c_fd_2b_a2:
+  name: d8_c8_0c_fd_2b_a2
+  mac: D8:C8:0C:FD:2B:A2
+  icon:
+  picture:
+  track: true
+
+c8_47_8c_40_12_b1:
+  name: c8_47_8c_40_12_b1
+  mac: C8:47:8C:40:12:B1
+  icon:
+  picture:
+  track: true
+
+c4_e7_ae_1c_9c_b8:
+  name: c4_e7_ae_1c_9c_b8
+  mac: C4:E7:AE:1C:9C:B8
+  icon:
+  picture:
+  track: true
+
+e4_66_e5_12_03_6c:
+  name: e4_66_e5_12_03_6c
+  mac: E4:66:E5:12:03:6C
+  icon:
+  picture:
+  track: true
+
+36_88_1d_03_7f_de:
+  name: 36_88_1d_03_7f_de
+  mac: 36:88:1D:03:7F:DE
+  icon:
+  picture:
+  track: true

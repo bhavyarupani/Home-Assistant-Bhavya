@@ -1,0 +1,122 @@
+sensor:
+
+  # --------------------------
+  # Shower water usage today
+  # --------------------------
+  - name: "Shower water today"
+    unique_id: shower_water_today
+    unit_of_measurement: "L"
+    state: >
+      {% set hours = states('sensor.shower_on_today') | float(0) %}
+      {% set flow_lpm = states('input_number.shower_flow_lpm') | float(6) %}
+      {{ (hours * 60 * flow_lpm) | round(1) }}
+
+  # --------------------------
+  # Washing machine usage today
+  # --------------------------
+  - name: "Washing machine water today"
+    unique_id: washing_machine_water_today
+    unit_of_measurement: "L"
+    state: >
+      {% set hours = states('sensor.washing_machine_on_today') | float(0) %}
+      {% set minutes = hours * 60 %}
+      {% set lpm = states('input_number.washing_machine_water_per_minute') | float(0.28) %}
+      {{ (minutes * lpm) | round(1) }}
+
+  # --------------------------
+  # Total water usage today
+  # --------------------------
+  - name: "Water total today"
+    unique_id: water_total_today
+    unit_of_measurement: "L"
+    state: >
+      {% set s = states('sensor.shower_water_today') | float(0) %}
+      {% set w = states('sensor.washing_machine_water_today') | float(0) %}
+      {{ (s + w) | round(1) }}
+
+  # --------------------------
+  # Daily change
+  # --------------------------
+  - name: "Water Daily Change"
+    unique_id: water_daily_change
+    unit_of_measurement: "%"
+    state: >
+      {% set today = states('sensor.water_daily') | float(0) %}
+      {% set yesterday = state_attr('sensor.water_daily', 'last_period') | float(0) %}
+      {% if yesterday == 0 %}
+        0
+      {% else %}
+        ((today - yesterday) / yesterday * 100) | round(1)
+      {% endif %}
+
+  - name: "Water Daily Verdict"
+    unique_id: water_daily_verdict
+    state: >
+      {% set change = states('sensor.water_daily_change') | float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  # --------------------------
+  # Weekly change
+  # --------------------------
+  - name: "Water Weekly Change"
+    unique_id: water_weekly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.water_weekly') | float(0) %}
+      {% set last = state_attr('sensor.water_weekly', 'last_period') | float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        ((this - last) / last * 100) | round(1)
+      {% endif %}
+
+  - name: "Water Weekly Verdict"
+    unique_id: water_weekly_verdict
+    state: >
+      {% set change = states('sensor.water_weekly_change') | float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  # --------------------------
+  # Monthly change
+  # --------------------------
+  - name: "Water Monthly Change"
+    unique_id: water_monthly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.water_monthly') | float(0) %}
+      {% set last = state_attr('sensor.water_monthly', 'last_period') | float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        ((this - last) / last * 100) | round(1)
+      {% endif %}
+
+  - name: "Water Monthly Verdict"
+    unique_id: water_monthly_verdict
+    state: >
+      {% set change = states('sensor.water_monthly_change') | float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}

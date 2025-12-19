@@ -1,0 +1,160 @@
+sensor:
+  # ----- VIRTUAL ELECTRICITY CHANGE & VERDICTS -----
+
+  - name: "Virtual Electricity Daily Change"
+    unique_id: virtual_electricity_daily_change
+    unit_of_measurement: "%"
+    state: >
+      {% set today = states('sensor.virtual_electricity_daily')|float(0) %}
+      {% set yesterday = state_attr('sensor.virtual_electricity_daily', 'last_period')|float(0) %}
+      {% if yesterday == 0 %}
+        0
+      {% else %}
+        ((today - yesterday) / yesterday * 100) | round(1)
+      {% endif %}
+
+  - name: "Virtual Electricity Daily Verdict"
+    unique_id: virtual_electricity_daily_verdict
+    state: >
+      {% set change = states('sensor.virtual_electricity_daily_change')|float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  - name: "Virtual Electricity Weekly Change"
+    unique_id: virtual_electricity_weekly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.virtual_electricity_weekly')|float(0) %}
+      {% set last = state_attr('sensor.virtual_electricity_weekly', 'last_period')|float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        ((this - last) / last * 100) | round(1)
+      {% endif %}
+
+  - name: "Virtual Electricity Weekly Verdict"
+    unique_id: virtual_electricity_weekly_verdict
+    state: >
+      {% set change = states('sensor.virtual_electricity_weekly_change')|float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  - name: "Virtual Electricity Monthly Change"
+    unique_id: virtual_electricity_monthly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.virtual_electricity_monthly')|float(0) %}
+      {% set last = state_attr('sensor.virtual_electricity_monthly', 'last_period')|float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        ((this - last) / last * 100) | round(1)
+      {% endif %}
+
+  - name: "Virtual Electricity Monthly Verdict"
+    unique_id: virtual_electricity_monthly_verdict
+    state: >
+      {% set change = states('sensor.virtual_electricity_monthly_change')|float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  # ----- REAL ELECTRICITY CHANGE & VERDICTS -----
+
+  - name: "Real Electricity Daily Change"
+    unique_id: real_electricity_daily_change
+    unit_of_measurement: "%"
+    state: >
+      {% set today = states('sensor.real_electricity_daily')|float(0) %}
+      {% set yesterday = state_attr('sensor.real_electricity_daily', 'last_period')|float(0) %}
+      {% if yesterday == 0 %}
+        0
+      {% else %}
+        ((today - yesterday) / yesterday * 100) | round(1)
+      {% endif %}
+
+  - name: "Real Electricity Daily Verdict"
+    unique_id: real_electricity_daily_verdict
+    state: >
+      {% set change = states('sensor.real_electricity_daily_change')|float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  - name: "Real Electricity Weekly Change"
+    unique_id: real_electricity_weekly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.real_electricity_weekly')|float(0) %}
+      {% set last = state_attr('sensor.real_electricity_weekly', 'last_period')|float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        ((this - last) / last * 100) | round(1)
+      {% endif %}
+
+  - name: "Real Electricity Weekly Verdict"
+    unique_id: real_electricity_weekly_verdict
+    state: >
+      {% set change = states('sensor.real_electricity_weekly_change')|float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}
+
+  - name: "Real Electricity Monthly Change"
+    unique_id: real_electricity_monthly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.real_electricity_monthly')|float(0) %}
+      {% set last = state_attr('sensor.real_electricity_monthly', 'last_period')|float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        ((this - last) / last * 100) | round(1)
+      {% endif %}
+
+  - name: "Real Electricity Monthly Verdict"
+    unique_id: real_electricity_monthly_verdict
+    state: >
+      {% set change = states('sensor.real_electricity_monthly_change')|float(0) %}
+      {% if change < -5 %}
+        Much better 👍
+      {% elif change < 0 %}
+        Slightly better 🙂
+      {% elif change < 5 %}
+        About the same 😐
+      {% else %}
+        Worse ⚠️
+      {% endif %}

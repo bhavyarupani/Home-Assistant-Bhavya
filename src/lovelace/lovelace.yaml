@@ -1,0 +1,46 @@
+mode: yaml
+
+resources:
+  - url: /hacsfiles/mushroom/mushroom.js
+    type: module
+  - url: /hacsfiles/button-card/button-card.js
+    type: module
+  - url: /hacsfiles/lovelace-layout-card/layout-card.js
+    type: module
+  - url: /hacsfiles/lovelace-card-mod/card-mod.js
+    type: module
+  - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
+    type: module
+
+dashboards:
+  living-room:
+    mode: yaml
+    title: Living Room
+    icon: mdi:sofa
+    show_in_sidebar: true
+    require_admin: false
+    filename: dashboards/living_room.yaml
+
+  bedroom-dashboard:
+    mode: yaml
+    title: Bedroom
+    icon: mdi:bed
+    show_in_sidebar: true
+    require_admin: false
+    filename: dashboards/bedroom.yaml
+
+  office-dashboard:
+    mode: yaml
+    title: Office
+    icon: mdi:desk
+    show_in_sidebar: true
+    require_admin: false
+    filename: dashboards/office.yaml
+
+  mobile-dashboard:
+    mode: yaml
+    title: Mobile
+    icon: mdi:cellphone
+    show_in_sidebar: true
+    require_admin: false
+    filename: dashboards/mobile.yaml

@@ -1,24 +1,269 @@
-2025-12-09 18:53:03.003 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2025-12-09 18:53:03.004 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration mass which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2025-12-09 18:53:03.004 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration bosch which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2025-12-09 18:53:03.005 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration ytube_music_player which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2025-12-09 18:53:03.005 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2025-12-09 18:53:03.005 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration alexa_media which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
-2025-12-09 18:53:04.349 WARNING (MainThread) [homeassistant.helpers.config_validation] The 'entity_id' option near /config/configuration.yaml:55 is deprecated, please remove it from your configuration
-2025-12-09 18:53:04.628 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 98: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
-2025-12-09 18:53:06.840 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 18:53:06.852 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 18:53:07.129 WARNING (MainThread) [homeassistant.components.bluetooth_le_tracker.device_tracker] No Bluetooth LE devices to track!
-2025-12-09 18:53:07.129 ERROR (MainThread) [homeassistant.components.device_tracker] Error setting up platform legacy bluetooth_le_tracker
-2025-12-09 18:53:07.158 WARNING (MainThread) [deebot_client.api_client] Device class "9eamof" not recognized. Please add support for it: {'did': '[REMOVED]', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 1, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {}}
-2025-12-09 18:53:07.159 WARNING (MainThread) [homeassistant.components.ecovacs.controller] Device "DEEBOT T80 OMNI" not supported. More information at https://github.com/DeebotUniverse/client.py/issues/612: {'did': '701ff3a3-45f1-4f9c-b8c8-c11dfe072185', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 1, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {}}
-2025-12-09 18:53:18.323 WARNING (MainThread) [homeassistant.components.group.sensor] Unable to use state. Only numerical states are supported, entity sensor.living_room_ceiling_light_bulb_1_power with value unavailable excluded from calculation in sensor.energy_real_power_sensors_w
-2025-12-09 18:53:18.323 WARNING (MainThread) [homeassistant.components.group.sensor] Unable to use state. Only numerical states are supported, entity sensor.living_room_ceiling_light_bulb_2_power with value unavailable excluded from calculation in sensor.energy_real_power_sensors_w
-2025-12-09 18:53:18.323 WARNING (MainThread) [homeassistant.components.group.sensor] Unable to use state. Only numerical states are supported, entity sensor.living_room_ceiling_light_bulb_3_power with value unavailable excluded from calculation in sensor.energy_real_power_sensors_w
-2025-12-09 18:53:18.323 WARNING (MainThread) [homeassistant.components.group.sensor] Unable to use state. Only numerical states are supported, entity sensor.living_room_ceiling_light_bulb_4_power with value unavailable excluded from calculation in sensor.energy_real_power_sensors_w
-2025-12-09 18:53:20.265 ERROR (MainThread) [custom_components.ytube_music_player.media_player] async_get_cipher failed
-2025-12-09 18:53:20.265 ERROR (MainThread) [custom_components.ytube_music_player.media_player] can't find header file at /config/.storage/header_YouTube_Music_Player.json
-2025-12-09 18:53:20.279 ERROR (SyncWorker_5) [homeassistant] Error doing job: Task exception was never retrieved (None)
+2025-12-18 23:57:06.716 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-18 23:57:06.716 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration mass which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-18 23:57:06.717 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration bosch which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-18 23:57:06.717 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration ytube_music_player which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-18 23:57:06.717 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-18 23:57:06.718 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration alexa_media which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2025-12-18 23:57:07.420 WARNING (MainThread) [homeassistant.components.lovelace] Cannot register panel at living-room, it is already defined in <homeassistant.components.lovelace.dashboard.LovelaceYAML object at 0x7fbf10d08f50>
+2025-12-18 23:57:08.103 WARNING (MainThread) [homeassistant.helpers.config_validation] The 'entity_id' option near /config/sensors/electricity.yaml:7 is deprecated, please remove it from your configuration
+2025-12-18 23:57:08.508 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 68: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
+2025-12-18 23:57:08.542 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 71: expected a dictionary '', got [{'sensor': [{'name': 'Bedroom Heater Heating Minutes', 'unique_id': 'bedroom_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.bedroom_heater_active', 'on') %}\n  {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}\n{% else %}\n  0\n{% endif %}\n"}, {'name': 'Office Heater Heating Minutes', 'unique_id': 'office_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.office_heater_active', 'on') %}\n ...
+2025-12-18 23:57:10.805 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:57:10.808 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:57:11.027 WARNING (MainThread) [homeassistant.components.bluetooth_le_tracker.device_tracker] No Bluetooth LE devices to track!
+2025-12-18 23:57:11.027 ERROR (MainThread) [homeassistant.components.device_tracker] Error setting up platform legacy bluetooth_le_tracker
+2025-12-18 23:57:11.320 WARNING (MainThread) [deebot_client.api_client] Device class "9eamof" not recognized. Please add support for it: {'did': '[REMOVED]', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 1, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {'currentFwVer': '1.42.2', 'currentFwVerFrom': 'rvc', 'force': False, 'version': '1.62.0', 'fw0': {'changeLog': 'MS5GaXgga25vd24gaXNzdWVzLCBvcHRpbWl6ZSB1c2VyIGV4cGVyaWVuY2U=', 'extra': {}}}}
+2025-12-18 23:57:11.320 WARNING (MainThread) [homeassistant.components.ecovacs.controller] Device "DEEBOT T80 OMNI" not supported. More information at https://github.com/DeebotUniverse/client.py/issues/612: {'did': '701ff3a3-45f1-4f9c-b8c8-c11dfe072185', 'name': 'E02536271G1FPP730383', 'class': '9eamof', 'resource': 'QNRbX88e', 'company': 'eco-ng', 'bindTs': 1759498411458, 'service': {'jmq': 'jmq-ngiot-eu.dc.ww.ecouser.net', 'mqs': 'api-ngiot.dc-eu.ww.ecouser.net'}, 'deviceName': 'DEEBOT T80 OMNI', 'icon': 'https://api-app.dc-eu.ww.ecouser.net/api/pim/file/get/678dbcdba37fd12d941e7834', 'ota': True, 'UILogicId': 'keplerse_ww_h_keplerseh5', 'materialNo': '110-2488-0101', 'pid': '6746e1b3b0a67b0840c312c2', 'product_category': 'DEEBOT', 'model': 'KEPLER_SE_BLACK_INT', 'updateInfo': {'needUpdate': False, 'changeLog': ''}, 'nick': 'Kaamwalibai', 'homeId': '68dfcf51b345ca0007d41de2', 'homeSort': 1, 'status': 1, 'btName': 'ECOVACS-9eamof-0383', 'btMac': 'E8:5C:5F:A6:75:87', 'otaUpgrade': {'currentFwVer': '1.42.2', 'currentFwVerFrom': 'rvc', 'force': False, 'version': '1.62.0', 'fw0': {'changeLog': 'MS5GaXgga25vd24gaXNzdWVzLCBvcHRpbWl6ZSB1c2VyIGV4cGVyaWVuY2U=', 'extra': {}}}}
+2025-12-18 23:57:21.192 ERROR (MainThread) [homeassistant.core] Error running job: <Job onetime listen homeassistant_start <function _async_at_core_state.<locals>._matched_event at 0x7fbef6b2b880> HassJobType.Callback <_OneTimeListener homeassistant.helpers.start:<function _async_at_core_state.<locals>._matched_event at 0x7fbef6b2b880>>>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 640, in state
+    numerical_value = float(value)  # type:ignore[arg-type]
+ValueError: could not convert string to float: '((today - yesterday) / yesterday * 100) | round(1)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1578, in async_fire_internal
+    self._hass.async_run_hass_job(job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1439, in __call__
+    self.hass.async_run_hass_job(self.listener_job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/start.py", line 44, in _matched_event
+    hass.async_run_hass_job(at_start_job, hass)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 517, in _async_template_startup
+    result_info.async_refresh()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1127, in async_refresh
+    self._refresh(None)
+    ~~~~~~~~~~~~~^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1313, in _refresh
+    self.hass.async_run_hass_job(self._job, event, updates)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 463, in _handle_results
+    self.async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1023, in async_write_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1148, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1085, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1029, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 642, in state
+    raise ValueError(
+    ...<5 lines>...
+    ) from err
+ValueError: Sensor sensor.virtual_electricity_daily_change has device class 'None', state class 'None' unit '%' and suggested precision 'None' thus indicating it has a numeric value; however, it has the non-numeric value: '((today - yesterday) / yesterday * 100) | round(1)' (<class 'str'>)
+2025-12-18 23:57:21.196 ERROR (MainThread) [homeassistant.core] Error running job: <Job onetime listen homeassistant_start <function _async_at_core_state.<locals>._matched_event at 0x7fbef6b2bd80> HassJobType.Callback <_OneTimeListener homeassistant.helpers.start:<function _async_at_core_state.<locals>._matched_event at 0x7fbef6b2bd80>>>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 635, in state
+    numerical_value = int(value)
+ValueError: invalid literal for int() with base 10: '((this - last) / last * 100) | round(1)'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 638, in state
+    numerical_value = float(value)
+ValueError: could not convert string to float: '((this - last) / last * 100) | round(1)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1578, in async_fire_internal
+    self._hass.async_run_hass_job(job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1439, in __call__
+    self.hass.async_run_hass_job(self.listener_job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/start.py", line 44, in _matched_event
+    hass.async_run_hass_job(at_start_job, hass)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 517, in _async_template_startup
+    result_info.async_refresh()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1127, in async_refresh
+    self._refresh(None)
+    ~~~~~~~~~~~~~^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1313, in _refresh
+    self.hass.async_run_hass_job(self._job, event, updates)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 463, in _handle_results
+    self.async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1023, in async_write_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1148, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1085, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1029, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 642, in state
+    raise ValueError(
+    ...<5 lines>...
+    ) from err
+ValueError: Sensor sensor.virtual_electricity_weekly_change has device class 'None', state class 'None' unit '%' and suggested precision 'None' thus indicating it has a numeric value; however, it has the non-numeric value: '((this - last) / last * 100) | round(1)' (<class 'str'>)
+2025-12-18 23:57:21.200 ERROR (MainThread) [homeassistant.core] Error running job: <Job onetime listen homeassistant_start <function _async_at_core_state.<locals>._matched_event at 0x7fbef6b4c7c0> HassJobType.Callback <_OneTimeListener homeassistant.helpers.start:<function _async_at_core_state.<locals>._matched_event at 0x7fbef6b4c7c0>>>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 640, in state
+    numerical_value = float(value)  # type:ignore[arg-type]
+ValueError: could not convert string to float: '((today - yesterday) / yesterday * 100) | round(1)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1578, in async_fire_internal
+    self._hass.async_run_hass_job(job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1439, in __call__
+    self.hass.async_run_hass_job(self.listener_job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/start.py", line 44, in _matched_event
+    hass.async_run_hass_job(at_start_job, hass)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 517, in _async_template_startup
+    result_info.async_refresh()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1127, in async_refresh
+    self._refresh(None)
+    ~~~~~~~~~~~~~^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1313, in _refresh
+    self.hass.async_run_hass_job(self._job, event, updates)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 463, in _handle_results
+    self.async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1023, in async_write_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1148, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1085, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1029, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 642, in state
+    raise ValueError(
+    ...<5 lines>...
+    ) from err
+ValueError: Sensor sensor.real_electricity_daily_change has device class 'None', state class 'None' unit '%' and suggested precision 'None' thus indicating it has a numeric value; however, it has the non-numeric value: '((today - yesterday) / yesterday * 100) | round(1)' (<class 'str'>)
+2025-12-18 23:57:21.204 ERROR (MainThread) [homeassistant.core] Error running job: <Job onetime listen homeassistant_start <function _async_at_core_state.<locals>._matched_event at 0x7fbef6b4ccc0> HassJobType.Callback <_OneTimeListener homeassistant.helpers.start:<function _async_at_core_state.<locals>._matched_event at 0x7fbef6b4ccc0>>>
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 635, in state
+    numerical_value = int(value)
+ValueError: invalid literal for int() with base 10: '((this - last) / last * 100) | round(1)'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 638, in state
+    numerical_value = float(value)
+ValueError: could not convert string to float: '((this - last) / last * 100) | round(1)'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1578, in async_fire_internal
+    self._hass.async_run_hass_job(job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 1439, in __call__
+    self.hass.async_run_hass_job(self.listener_job, event)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/start.py", line 44, in _matched_event
+    hass.async_run_hass_job(at_start_job, hass)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 517, in _async_template_startup
+    result_info.async_refresh()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1127, in async_refresh
+    self._refresh(None)
+    ~~~~~~~~~~~~~^^^^^^
+  File "/usr/src/homeassistant/homeassistant/helpers/event.py", line 1313, in _refresh
+    self.hass.async_run_hass_job(self._job, event, updates)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/core.py", line 940, in async_run_hass_job
+    hassjob.target(*args)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/template/template_entity.py", line 463, in _handle_results
+    self.async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1023, in async_write_ha_state
+    self._async_write_ha_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1148, in _async_write_ha_state
+    self.__async_calculate_state()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1085, in __async_calculate_state
+    state = self._stringify_state(available)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 1029, in _stringify_state
+    if (state := self.state) is None:
+                 ^^^^^^^^^^
+  File "/usr/src/homeassistant/homeassistant/components/sensor/__init__.py", line 642, in state
+    raise ValueError(
+    ...<5 lines>...
+    ) from err
+ValueError: Sensor sensor.real_electricity_weekly_change has device class 'None', state class 'None' unit '%' and suggested precision 'None' thus indicating it has a numeric value; however, it has the non-numeric value: '((this - last) / last * 100) | round(1)' (<class 'str'>)
+2025-12-18 23:57:23.127 ERROR (MainThread) [custom_components.ytube_music_player.media_player] async_get_cipher failed
+2025-12-18 23:57:23.127 ERROR (MainThread) [custom_components.ytube_music_player.media_player] can't find header file at /config/.storage/header_YouTube_Music_Player.json
+2025-12-18 23:57:23.127 ERROR (MainThread) [custom_components.ytube_music_player.media_player] async_update_selects failed
+2025-12-18 23:57:23.135 ERROR (MainThread) [homeassistant] Error doing job: Task exception was never retrieved (None)
 Traceback (most recent call last):
   File "/usr/src/homeassistant/homeassistant/components/emulated_hue/__init__.py", line 155, in _start
     await start_emulated_hue_bridge(hass, config, app)
@@ -36,21 +281,25 @@ Traceback (most recent call last):
     )
     ^
 OSError: [Errno 99] Address not available
-2025-12-09 18:53:20.292 ERROR (MainThread) [homeassistant.components.homekit] HomeKit Room TV ES cannot startup: entity not available: {'exclude_domains': [], 'exclude_entities': [], 'include_domains': [], 'include_entities': ['remote.room_tv'], 'exclude_entity_globs': [], 'include_entity_globs': []}
-2025-12-09 18:53:20.293 ERROR (MainThread) [homeassistant.components.homekit] HomeKit Room TV cannot startup: entity not available: {'exclude_domains': [], 'exclude_entities': [], 'include_domains': [], 'include_entities': ['media_player.room_tv_2'], 'exclude_entity_globs': [], 'include_entity_globs': []}
-2025-12-09 18:53:20.297 ERROR (MainThread) [homeassistant.components.homekit.util] media_player.xbox does not support any media_player features
-2025-12-09 18:53:20.300 ERROR (MainThread) [homeassistant.components.homekit.util] media_player.spotify_bhavya_rupani does not support any media_player features
-2025-12-09 18:59:12.331 WARNING (MainThread) [homeassistant.helpers.service] Referenced entities counter.bedroom_motion_counter are missing or not currently available
-2025-12-09 18:59:12.332 WARNING (MainThread) [homeassistant.helpers.service] Referenced entities counter.bedroom_motion_counter are missing or not currently available
-2025-12-09 19:06:47.627 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 107: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
-2025-12-09 19:06:47.638 WARNING (MainThread) [homeassistant.components.config] The 'entity_id' option near /config/configuration.yaml:55 is deprecated, please remove it from your configuration
-2025-12-09 19:06:47.640 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 19:06:47.640 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 19:06:49.162 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 107: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
-2025-12-09 19:06:49.172 WARNING (MainThread) [homeassistant.components.config] The 'entity_id' option near /config/configuration.yaml:55 is deprecated, please remove it from your configuration
-2025-12-09 19:06:49.175 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 19:06:49.175 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 19:06:51.105 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 107: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
-2025-12-09 19:06:51.118 WARNING (MainThread) [homeassistant.components.homeassistant] The 'entity_id' option near /config/configuration.yaml:55 is deprecated, please remove it from your configuration
-2025-12-09 19:06:51.121 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
-2025-12-09 19:06:51.121 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:57:23.150 ERROR (MainThread) [homeassistant.components.homekit] HomeKit Room TV cannot startup: entity not available: {'exclude_domains': [], 'exclude_entities': [], 'include_domains': [], 'include_entities': ['media_player.room_tv_2'], 'include_entity_globs': [], 'exclude_entity_globs': []}
+2025-12-18 23:57:23.152 ERROR (MainThread) [homeassistant.components.homekit] HomeKit Room TV ES cannot startup: entity not available: {'exclude_domains': [], 'exclude_entities': [], 'include_domains': [], 'include_entities': ['remote.room_tv'], 'include_entity_globs': [], 'exclude_entity_globs': []}
+2025-12-18 23:57:23.157 ERROR (MainThread) [homeassistant.components.homekit.util] media_player.xbox does not support any media_player features
+2025-12-18 23:58:00.170 WARNING (MainThread) [homeassistant.helpers.entity_component] Forced update failed. Entity sensor.bedroom_heater_heating_minutes not found.
+2025-12-18 23:58:00.170 WARNING (MainThread) [homeassistant.helpers.entity_component] Forced update failed. Entity sensor.office_heater_heating_minutes not found.
+2025-12-18 23:59:00.170 WARNING (MainThread) [homeassistant.helpers.entity_component] Forced update failed. Entity sensor.bedroom_heater_heating_minutes not found.
+2025-12-18 23:59:00.170 WARNING (MainThread) [homeassistant.helpers.entity_component] Forced update failed. Entity sensor.office_heater_heating_minutes not found.
+2025-12-18 23:59:21.092 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:59:21.092 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:59:21.102 WARNING (MainThread) [homeassistant.components.config] The 'entity_id' option near /config/sensors/electricity.yaml:7 is deprecated, please remove it from your configuration
+2025-12-18 23:59:21.103 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 68: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
+2025-12-18 23:59:21.104 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 71: expected a dictionary '', got [{'sensor': [{'name': 'Bedroom Heater Heating Minutes', 'unique_id': 'bedroom_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.bedroom_heater_active', 'on') %}\n  {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}\n{% else %}\n  0\n{% endif %}\n"}, {'name': 'Office Heater Heating Minutes', 'unique_id': 'office_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.office_heater_active', 'on') %}\n ...
+2025-12-18 23:59:24.786 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:59:24.786 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:59:24.795 WARNING (MainThread) [homeassistant.components.config] The 'entity_id' option near /config/sensors/electricity.yaml:7 is deprecated, please remove it from your configuration
+2025-12-18 23:59:24.797 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 68: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
+2025-12-18 23:59:24.798 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 71: expected a dictionary '', got [{'sensor': [{'name': 'Bedroom Heater Heating Minutes', 'unique_id': 'bedroom_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.bedroom_heater_active', 'on') %}\n  {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}\n{% else %}\n  0\n{% endif %}\n"}, {'name': 'Office Heater Heating Minutes', 'unique_id': 'office_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.office_heater_active', 'on') %}\n ...
+2025-12-18 23:59:26.835 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Tag Working Desk is scanned' failed to setup actions and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:59:26.835 ERROR (MainThread) [homeassistant.components.automation] Automation with alias 'Turn off workstation' failed to setup triggers and has been disabled: Unknown device '9e8b5ede244364654e33e33ee1d0201f'
+2025-12-18 23:59:26.845 WARNING (MainThread) [homeassistant.components.homeassistant] The 'entity_id' option near /config/sensors/electricity.yaml:7 is deprecated, please remove it from your configuration
+2025-12-18 23:59:26.847 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 68: expected a dictionary '', got [{'sensor': [{'unique_id': 'sidebar', 'state': 'template', 'attributes': {'time': '{% set hours = now().strftime(\'%H\') %} {% set minutes = now().strftime(\'%M\') %} <span class="time">\n  {{ hours }}<span class="time-colon">:</span>{{ minutes }}\n</span>\n', 'date': "<font color='#6a7377'><b> {% if strptime(states('sensor.date'), '%Y-%m-%d').day != None %} {% set days = ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'] %} {% set months = ['Januari', 'Februari', 'Mars',...
+2025-12-18 23:59:26.847 ERROR (MainThread) [homeassistant.config] Invalid config for 'template' at configuration.yaml, line 71: expected a dictionary '', got [{'sensor': [{'name': 'Bedroom Heater Heating Minutes', 'unique_id': 'bedroom_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.bedroom_heater_active', 'on') %}\n  {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}\n{% else %}\n  0\n{% endif %}\n"}, {'name': 'Office Heater Heating Minutes', 'unique_id': 'office_heater_heating_minutes', 'unit_of_measurement': 'min', 'state': "{% if is_state('binary_sensor.office_heater_active', 'on') %}\n ...

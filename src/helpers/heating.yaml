@@ -1,0 +1,26 @@
+bedroom_heater_gas_per_minute:
+  name: Bedroom Heater Gas per Minute
+  min: 0.000
+  max: 0.050
+  step: 0.001
+  unit_of_measurement: "m³/min"
+  icon: mdi:fire
+  initial: 0.010
+
+office_heater_gas_per_minute:
+  name: Office Heater Gas per Minute
+  min: 0.000
+  max: 0.050
+  step: 0.001
+  unit_of_measurement: "m³/min"
+  icon: mdi:fire
+  initial: 0.008
+
+heater_overwork_threshold:
+  name: Heater Overwork Threshold
+  min: 1
+  max: 60
+  step: 1
+  unit_of_measurement: "min"
+  icon: mdi:timer-alert
+  initial: 5

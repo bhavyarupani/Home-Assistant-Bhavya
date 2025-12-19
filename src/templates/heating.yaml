@@ -1,0 +1,21 @@
+# Heating Minutes Today (for utility_meter source)
+sensor:
+    - name: "Bedroom Heater Heating Minutes"
+      unique_id: bedroom_heater_heating_minutes
+      unit_of_measurement: "min"
+      state: >
+        {% if is_state('binary_sensor.bedroom_heater_active', 'on') %}
+          {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}
+        {% else %}
+          0
+        {% endif %}
+
+    - name: "Office Heater Heating Minutes"
+      unique_id: office_heater_heating_minutes
+      unit_of_measurement: "min"
+      state: >
+        {% if is_state('binary_sensor.office_heater_active', 'on') %}
+          {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}
+        {% else %}
+          0
+        {% endif %}

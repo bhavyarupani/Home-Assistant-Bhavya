@@ -11,3 +11,38 @@ tts/
 Git Clones/
 secrets.yaml
 
+
+# Home Assistant logs
+home-assistant.log*
+home-assistant_v2.db*
+*.db-shm
+*.db-wal
+
+# Home Assistant image/media cache
+image/
+media/
+
+# HACS generated frontend assets (can change frequently)
+custom_components/hacs/hacs_frontend/static/
+
+# HACS frontend build artifacts
+custom_components/hacs/hacs_frontend/frontend_latest/
+
+# HACS frontend ES5 build artifacts
+custom_components/hacs/hacs_frontend/frontend_es5/
+
+# HA runtime lock
+.ha_run.lock
+
+# Local backup folders/files
+backup-*/
+backup-*.yaml
+
+# Python caches
+__pycache__/
+*.pyc
+
+# HACS-managed frontend files (auto-updated)
+www/community/
+custom_components/hacs/hacs_frontend/
+
