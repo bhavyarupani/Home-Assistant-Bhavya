@@ -10,6 +10,7 @@ tts/
 .git/
 Git Clones/
 secrets.yaml
+.vscode/
 
 
 # Home Assistant logs

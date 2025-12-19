@@ -1,0 +1,17 @@
+name: HA config check
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  ha_config_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Home Assistant configuration check
+        uses: frenck/action-home-assistant@v1
+        with:
+          path: "./"
+          version: stable
+

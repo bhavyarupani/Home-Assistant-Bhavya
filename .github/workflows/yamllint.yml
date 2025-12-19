@@ -1,0 +1,15 @@
+name: YAML lint
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  yamllint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pipx install yamllint
+      - name: yamllint
+        run: |
+          yamllint -d "{extends: default, rules: {line-length: {max: 160, level: warning}}}" .
