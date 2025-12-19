@@ -1,30 +1,11 @@
 name: HA config check
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  pr_gate:
-    runs-on: ubuntu-latest
-    outputs:
-      has_pr: ${{ steps.pr.outputs.has_pr }}
-    steps:
-      - name: Check if this branch has an open PR
-        id: pr
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH="${GITHUB_REF_NAME}"
-          PR_COUNT=$(gh pr list --head "$BRANCH" --state open --json number --jq 'length')
-          if [ "$PR_COUNT" -gt 0 ]; then
-            echo "has_pr=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_pr=false" >> "$GITHUB_OUTPUT"
-          fi
-
   ha_config_check:
-    needs: pr_gate
-    if: needs.pr_gate.outputs.has_pr == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

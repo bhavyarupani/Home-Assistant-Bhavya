@@ -1,44 +1,16 @@
 name: Secret scan
 
 on:
-  push:
-    branches:
-      - "**"
-
-permissions:
-  contents: read
-  pull-requests: read
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
   gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if this branch has an open PR
-        id: pr
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
-        run: |
-          set -euo pipefail
-          count="$(curl -sS \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/$REPO/pulls?state=open&head=$REPO:$BRANCH" \
-            | jq 'length')"
-          echo "open_pr_count=$count" >> "$GITHUB_OUTPUT"
-          if [ "$count" -eq 0 ]; then
-            echo "No open PR for branch '$BRANCH' -> skipping."
-          else
-            echo "Open PR found for branch '$BRANCH' -> running."
-          fi
-
       - uses: actions/checkout@v4
-        if: steps.pr.outputs.open_pr_count != '0'
         with:
           fetch-depth: 0
-
       - uses: gitleaks/gitleaks-action@v2
-        if: steps.pr.outputs.open_pr_count != '0'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
