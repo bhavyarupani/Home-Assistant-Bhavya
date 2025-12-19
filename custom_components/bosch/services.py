@@ -158,7 +158,7 @@ def async_register_services(hass: HomeAssistant, entry: ConfigEntry) -> None:
         return {
             "data": data
         }
-        
+
     hass.services.async_register(
         DOMAIN,
         SERVICE_UPDATE,

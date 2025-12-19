@@ -22,7 +22,6 @@
 
         {{ ns.total }}
 
-
 # Integration sensors – convert power → energy (kWh)
 - platform: integration
   source: sensor.virtual_electricity_power
@@ -35,4 +34,3 @@
   name: "Real Electricity Energy"
   unit_prefix: k
   round: 3
-

@@ -17,12 +17,11 @@ browser_mod:
     content:
       type: vertical-stack
       cards:
-
         ### ON ###
         - type: conditional
           conditions:
             - entity: switch.imac
-              state: 'on'
+              state: "on"
           card:
             type: vertical-stack
             cards:
@@ -31,7 +30,6 @@ browser_mod:
                 card_mod:
                   class: content
                 entities:
-
                   - entity: switch.imac
                     name: iMac
                     secondary_info: last-changed
@@ -40,18 +38,17 @@ browser_mod:
                     width: 55%
                     height: 2em
                     decimal: 0
-                    unit_of_measurement: '%'
+                    unit_of_measurement: "%"
                     positions:
                       icon: outside
-                      indicator: 'off'
+                      indicator: "off"
                       name: outside
                     severity:
-                      - color: '#6d2525'
+                      - color: "#6d2525"
                         from: 90
                         to: 999
                     entity_row: true
                     entities:
-
                       - entity: sensor.imac_cpu
                         tap_action:
                           action: call-service
@@ -100,10 +97,8 @@ browser_mod:
                         padding: var(--tablet-popup-button-padding);
                       }
                 card:
-
                   type: horizontal-stack
                   cards:
-
                     - type: custom:button-card
                       name: Försätt i vila
                       icon: mdi:power-sleep
@@ -120,12 +115,11 @@ browser_mod:
                         service: shell_command.imac_restart
                       template: icon_name
 
-
         ### OFF ###
         - type: conditional
           conditions:
             - entity: switch.imac
-              state: 'off'
+              state: "off"
           card:
             type: vertical-stack
             cards:
@@ -135,7 +129,6 @@ browser_mod:
                 card_mod:
                   class: content
                 entities:
-
                   - entity: switch.imac
                     name: iMac
                     secondary_info: last-changed
@@ -151,10 +144,8 @@ browser_mod:
                         padding: var(--tablet-popup-button-padding);
                       }
                 card:
-
                   type: horizontal-stack
                   cards:
-
                     - type: custom:button-card
                       name: Starta iMac
                       icon: mdi:power

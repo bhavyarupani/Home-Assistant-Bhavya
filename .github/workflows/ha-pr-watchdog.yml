@@ -1,0 +1,65 @@
+name: HA PR Watchdog (revert after inactivity)
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  revert_if_stale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revert HA to master if PR mode stale
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HA_SSH_HOST }}
+          port: ${{ secrets.HA_SSH_PORT }}
+          username: ${{ secrets.HA_SSH_USER }}
+          key: ${{ secrets.HA_SSH_KEY }}
+          script: |
+            set -e
+
+            cd /config
+
+            if [ ! -f /config/.pr_mode_last_push ]; then
+              echo "No PR mode timestamp. Nothing to do."
+              exit 0
+            fi
+
+            NOW="$(date +%s)"
+            LAST="$(cat /config/.pr_mode_last_push || echo 0)"
+            AGE=$((NOW - LAST))
+
+            if [ "$AGE" -lt 7200 ]; then
+              echo "PR mode still fresh (age=${AGE}s). Not reverting."
+              exit 0
+            fi
+
+            # Safety: don't clobber uncommitted edits from File Editor
+            if [ -n "$(git status --porcelain)" ]; then
+              echo "Uncommitted changes in /config; refusing to revert."
+              git status --porcelain
+              exit 1
+            fi
+
+            echo "PR mode stale (age=${AGE}s). Reverting to master..."
+
+            git fetch origin --prune
+            git checkout master
+            git pull origin master
+
+            rm -f /config/.pr_mode_last_push
+
+            SHA="$(git rev-parse --short HEAD)"
+            TS="$(date -Iseconds)"
+            TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+
+            cat > /config/.ha_build_info <<EOF
+            mode=master
+            branch=master
+            tag=${TAG}
+            sha=${SHA}
+            timestamp=${TS}
+            EOF
+
+            ha core restart

@@ -1,0 +1,18 @@
+# never format dependencies
+node_modules/
+dist/
+build/
+
+# Home Assistant vendor / generated / large assets
+custom_components/
+button_card_templates/
+popup/
+www/
+themes/
+src/frontend/themes/
+blueprints/
+
+# root files that use HA tags/includes
+configuration.yaml
+ui-lovelace.yaml
+known_devices.yaml

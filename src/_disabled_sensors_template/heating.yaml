@@ -4,7 +4,6 @@
   # Update every minute so the counter increments
   scan_interval: 60
   sensors:
-
     bedroom_heater_heating_minutes:
       friendly_name: "Bedroom Heater Heating Minutes"
       unique_id: bedroom_heater_heating_minutes

@@ -83,7 +83,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				pass
 			if self._selects[k] is not None and self._selects[k].replace(" ","") != "":
 				self._selects[k] = _domain + "." + self._selects[k].replace(_domain + ".", "")
-				self.log_me('debug', "Found old {} {}: {},please consider using the new select entities.".format(_domain, k, self._selects[k] ))	
+				self.log_me('debug', "Found old {} {}: {},please consider using the new select entities.".format(_domain, k, self._selects[k] ))
 
 		self._like_in_name = config.data.get(CONF_LIKE_IN_NAME, DEFAULT_LIKE_IN_NAME)
 
@@ -491,7 +491,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 					else:
 						data = {select.ATTR_OPTION: repeat, ATTR_ENTITY_ID: self._selects['repeatmode']}
 						await self.hass.services.async_call(select.DOMAIN, select.SERVICE_SELECT_OPTION, data)
-					
+
 			self.log_me('debug', f"[E] set_repeat: {repeat}")
 			self.async_schedule_update_ha_state()
 
@@ -706,12 +706,12 @@ class yTubeMusicComponent(MediaPlayerEntity):
 	async def async_get_cipher(self, videoId):
 		self.log_debug_later("[S] async_get_cipher")
 		embed_url = "https://www.youtube.com/embed/" + videoId
-		# this is why we need pytubefix as include 
+		# this is why we need pytubefix as include
 		embed_html = await self.hass.async_add_executor_job(request.get, embed_url)
 		js_url = extract.js_url(embed_html)
 		self._js = await self.hass.async_add_executor_job(request.get, js_url)
 		self._cipher = pytubefix.cipher.Cipher(js=self._js, js_url=js_url)
-		# this is why we need pytubefix as include 
+		# this is why we need pytubefix as include
 		self.log_me('debug', "[E] async_get_cipher")
 
 	async def async_sync_player(self, event=None):
@@ -726,7 +726,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			old_state = None
 			new_state = None
 			self.log_me('debug', f"event: {event}")
-	
+
 		if(entity_id is not None and old_state is not None) and new_state is not None:
 			self.log_debug_later(entity_id + ": " + old_state.state + " -> " + new_state.state)
 			if(entity_id.lower() != self._remote_player.lower()):
@@ -758,7 +758,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				self._media_position_updated = datetime.datetime.now(datetime.timezone.utc)
 
 		# Workaround for chromecast sometimes not playing first song in a playlist
-		if(old_state!=None and new_state!=None):	
+		if(old_state!=None and new_state!=None):
 			try:
 				if(old_state.state == STATE_IDLE and new_state.state == STATE_PAUSED):
 					if(self._state == STATE_PLAYING):
@@ -808,7 +808,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				except:
 					self.log_me('debug', "adding "+self._attributes['videoId']+" to history failed")
 
-				await self.async_get_track(auto_advance=True) 
+				await self.async_get_track(auto_advance=True)
 			# turn this player off when the remote_player was shut down
 			elif((old_state.state == STATE_PLAYING or old_state.state == STATE_IDLE or old_state.state == STATE_PAUSED) and new_state.state == STATE_OFF):
 				if(self._x_to_idle == STATE_OFF or self._x_to_idle == STATE_OFF_1X):  # workaround for MPD (changes to OFF at the end of a track)
@@ -1096,13 +1096,13 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				await self.hass.services.async_call(input_select.DOMAIN, input_select.SERVICE_SET_OPTIONS, data)
 			else:
 				await self.hass.data[DOMAIN][self._attr_unique_id]['select_speakers'].async_update(friendly_speakersList)  # update speaker select
-			
+
 			data = {_select.ATTR_OPTION: friendly_speakersList[0], ATTR_ENTITY_ID: self._selects['speakers']}  # select the first one in the list as the default player
 			await self.hass.services.async_call(_select.DOMAIN, _select.SERVICE_SELECT_OPTION, data)
 		else:
 			# we need to set the default player here, as there is no selct field. without a select field we don't get updates from the field and will never set the default player
 			await self.async_select_source(speakersList[0])
-		
+
 		# finally call update playlist to fill the list .. if it exists
 		await self.async_update_playlists()
 		self.log_me('debug', "[E] async_update_selects")
@@ -1192,7 +1192,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			info = self.extract_info(track)
 			track_attributes.append(info['track_artist'] + " - " + info['track_name'])
 		await self.async_update_extra_sensor('tracks', track_attributes)  # update extra sensor
-		
+
 		# fire event to let media card know to update
 		event_data = {
 			"device_id": self._attr_unique_id,
@@ -1424,10 +1424,10 @@ class yTubeMusicComponent(MediaPlayerEntity):
 			if(r.status_code == 403):
 				self.log_me('error', "- self decoded url return 403 status code, attempt "+str(retry)+"/60")
 				_url = ""
-		
+
 		if(_url == ""):
 			_url = await self.async_get_url_pytube(videoId)
-		
+
 		# check url
 		if(_url != ""):
 			r = await self.hass.async_add_executor_job(requests.head, _url)
@@ -1438,7 +1438,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 				if(retry>0):
 					self._api = None
 					self.log_me('debug', "- relogin to fresh cookie and try again")
-					self.async_check_api() 
+					self.async_check_api()
 					return await self.async_get_url(videoId, retry-1)
 				else:
 					self.log_me('debug', "- giving up, maybe pyTube can help")
@@ -1499,7 +1499,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 								self.log_me('debug', '- found audio audiostream (' + str(i) + ')')
 								stream['audioQuality'] = quality_mapper.get(stream['audioQuality'], 0)
 								valid_streams.append(stream)
-				
+
 				# try to find best audio only stream, but accept lower quality if we have to
 				valid_streams.sort(key=lambda x: x['bitrate'], reverse=True)
 				self.log_me('debug', "found "+str(len(valid_streams))+" streams")
@@ -1521,7 +1521,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 					streamId = min(1,len(valid_streams))
 				else:
 					streamId = 0
-				
+
 				self.log_me('debug', 'Using stream '+str(streamId)+"/"+str(len(valid_streams))+", bitrate:"+str(valid_streams[streamId]['bitrate']))
 				# self.log_me('debug', '- using stream ' + str(streamId))
 				if(valid_streams[streamId].get('url') is None):
@@ -1539,7 +1539,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 					if(self._js == "" or retry<60):
 						self.log_me('debug', "- reloading cipher from current video")
 						await self.async_get_cipher(videoId)
-					
+
 					#stream_manifest = extract.apply_descrambler(self.streaming_data)
 					##try:
             		#extract.apply_signature(stream_manifest, self.vid_info, self.js)
@@ -1556,7 +1556,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 						signature = self._cipher.get_signature(ciphered_signature=res['s'])
 						_url = res['url'] + "&sig=" + signature
 					self.log_me('debug', "- self decoded URL via cipher")
-					
+
 				else:
 					_url = valid_streams[streamId]['url']
 					self.log_me('debug', "- found URL in api data")
@@ -1709,7 +1709,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 
 		# mode "Shuffle" and "Shuffle Random" shuffle the playlist after generation, but only if shuffle is active
 		if(isinstance(self._tracks, list)):
-			if(self._attr_shuffle): 
+			if(self._attr_shuffle):
 				if self._shuffle_mode in (PLAYMODE_SHUFFLE,PLAYMODE_SHUFFLE_RANDOM) and len(self._tracks) > 1:
 					random.shuffle(self._tracks)
 					self.log_me('debug', "- shuffle new tracklist")
@@ -2054,7 +2054,7 @@ class yTubeMusicComponent(MediaPlayerEntity):
 		self.log_me('debug', "[E] async_modify_playlist")
 
 
-	
+
 
 
 	async def async_limit_count(self, limit):

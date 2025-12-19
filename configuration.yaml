@@ -64,3 +64,57 @@ template:
   - !include src/templates/electricity.yaml
   - !include src/templates/water.yaml
   - !include src/templates/heating.yaml
+
+
+rest_command:
+  ha_pr_mode_deploy:
+    url: "https://api.github.com/repos//bhavyarupani/Home-Assistant-Bhavya/actions/workflows/ha-pr-mode.yml/dispatches"
+    method: POST
+    headers:
+      Authorization: "Bearer !secret github_pat"
+      Accept: "application/vnd.github+json"
+      Content-Type: "application/json"
+    payload: >
+      {
+        "ref": "master",
+        "inputs": {
+          "branch": "{{ branch | default('') }}"
+        }
+      }
+
+  ha_revert_master_now:
+    url: "https://api.github.com/repos//bhavyarupani/Home-Assistant-Bhavya/actions/workflows/ha-revert-now.yml/dispatches"
+    method: POST
+    headers:
+      Authorization: "Bearer !secret github_pat"
+      Accept: "application/vnd.github+json"
+      Content-Type: "application/json"
+    payload: >
+      { "ref": "master" }
+
+input_text:
+  pr_branch_to_test:
+    name: PR branch to test
+    placeholder: "feat/... or fix/... (empty = latest pushed)"
+
+sensor:
+  - platform: file
+    name: HA Build Info Raw
+    file_path: /config/.ha_build_info
+
+template:
+  - sensor:
+      - name: HA Build Label
+        state: >
+          {% set s = states('sensor.ha_build_info_raw') %}
+          {% if s in ['unknown','unavailable','none','None',''] %}
+            unknown
+          {% else %}
+            {% set lines = s.split('\n') %}
+            {% set d = dict((l.split('=')[0], l.split('=')[1]) for l in lines if '=' in l) %}
+            {% if d.get('mode') == 'pr' %}
+              PR-{{ d.get('pr_number','?') }} ({{ d.get('branch','') }}) @ {{ d.get('sha','') }}
+            {% else %}
+              master{% if d.get('tag') %} ({{ d.get('tag') }}){% endif %} @ {{ d.get('sha','') }}
+            {% endif %}
+          {% endif %}

@@ -1,0 +1,25 @@
+extends: default
+
+ignore: |
+  .venv/
+  .git/
+  .storage/
+  home-assistant_v2.db*
+  www/
+  popup/
+  button_card_templates/
+  custom_components/
+  src/frontend/themes/
+  themes/
+  blueprints/
+  ui-lovelace.yaml
+  known_devices.yaml
+
+rules:
+  document-start: disable
+  comments:
+    min-spaces-from-content: 1
+  line-length:
+    max: 200
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true

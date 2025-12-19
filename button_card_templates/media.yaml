@@ -80,7 +80,7 @@ media:
       icon:
         - width: 70%
         - margin-left: 2%
-        - fill: '#9da0a2'
+        - fill: "#9da0a2"
         - display: >
             [[[
             if (variables.is_youtube) {
