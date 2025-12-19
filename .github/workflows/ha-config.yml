@@ -12,20 +12,11 @@ jobs:
       - uses: actions/checkout@v4
 
       # CI-only: create files that are referenced by config but not committed
-      - name: Create CI stubs (secrets + lovelace resources)
+      - name: Create CI secrets.yaml (dummy)
+        shell: bash
         run: |
-          # secrets.yaml for !secret lookups
-          cat > secrets.yaml <<'EOF'
-          gmail_app_password: "dummy"
-          EOF
-
-          # create empty resources file if configuration references it
-          mkdir -p src/lovelace
-          if [ ! -f src/lovelace/resources.yaml ]; then
-            cat > src/lovelace/resources.yaml <<'EOF'
-            []
-            EOF
-          fi
+          set -euo pipefail
+          printf '%s\n' 'gmail_app_password: "dummy"' > secrets.yaml
 
       - name: Home Assistant configuration check
         uses: frenck/action-home-assistant@v1
