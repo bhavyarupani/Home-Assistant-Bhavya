@@ -1,1 +1,11 @@
-{}
+deploy-pr-mode-from-ha:
+  alias: Deploy PR mode (from HA)
+  sequence:
+    - service: rest_command.ha_pr_mode_deploy
+      data:
+        branch: "{{ states('input_text.pr_branch_to_test') | default('') }}"
+
+revert-to-master-from-ha:
+  alias: Revert to master now (from HA)
+  sequence:
+    - service: rest_command.ha_revert_master_now

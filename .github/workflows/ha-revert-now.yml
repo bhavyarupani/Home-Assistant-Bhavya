@@ -1,0 +1,47 @@
+name: HA Revert Now
+
+on:
+  workflow_dispatch:
+
+jobs:
+  revert_now:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Revert HA to master now
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HA_SSH_HOST }}
+          port: ${{ secrets.HA_SSH_PORT }}
+          username: ${{ secrets.HA_SSH_USER }}
+          key: ${{ secrets.HA_SSH_KEY }}
+          script: |
+            set -e
+
+            cd /config
+
+            # Safety: don't clobber uncommitted edits from File Editor
+            if [ -n "$(git status --porcelain)" ]; then
+              echo "Uncommitted changes in /config; refusing to revert."
+              git status --porcelain
+              exit 1
+            fi
+
+            git fetch origin --prune
+            git checkout master
+            git pull origin master
+
+            rm -f /config/.pr_mode_last_push
+
+            SHA="$(git rev-parse --short HEAD)"
+            TS="$(date -Iseconds)"
+            TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+
+            cat > /config/.ha_build_info <<EOF
+            mode=master
+            branch=master
+            tag=${TAG}
+            sha=${SHA}
+            timestamp=${TS}
+            EOF
+
+            ha core restart
