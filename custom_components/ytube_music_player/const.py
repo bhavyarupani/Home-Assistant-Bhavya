@@ -220,7 +220,7 @@ USER_ARTIST_2 = 'user_artist2'
 USER_ARTIST_2_TITLE = "Uploaded Album"
 
 SEARCH = 'search'
-SEARCH_TITLE = "Search results" 
+SEARCH_TITLE = "Search results"
 
 ALBUM_OF_TRACK = 'album_of_track'
 ALBUM_OF_TRACK_TITLE = 'Album of current Track'

@@ -4,16 +4,13 @@ browser_mod:
   data:
     title: Monitorer
     content:
-
       type: vertical-stack
       cards:
-
         - type: entities
           state_color: true
           card_mod:
             class: content
           entities:
-
             - entity: switch.gosund_monitors_switch
               secondary_info: last-changed
 
@@ -55,10 +52,8 @@ browser_mod:
                   padding: var(--tablet-popup-button-padding);
                 }
           card:
-
             type: horizontal-stack
             cards:
-
               - type: custom:button-card
                 entity: switch.monitors_mute
                 icon: mdi:volume-mute

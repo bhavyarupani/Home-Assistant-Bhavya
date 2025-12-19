@@ -1,3 +1,2 @@
 pre-commit==3.7.1
 yamllint==1.35.1
-ruamel.yaml==0.18.6

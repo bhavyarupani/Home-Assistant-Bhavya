@@ -47,3 +47,6 @@ __pycache__/
 www/community/
 custom_components/hacs/hacs_frontend/
 
+# JS deps
+node_modules/
+node_modules/.cache/

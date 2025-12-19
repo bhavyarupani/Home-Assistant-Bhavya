@@ -38,14 +38,14 @@ class yTubeMusicFlowHandler(config_entries.ConfigFlow):
 	async def async_step_user(self, user_input=None):   # pylint: disable=unused-argument
 		"""Call this as first page."""
 		self._errors = {}
-	
+
 		user_input = dict()
 		user_input[CONF_NAME] = DOMAIN
 
 #		OAUTH
 #		session = requests.Session()
 #		self.oauth = OAuthCredentials("","",session,"")
-#		self.code = await self.hass.async_add_executor_job(self.oauth.get_code) 
+#		self.code = await self.hass.async_add_executor_job(self.oauth.get_code)
 #		user_input[CONF_CODE] = self.code
 #		OAUTH
 		return self.async_show_form(step_id="oauth", data_schema=vol.Schema(await async_create_form(self.hass,user_input,1)), errors=self._errors)
@@ -57,9 +57,9 @@ class yTubeMusicFlowHandler(config_entries.ConfigFlow):
 		if user_input is not None:
 			user_input[CONF_NAME] = user_input[CONF_NAME].replace(DOMAIN_MP+".","") # make sure to erase "media_player.bla" -> bla
 			self.data = user_input
-#		OAUTH			
+#		OAUTH
 #		try:
-#			self.token = await self.hass.async_add_executor_job(lambda: self.oauth.token_from_code(self.code["device_code"])) 
+#			self.token = await self.hass.async_add_executor_job(lambda: self.oauth.token_from_code(self.code["device_code"]))
 #			self.refresh_token = RefreshingToken(credentials=self.oauth, **self.token)
 #			self.refresh_token.update(self.refresh_token.as_dict())
 #		except:
@@ -82,7 +82,7 @@ class yTubeMusicFlowHandler(config_entries.ConfigFlow):
 		self._errors = {}
 		if user_input is not None:
 			self.data.update(user_input)
-#			OAUTH			
+#			OAUTH
 #			await self.hass.async_add_executor_job(lambda: self.refresh_token.store_token(self.data[CONF_HEADER_PATH]))
 #			OAUTH
 			if(self.data[CONF_ADVANCE_CONFIG]):
@@ -91,13 +91,13 @@ class yTubeMusicFlowHandler(config_entries.ConfigFlow):
 				return self.async_create_entry(title="yTubeMusic "+self.data[CONF_NAME].replace(DOMAIN,''), data=self.data)
 		# we should never get below here
 		return self.async_show_form(step_id="finish", data_schema=vol.Schema(await async_create_form(self.hass,user_input,2)), errors=self._errors)
-	
+
 
 	async def async_step_adv_finish(self,user_input=None):
 		self._errors = {}
 		self.data.update(user_input)
 		return self.async_create_entry(title="yTubeMusic "+self.data[CONF_NAME].replace(DOMAIN,''), data=self.data)
-		
+
 
 	# TODO .. what is this good for?
 	async def async_step_import(self, user_input):  # pylint: disable=unused-argument
@@ -160,7 +160,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 			# sync data and user input again
 			self.data.update(user_input)
 			user_input = self.data
-#			OAUTH			
+#			OAUTH
 #			await self.hass.async_add_executor_job(lambda: self.refresh_token.store_token(self.data[CONF_HEADER_PATH]))
 #			OAUTH
 			if(self.data[CONF_ADVANCE_CONFIG]):
@@ -189,7 +189,7 @@ async def async_create_form(hass, user_input, page=1):
 		data_schema[vol.Required(CONF_COOKIE, default=user_input[CONF_COOKIE])] = str # configuration of the cookie
 	if(page == 2):
 		# Generate a list of excluded entities.
-		# This method is more reliable because it won't become invalid 
+		# This method is more reliable because it won't become invalid
 		# if users modify entity IDs, and it supports multiple instances.
 		_exclude_entities = []
 		if (_ytm := hass.data.get(DOMAIN)) is not None:
@@ -255,7 +255,7 @@ async def async_check_data(hass, user_input):
 		# we get a looong string that we've to rearrange into multiline for ytmusic
 
 		# so the fields are written like 'identifier': 'value', but some values actually have ':' inside, bummer.
-		# we'll split after every ': ', and try to parse the key + value 
+		# we'll split after every ': ', and try to parse the key + value
 		cs = user_input[CONF_COOKIE].split(": ")
 		key = []
 		value = []

@@ -53,13 +53,12 @@ browser_mod:
                       }
 
                 entities:
-
                   - type: custom:mushroom-climate-card
                     entity: climate.ac
                     name: Klimat
                     icon: mdi:home-thermometer
                     hvac_modes:
-                      - 'off'
+                      - "off"
                       - cool
                       - fan_only
                     primary_info: name
@@ -86,7 +85,6 @@ browser_mod:
                   - type: custom:hui-horizontal-stack-card
                     title: Fläktläge
                     cards:
-
                       - type: custom:button-card
                         entity: climate.ac
                         name: Låg
@@ -161,7 +159,7 @@ browser_mod:
                 series:
                   - entity: sensor.broadlink_temperature
                     name: Temp
-                    color: '#385581'
+                    color: "#385581"
                     type: area
                     fill_raw: last
                     group_by:

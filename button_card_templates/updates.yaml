@@ -176,7 +176,7 @@ hacs_iframe:
     browser_mod:
       service: browser_mod.popup
       data:
-        title: ' '
+        title: " "
         size: fullscreen
         content:
           type: iframe

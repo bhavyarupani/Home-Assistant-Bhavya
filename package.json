@@ -2,10 +2,27 @@
   "name": "ha-config",
   "private": true,
   "devDependencies": {
-    "prettier": "^3.0.0"
+    "prettier": "^3.7.4"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{yml,yaml,json,md}\"",
-    "format:check": "prettier --check \"**/*.{yml,yaml,json,md}\""
-  }
+    "format:check": "prettier --check \"**/*.{yml,yaml,json,md}\"",
+    "fix": "pre-commit run -a || true && npx prettier -w \"**/*.{yml,yaml,json,md}\"",
+    "check": "pre-commit run --all-files"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "my-cards.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhavyarupani/Home-Assistant-Bhavya.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bhavyarupani/Home-Assistant-Bhavya/issues"
+  },
+  "homepage": "https://github.com/bhavyarupani/Home-Assistant-Bhavya#readme"
 }
