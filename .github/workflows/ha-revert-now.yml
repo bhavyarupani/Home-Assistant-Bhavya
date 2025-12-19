@@ -10,7 +10,7 @@ jobs:
 
 
     steps:
-      - name: SSH into Home Assistant and revert to master
+      - name: Revert HA to master now
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.HA_SSH_HOST }}
@@ -19,24 +19,25 @@ jobs:
           port: ${{ secrets.HA_SSH_PORT }}
           script: |
             set -e
-          
+      
             cd /homeassistant
-            git config --global --add safe.directory /homeassistant
-          
-            git fetch --all --prune
-            git checkout master
-            git reset --hard origin/master
-          
-            # write build label file (adjust path if needed)
-            SHA="$(git rev-parse --short HEAD)"
-            TAG="$(git describe --tags --exact-match 2>/dev/null || true)"
+      
+            sudo git config --global --add safe.directory /homeassistant
+            sudo git fetch --all --prune
+            sudo git checkout master
+            sudo git reset --hard origin/master
+      
+            # write build label file
+            SHA="$(sudo git rev-parse --short HEAD)"
+            TAG="$(sudo git describe --tags --exact-match 2>/dev/null || true)"
             TS="$(date -Iseconds)"
-            cat > /config/.ha_build_info <<EOF
+            sudo tee /config/.ha_build_info >/dev/null <<EOF
             mode=master
             branch=master
             tag=$TAG
             sha=$SHA
             timestamp=$TS
             EOF
-          
-            ha core restart
+      
+            # restart HA
+            sudo ha core restart
