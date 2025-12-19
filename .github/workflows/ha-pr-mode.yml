@@ -18,6 +18,7 @@ on:
 
 jobs:
   deploy_pr:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: Deploy PR branch to Home Assistant (PR mode)
