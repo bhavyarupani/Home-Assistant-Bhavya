@@ -8,6 +8,10 @@
   "scripts": {
     "format": "prettier --write \"**/*.{yml,yaml,json,md}\"",
     "format:check": "prettier --check \"**/*.{yml,yaml,json,md}\"",
+    "check:ha-refs": "python3 scripts/validate_ha_references.py",
+    "update:ha-refs": "python3 scripts/validate_ha_references.py --update-baseline",
+    "check:ha-refs:baseline": "python3 scripts/validate_ha_references.py --check-baseline",
+    "check:forbidden-files": "python3 scripts/check_forbidden_files.py",
     "fix": "pre-commit run --all-files && npm run format",
     "check": "pre-commit run --all-files"
   },

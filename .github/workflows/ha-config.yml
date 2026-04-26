@@ -3,6 +3,11 @@ name: HA config check
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
 
 jobs:
   ha_config_check:
