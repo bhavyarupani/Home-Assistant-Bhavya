@@ -1,0 +1,40 @@
+name: HA deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to deploy to Home Assistant"
+        required: true
+        default: "main"
+        type: choice
+        options:
+          - main
+          - develop
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.branch }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy branch on Home Assistant
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HA_SSH_HOST }}
+          port: ${{ secrets.HA_SSH_PORT }}
+          username: ${{ secrets.HA_SSH_USER }}
+          key: ${{ secrets.HA_SSH_KEY }}
+          script: |
+            set -euo pipefail
+
+            BRANCH="${{ inputs.branch }}"
+            case "$BRANCH" in
+              main|develop) ;;
+              *)
+                echo "Unsupported branch: $BRANCH" >&2
+                exit 2
+                ;;
+            esac
+
+            cd /config
+            bash scripts/ha_branch_deploy.sh "$BRANCH" /config

@@ -24,3 +24,29 @@ normalize_weather:
       data:
         time_phase: "{{ states('input_text.current_time_phase') }}"
         weather: "{{ weather_bucket }}"
+
+deploy_home_assistant_main:
+  alias: Deploy Home Assistant main (prod)
+  mode: single
+  sequence:
+    - service: shell_command.ha_deploy_main
+
+deploy_home_assistant_develop:
+  alias: Deploy Home Assistant develop (preprod)
+  mode: single
+  sequence:
+    - service: shell_command.ha_deploy_develop
+
+deploy_home_assistant_selected_branch:
+  alias: Deploy selected Home Assistant branch
+  mode: single
+  sequence:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: input_select.ha_deploy_branch
+              state: develop
+          sequence:
+            - service: shell_command.ha_deploy_develop
+      default:
+        - service: shell_command.ha_deploy_main

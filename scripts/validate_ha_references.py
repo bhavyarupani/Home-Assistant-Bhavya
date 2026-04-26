@@ -263,6 +263,13 @@ def collect_yaml_defined_entities() -> set[str]:
                 if scene_id:
                     defined.add(f"scene.{slugify(scene_id)}")
 
+    scripts = ROOT / "src" / "scripts.yaml"
+    if scripts.exists():
+        for line in scripts.read_text(encoding="utf-8", errors="ignore").splitlines():
+            match = TOP_LEVEL_KEY_RE.match(line)
+            if match:
+                defined.add(f"script.{match.group(1).lower()}")
+
     return defined
 
 

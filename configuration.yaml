@@ -67,4 +67,16 @@ input_text:
   global_dashboard_background:
     name: Global Dashboard Background
 
+input_select:
+  ha_deploy_branch:
+    name: Home Assistant deploy branch
+    options:
+      - main
+      - develop
+    initial: main
+
+shell_command:
+  ha_deploy_main: "bash /config/scripts/ha_branch_deploy.sh main"
+  ha_deploy_develop: "bash /config/scripts/ha_branch_deploy.sh develop"
+
 python_script:

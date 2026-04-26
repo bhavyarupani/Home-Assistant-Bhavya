@@ -32,3 +32,25 @@ npm run update:ha-refs
 ```
 
 Generated/runtime files such as `.storage/`, databases, private keys, `.DS_Store`, and `__pycache__` must not be committed.
+
+## Deploying Home Assistant
+
+Home Assistant can deploy either branch from `/config`:
+
+- `main` = prod
+- `develop` = preprod/testing
+
+Available HA scripts:
+
+- `script.deploy_home_assistant_main`
+- `script.deploy_home_assistant_develop`
+- `script.deploy_home_assistant_selected_branch`
+
+There is also a nightly Home Assistant automation that deploys `main` at `00:00` local time.
+
+GitHub Actions also includes a manual `HA deploy` workflow for remote branch switching. The workflow requires these repository secrets:
+
+- `HA_SSH_HOST`
+- `HA_SSH_PORT`
+- `HA_SSH_USER`
+- `HA_SSH_KEY`

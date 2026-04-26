@@ -1,3 +1,13 @@
+- id: ha_sync_main_midnight
+  alias: Home Assistant - sync main at midnight
+  description: Pulls and deploys the latest main branch every night at 00:00.
+  triggers:
+    - trigger: time
+      at: "00:00:00"
+  actions:
+    - action: script.deploy_home_assistant_main
+  mode: single
+
 - id: "1718898933157"
   alias: Leave Home - Full Away Mode (per-device stagger)
   description: Leave home only if no occupancy; then turn off devices one-by-one with
