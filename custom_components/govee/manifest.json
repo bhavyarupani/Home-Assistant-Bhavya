@@ -1,0 +1,21 @@
+{
+  "domain": "govee",
+  "name": "Govee Cloud Integration",
+  "codeowners": ["@lasswellt"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/lasswellt/govee-homeassistant/blob/master/README.md",
+  "homekit": {},
+  "integration_type": "hub",
+  "iot_class": "cloud_push",
+  "issue_tracker": "https://github.com/lasswellt/govee-homeassistant/issues",
+  "loggers": ["custom_components.govee", "aiohttp", "aiomqtt"],
+  "requirements": [
+    "aiohttp-retry>=2.8.3",
+    "aiomqtt>=2.0.0",
+    "cryptography>=41.0.0"
+  ],
+  "ssdp": [],
+  "version": "2026.1.61",
+  "zeroconf": []
+}

@@ -1,0 +1,47 @@
+- sensor:
+
+    - name: "Natural Light Base"
+      unit_of_measurement: "%"
+      state: >
+        {% set elevation = state_attr('sun.sun', 'elevation') | float %}
+        {% set clouds = state_attr('weather.home', 'cloud_coverage') | float(0) %}
+
+        {% if elevation < 0 %}
+          0
+        {% else %}
+          {{ ((elevation / 90) * (100 - clouds)) | round(1) }}
+        {% endif %}
+
+    - name: "Living Room Natural Light"
+      unit_of_measurement: "%"
+      state: >
+        {% set azimuth = state_attr('sun.sun', 'azimuth') | float %}
+        {% set base = states('sensor.natural_light_base') | float %}
+
+        {% if 110 < azimuth < 250 %}
+          {{ (base * 1.0) | round(1) }}
+        {% else %}
+          {{ (base * 0.5) | round(1) }}
+        {% endif %}
+
+    - name: "Bedroom Natural Light"
+      unit_of_measurement: "%"
+      state: >
+        {% set azimuth = state_attr('sun.sun', 'azimuth') | float %}
+        {% set base = states('sensor.natural_light_base') | float %}
+
+        {% if 110 < azimuth < 250 %}
+          {{ (base * 0.85) | round(1) }}
+        {% else %}
+          {{ (base * 0.4) | round(1) }}
+        {% endif %}
+
+    - name: "Kitchen Natural Light"
+      unit_of_measurement: "%"
+      state: >
+        {{ (states('sensor.natural_light_base') | float * 0.35) | round(1) }}
+
+    - name: "Office Natural Light"
+      unit_of_measurement: "%"
+      state: >
+        {{ (states('sensor.natural_light_base') | float * 0.3) | round(1) }}

@@ -4,16 +4,14 @@ default_config:
 homeassistant:
   customize: !include src/customize.yaml
 
-lovelace:
-  mode: yaml
-  dashboards: !include src/lovelace/dashboards.yaml
-  resources: !include src/lovelace/resources.yaml
-
 frontend:
   themes: !include_dir_merge_named src/frontend/themes
 
-automation: !include src/automations.yaml
-script: !include src/scripts.yaml
+# ✅ FIX: only ONE script key allowed
+# Put all your script YAML files inside /config/src/scripts/
+script: !include_dir_merge_named src/scripts
+
+automation: !include automations.yaml
 scene: !include src/scenes.yaml
 
 emulated_hue:
@@ -64,57 +62,11 @@ template:
   - !include src/templates/electricity.yaml
   - !include src/templates/water.yaml
   - !include src/templates/heating.yaml
-
-
-rest_command:
-  ha_pr_mode_deploy:
-    url: "https://api.github.com/repos//bhavyarupani/Home-Assistant-Bhavya/actions/workflows/ha-pr-mode.yml/dispatches"
-    method: POST
-    headers:
-      Authorization: "Bearer !secret github_pat"
-      Accept: "application/vnd.github+json"
-      Content-Type: "application/json"
-    payload: >
-      {
-        "ref": "master",
-        "inputs": {
-          "branch": "{{ branch | default('') }}"
-        }
-      }
-
-  ha_revert_master_now:
-    url: "https://api.github.com/repos//bhavyarupani/Home-Assistant-Bhavya/actions/workflows/ha-revert-now.yml/dispatches"
-    method: POST
-    headers:
-      Authorization: "Bearer !secret github_pat"
-      Accept: "application/vnd.github+json"
-      Content-Type: "application/json"
-    payload: >
-      { "ref": "master" }
+  # (Optional) add later when you create it:
+  # - !include src/templates/daylight.yaml
 
 input_text:
-  pr_branch_to_test:
-    name: PR branch to test
-    placeholder: "feat/... or fix/... (empty = latest pushed)"
+  global_dashboard_background:
+    name: Global Dashboard Background
 
-sensor:
-  - platform: file
-    name: HA Build Info Raw
-    file_path: /config/.ha_build_info
-
-template:
-  - sensor:
-      - name: HA Build Label
-        state: >
-          {% set s = states('sensor.ha_build_info_raw') %}
-          {% if s in ['unknown','unavailable','none','None',''] %}
-            unknown
-          {% else %}
-            {% set lines = s.split('\n') %}
-            {% set d = dict((l.split('=')[0], l.split('=')[1]) for l in lines if '=' in l) %}
-            {% if d.get('mode') == 'pr' %}
-              PR-{{ d.get('pr_number','?') }} ({{ d.get('branch','') }}) @ {{ d.get('sha','') }}
-            {% else %}
-              master{% if d.get('tag') %} ({{ d.get('tag') }}){% endif %} @ {{ d.get('sha','') }}
-            {% endif %}
-          {% endif %}
+python_script:

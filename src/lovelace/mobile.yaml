@@ -1,9 +1,0 @@
-title: Mobile
-views:
-  - title: Quick
-    path: quick
-    icon: mdi:flash
-    cards:
-      - type: markdown
-        content: |
-          ## Quick Controls
