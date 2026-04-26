@@ -575,3 +575,5 @@ views:
                           : states[id[1]].state === 'off';
                 ]]]
             template: footer
+
+  - !include dashboards/mobile.yaml

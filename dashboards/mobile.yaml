@@ -1,0 +1,289 @@
+title: Mobile
+path: mobile
+icon: mdi:cellphone
+type: masonry
+cards:
+  - type: custom:button-card
+    entity: sensor.template_sidebar
+    template: sidebar
+
+  - type: conditional
+    conditions:
+      - entity: input_boolean.laundry_display
+        state: "on"
+    card:
+      type: custom:button-card
+      entity: timer.laundry
+      double_tap_action:
+        action: call-service
+        service: input_boolean.turn_off
+        service_data:
+          entity_id: input_boolean.laundry_display
+      template: laundry
+
+  - type: grid
+    title: Hemma
+    columns: 2
+    square: false
+    cards:
+      - type: custom:button-card
+        entity: person.matte
+        name: Mattias
+        triggers_update:
+          - sensor.matte_last_changed
+        double_tap_action: !include ../popup/hemma_mattias.yaml
+        variables:
+          retain: sensor.matte_last_changed
+        template:
+          - person
+          - circle
+
+      - type: custom:button-card
+        entity: person.sanja
+        name: Sanja
+        triggers_update:
+          - sensor.sanja_last_changed
+        double_tap_action: !include ../popup/hemma_sanja.yaml
+        variables:
+          retain: sensor.sanja_last_changed
+        template:
+          - person
+          - circle
+
+      - type: custom:button-card
+        entity: script.home_arrive
+        name: Hemma
+        template:
+          - base
+          - icon_home
+
+      - type: custom:button-card
+        entity: script.home_leave
+        name: Stäng allt
+        template:
+          - base
+          - icon_away
+
+  - type: grid
+    title: Rum
+    columns: 2
+    square: false
+    cards:
+      - type: custom:button-card
+        entity: light.vardagsrum_group
+        name: Vardagsrum
+        template:
+          - light
+          - icon_hue
+
+      - type: custom:button-card
+        entity: light.sovrum_group
+        name: Sovrum
+        template:
+          - light
+          - icon_hue
+
+      - type: custom:button-card
+        entity: light.studio_group
+        name: Studio
+        template:
+          - light
+          - icon_hue
+
+      - type: custom:button-card
+        entity: light.hall_group
+        name: Hall
+        template:
+          - light
+          - icon_spot
+
+      - type: custom:button-card
+        entity: light.badrum_group
+        name: Badrum
+        template:
+          - light
+          - icon_bathroom
+
+      - type: custom:button-card
+        entity: light.garderob_lampa
+        name: Garderob
+        template:
+          - light
+          - icon_closet
+
+  - type: grid
+    title: Snabbt
+    columns: 2
+    square: false
+    cards:
+      - type: custom:button-card
+        entity: light.vardagsrum_horna
+        name: Hörna
+        template:
+          - light
+          - icon_lamp
+
+      - type: custom:button-card
+        entity: switch.deltaco_sh_p01_socket
+        name: Balkong
+        double_tap_action: !include ../popup/vardagsrum_balkong.yaml
+        template:
+          - base
+          - icon_spot
+          - loader
+
+      - type: custom:button-card
+        entity: light.studio_dator
+        name: Datorlampa
+        template:
+          - light
+          - icon_lamp
+
+      - type: custom:button-card
+        entity: switch.gosund_fan_switch
+        name: Fläkt
+        double_tap_action: !include ../popup/studio_flakt.yaml
+        template:
+          - base
+          - icon_fan2
+          - loader
+
+  - type: grid
+    title: Studio
+    columns: 2
+    square: false
+    cards:
+      - type: custom:button-card
+        entity: switch.imac
+        name: iMac
+        double_tap_action: !include ../popup/studio_dator.yaml
+        template:
+          - base
+          - icon_imac
+          - loader
+
+      - type: custom:button-card
+        entity: switch.gosund_monitors_switch
+        name: Monitorer
+        double_tap_action: !include ../popup/studio_monitorer.yaml
+        template:
+          - base
+          - icon_monitors
+          - loader
+
+  - type: grid
+    title: Sovrum
+    columns: 2
+    square: false
+    cards:
+      - type: custom:button-card
+        entity: climate.ac
+        name: Klimat
+        double_tap_action: !include ../popup/sovrum_klimat.yaml
+        template:
+          - base
+          - icon_climate
+          - loader
+
+      - type: custom:button-card
+        entity: switch.ps5_635_power
+        name: PS5
+        double_tap_action: !include ../popup/sovrum_playstation.yaml
+        template:
+          - base
+          - icon_ps5
+          - loader
+
+      - type: custom:button-card
+        entity: media_player.samsung
+        name: Tv²
+        double_tap_action: !include ../popup/sovrum_tv2.yaml
+        template:
+          - base
+          - icon_tv
+          - loader
+
+  - type: grid
+    title: Media
+    columns: 2
+    square: false
+    cards:
+      - type: custom:button-card
+        entity: media_player.vardagsrum
+        triggers_update: sensor.youtube_watching
+        name: Vardagsrum
+        template:
+          - media
+          - icon_apple_tv
+
+      - type: custom:button-card
+        entity: media_player.sovrum
+        triggers_update: sensor.youtube_watching
+        name: Sovrum
+        template:
+          - media
+          - icon_apple_tv
+
+      - type: custom:button-card
+        entity: media_player.spotify
+        name: Spotify
+        template:
+          - media
+          - icon_spotify
+
+      - type: custom:button-card
+        entity: media_player.kok
+        name: Nest Mini
+        template:
+          - media
+          - icon_nest_mini
+
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        name: >
+          <ha-icon icon="mdi:nas"></ha-icon> NAS
+        tap_action: !include ../popup/footer_nas.yaml
+        triggers_update:
+          - update.nas_dsm_update
+          - sensor.nas_volume_1_status
+          - binary_sensor.nas_security_status
+          - sensor.disk_use_percent
+        variables:
+          notify: >
+            [[[
+              let id = this._config.triggers_update;
+              if (id.every(e => states[e]))
+                  return states[id[0]].state === 'on'
+                      ? 1
+                      : states[id[1]].state === 'background_scrubbing' ||
+                        states[id[2]].state === 'on' ||
+                        parseFloat(states[id[3]].state) >= 85;
+            ]]]
+        template: footer
+
+      - type: custom:button-card
+        entity: sensor.template_updates
+        name: >
+          <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Uppdatera
+        tap_action: !include ../popup/footer_updates.yaml
+        variables:
+          notify: >
+            [[[
+              return parseInt(entity?.state);
+            ]]]
+        template: footer
+
+      - type: custom:button-card
+        name: >
+          <ha-icon icon="mdi:robot-vacuum-variant"></ha-icon> Städa
+        tap_action: !include ../popup/footer_vacuum.yaml
+        triggers_update:
+          - sensor.date
+        variables:
+          notify: >
+            [[[
+              let id = states['sensor.morty_last_clean_end'];
+              if (id) return (Date.now() - Date.parse(id.state)) > 6048e5;
+            ]]]
+        template: footer
