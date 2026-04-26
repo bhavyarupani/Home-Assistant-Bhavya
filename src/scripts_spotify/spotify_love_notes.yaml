@@ -1,0 +1,27 @@
+spotify_play_love_notes_denon_shuffle:
+  alias: Spotify – Love Notes (Denon, Shuffle ON)
+  mode: restart
+  sequence:
+    # Force output to Denon
+    - service: media_player.select_source
+      target:
+        entity_id: media_player.spotify_bhavya_rupani
+      data:
+        source: Denon AVR-S770H
+
+    - delay: "00:00:01"
+
+    # Force shuffle ON
+    - service: media_player.shuffle_set
+      target:
+        entity_id: media_player.spotify_bhavya_rupani
+      data:
+        shuffle: true
+
+    # Play playlist
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.spotify_bhavya_rupani
+      data:
+        media_content_type: playlist
+        media_content_id: spotify:playlist:481ViFtp349NcNhu1ddoQc

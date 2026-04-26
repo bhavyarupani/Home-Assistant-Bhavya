@@ -9,3 +9,32 @@ revert-to-master-from-ha:
   alias: Revert to master now (from HA)
   sequence:
     - service: rest_command.ha_revert_master_now
+    
+
+normalize_weather:
+  alias: Normalize weather for background
+  mode: single
+  fields:
+    raw_weather:
+  sequence:
+    - variables:
+        weather_bucket: >
+          {% set w = raw_weather %}
+          {% if w in ['sunny','clear','clear-night'] %}
+            clear
+          {% elif w in ['partlycloudy','cloudy'] %}
+            cloudy
+          {% elif w in ['rainy','pouring','lightning','lightning-rainy'] %}
+            rainy
+          {% elif w in ['fog','mist','haze'] %}
+            fog
+          {% elif w in ['snowy','snowy-rainy','hail','sleet'] %}
+            cloudy
+          {% else %}
+            cloudy
+          {% endif %}
+    - service: python_script.set_dashboard_background
+      data:
+        time_phase: "{{ states('input_text.current_time_phase') }}"
+        weather: "{{ weather_bucket }}"
+

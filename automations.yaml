@@ -1,0 +1,1726 @@
+- id: '1718898933157'
+  alias: Leave Home - Full Away Mode (per-device stagger)
+  description: Leave home only if no occupancy; then turn off devices one-by-one with
+    delays, set climate to 5C, disable away-managed automations
+  triggers:
+  - entity_id:
+    - device_tracker.bhavyas_iphone
+    from:
+    - home
+    to:
+    - not_home
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: binary_sensor.living_room_presence
+    state: 'off'
+    for: 00:02:00
+  - condition: state
+    entity_id: binary_sensor.bedroom_presence
+    state: 'off'
+    for: 00:02:00
+  - condition: state
+    entity_id: binary_sensor.hall_motion
+    state: 'off'
+    for: 00:02:00
+  actions:
+  - repeat:
+      for_each: '{{ media_players }}'
+      sequence:
+      - target:
+          entity_id: '{{ repeat.item }}'
+        action: media_player.turn_off
+      - delay: '{{ delay_media }}'
+  - repeat:
+      for_each: '{{ lights }}'
+      sequence:
+      - target:
+          entity_id: '{{ repeat.item }}'
+        action: light.turn_off
+      - delay: '{{ delay_lights }}'
+  - repeat:
+      for_each: '{{ switches }}'
+      sequence:
+      - target:
+          entity_id: '{{ repeat.item }}'
+        action: switch.turn_off
+      - delay: '{{ delay_switches }}'
+  - repeat:
+      for_each: '{{ climates }}'
+      sequence:
+      - target:
+          entity_id: '{{ repeat.item }}'
+        data:
+          hvac_mode: heat
+        action: climate.set_hvac_mode
+      - delay: '{{ delay_climate }}'
+      - target:
+          entity_id: '{{ repeat.item }}'
+        data:
+          temperature: 5
+        action: climate.set_temperature
+      - delay: '{{ delay_climate }}'
+  - target:
+      label_id: away_managed
+    data:
+      stop_actions: false
+    action: automation.turn_off
+  variables:
+    exclude_entities:
+    delay_media: 00:00:03
+    delay_lights: 00:00:02
+    delay_switches: 00:00:04
+    delay_climate: 00:00:03
+    media_players: "{{ states.media_player\n  | map(attribute='entity_id')\n  | list
+      }}"
+    lights: "{{ states.light\n  | map(attribute='entity_id')\n  | reject('in', exclude_entities)\n
+      \ | list }}"
+    switches: "{{ states.switch\n  | map(attribute='entity_id')\n  | reject('in',
+      exclude_entities)\n  | list }}"
+    climates: "{{ states.climate\n  | map(attribute='entity_id')\n  | list }}"
+  mode: single
+- id: '1765221110611'
+  alias: Enter Home - Enable Away-Managed Automations
+  description: When I enter home, enable only the automations that were disabled on
+    leave
+  triggers:
+  - entity_id:
+    - device_tracker.bhavyas_iphone
+    from:
+    - not_home
+    to:
+    - home
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+    trigger: state
+  actions:
+  - target:
+      label_id: away_managed
+    action: automation.turn_on
+  mode: single
+- id: '1765234997681'
+  alias: Bhavya - Sleep Mode Manager
+  description: Automatically set Bhavya sleep mode on/off based on time and iPhone
+    activity only.
+  trigger:
+  - platform: state
+    entity_id: sensor.bhavyas_iphone_activity
+    to: stationary
+    for: 00:45:00
+    id: maybe_sleep
+  - platform: state
+    entity_id: sensor.bhavyas_iphone_activity
+    id: phone_activity
+  - platform: time
+    at: 09:00:00
+    id: wake_time
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: maybe_sleep
+      - condition: time
+        after: '22:30:00'
+        before: 09:00:00
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'off'
+      sequence:
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.bhavya_sleep_mode
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'on'
+      - condition: or
+        conditions:
+        - condition: trigger
+          id: wake_time
+        - condition: and
+          conditions:
+          - condition: trigger
+            id: phone_activity
+          - condition: template
+            value_template: '{{ states(''sensor.bhavyas_iphone_activity'') not in
+              [''stationary'',''unknown'',''unavailable''] }}
+
+              '
+          - condition: time
+            after: 05:30:00
+      sequence:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.bhavya_sleep_mode
+  mode: restart
+- id: '1765235434928'
+  alias: Bedroom - Smart Motion Lights (Bhavya)
+  description: Control bedroom ceiling light based on motion, natural light, Bhavya's
+    presence and sleep mode.
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'off'
+    to: 'on'
+    id: motion_on_raw
+  - platform: state
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+    id: motion_on_stable
+  - platform: state
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for: 00:00:10
+    id: motion_clear_10sec
+  - platform: state
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for: 00:00:10
+    id: motion_clear_3min
+  - platform: state
+    entity_id: binary_sensor.bedroom_motion_sensor_motion
+    from: 'on'
+    to: 'off'
+    for: 00:10:00
+    id: motion_clear_10min
+  - platform: state
+    entity_id: device_tracker.bhavyas_iphone
+    to: not_home
+    id: bhavya_left_home
+  condition: []
+  action:
+  - variables:
+      light_level: '{% set s = states(''sensor.bedroom_natural_light_level'') %} {%
+        if s in [''bright'',''medium'',''dark''] %}{{ s }}{% else %}medium{% endif
+        %}'
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: motion_on_stable
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: home
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'on'
+      - condition: template
+        value_template: '{{ light_level == ''dark'' }}'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id: light.bedroom_ceiling_light
+        data:
+          brightness_pct: 8
+    - conditions:
+      - condition: trigger
+        id: motion_on_stable
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: home
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'off'
+      - condition: template
+        value_template: '{{ light_level != ''bright'' }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ light_level == ''medium'' }}'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.bedroom_ceiling_light
+            data:
+              brightness_pct: 80
+        - conditions:
+          - condition: template
+            value_template: '{{ light_level == ''dark'' }}'
+          sequence:
+          - service: light.turn_on
+            target:
+              entity_id: light.bedroom_ceiling_light
+            data:
+              brightness_pct: 25
+        default: []
+    - conditions:
+      - condition: trigger
+        id: motion_clear_10sec
+      - condition: state
+        entity_id: input_boolean.bhavya_sleep_mode
+        state: 'on'
+      - condition: template
+        value_template: '{{ light_level == ''dark'' }}'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.bedroom_ceiling_light
+    - conditions:
+      - condition: trigger
+        id: motion_clear_3min
+      - condition: template
+        value_template: '{{ light_level == ''dark'' }}'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.bedroom_ceiling_light
+    - conditions:
+      - condition: trigger
+        id: motion_clear_10min
+      - condition: template
+        value_template: '{{ light_level in [''medium'',''bright''] }}'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.bedroom_ceiling_light
+    - conditions:
+      - condition: trigger
+        id: bhavya_left_home
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.bedroom_ceiling_light
+    default: []
+  mode: restart
+- id: '1765305534323'
+  alias: Energy – Daily Email Summary
+  description: Send a daily electricity report with trends and simple insights
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition: []
+  action:
+  - service: notify.bhavya_email
+    data:
+      title: "\U0001F3E0 Daily Energy Report – {{ states('sensor.day_en') }} {{ states('sensor.date_en')
+        }}\n"
+      message: "Hi Bhavya,\nHere’s your daily home energy snapshot. \U0001F48C\n\n\U0001F50C
+        Electricity today\n{% set daily = states('sensor.virtual_electricity_daily')
+        | float(0) %}\n{% set dchg  = states('sensor.virtual_electricity_daily_change')
+        | float(0) %}\n{% if dchg > 5 %}\n  {% set demoji = '\U0001F4C8' %}\n{% elif
+        dchg < -5 %}\n  {% set demoji = '\U0001F4C9' %}\n{% else %}\n  {% set demoji
+        = '➖' %}\n{% endif %}\n{% set real_daily = states('sensor.real_electricity_daily')
+        | float(0) %}\n{% set share_real = (real_daily / daily * 100) if daily > 0
+        else 0 %}\n• Total: {{ daily | round(2) }} kWh\n• Change vs yesterday: {{
+        demoji }} {{ dchg | round(1) }} %\n• Verdict: {{ states('sensor.virtual_electricity_daily_verdict')
+        }}\n\n\U0001F4CA Today vs yesterday\n{% set yesterday = state_attr('sensor.virtual_electricity_daily',
+        'last_period') | float(0) %}\n{% set week_total = states('sensor.virtual_electricity_weekly')
+        | float(0) %}\n{% set week_avg = (week_total / 7) if week_total > 0 else 0
+        %}\n{% set t_blocks = (daily * 3) | round(0) %}\n{% set y_blocks = (yesterday
+        * 3) | round(0) %}\n{% set w_blocks = (week_avg * 3) | round(0) %}\nToday
+        \      {{ '▇' * t_blocks }}   {{ daily | round(2) }} kWh\nYesterday   {{ '▇'
+        * y_blocks }}   {{ yesterday | round(2) }} kWh\nWeek avg    {{ '▇' * w_blocks
+        }}   {{ week_avg | round(2) }} kWh\n\n\U0001F4C6 Weekly & monthly trend\n{%
+        set weekly  = states('sensor.virtual_electricity_weekly') | float(0) %}\n{%
+        set wchg    = states('sensor.virtual_electricity_weekly_change') | float(0)
+        %}\n{% if wchg > 5 %}\n  {% set wemoji = '\U0001F4C8' %}\n{% elif wchg < -5
+        %}\n  {% set wemoji = '\U0001F4C9' %}\n{% else %}\n  {% set wemoji = '➖' %}\n{%
+        endif %}\n{% set monthly = states('sensor.virtual_electricity_monthly') |
+        float(0) %}\n{% set mchg    = states('sensor.virtual_electricity_monthly_change')
+        | float(0) %}\n{% if mchg > 5 %}\n  {% set memoji = '\U0001F4C8' %}\n{% elif
+        mchg < -5 %}\n  {% set memoji = '\U0001F4C9' %}\n{% else %}\n  {% set memoji
+        = '➖' %}\n{% endif %}\n• This week: {{ weekly | round(2) }} kWh\n  → {{ wemoji
+        }} {{ states('sensor.virtual_electricity_weekly_verdict') }}\n    ({{ wchg
+        | round(1) }} % vs last week)\n\n• This month: {{ monthly | round(1) }} kWh\n
+        \ → {{ memoji }} {{ states('sensor.virtual_electricity_monthly_verdict') }}\n
+        \   ({{ mchg | round(1) }} % vs last month)\n\n\U0001F4A1 Why it was higher
+        or lower\n{% set real_devices = expand('sensor.energy_real_power_sensors_w')
+        %}\n{% if dchg > 10 %}\n  • You used noticeably more electricity than yesterday.\n
+        \ {% if share_real > 40 and real_devices | length > 0 %}\n    Devices that
+        likely contributed most today:\n    {% for d in real_devices %}\n      - {{
+        d.name }} (now {{ d.state }} W)\n    {% endfor %}\n  {% else %}\n    The difference
+        is probably from overall lighting and background\n    usage in multiple rooms.\n
+        \ {% endif %}\n{% elif dchg < -10 %}\n  • Nice! Your electricity usage was
+        clearly lower than yesterday.\n  {% if share_real > 40 and real_devices |
+        length > 0 %}\n    Larger plugged devices also seem calmer today, such as:\n
+        \   {% for d in real_devices %}\n      - {{ d.name }} (now {{ d.state }} W)\n
+        \   {% endfor %}\n  {% else %}\n    This is likely thanks to reduced lighting
+        / background usage or\n    spending less time with many devices on at once.\n
+        \ {% endif %}\n{% else %}\n  • Usage was roughly similar to yesterday – no
+        big change in your pattern.\n{% endif %}\n\n✅ What you can try next\n{% if
+        share_real > 40 and real_devices | length > 0 %}\n  • Pay extra attention
+        to these devices on busy days:\n  {% for d in real_devices %}\n    - {{ d.name
+        }}\n  {% endfor %}\n  Turning them off earlier in the evening or putting them
+        behind simple\n  time/presence automations can reduce your total quite a bit.\n{%
+        else %}\n  • Most of your usage is spread across lights and smaller devices.\n
+        \   Using motion-based lighting, scenes, and making sure unused rooms stay\n
+        \   dark will help keep your daily number steady or lower.\n{% endif %}\n•
+        Overall weekly trend: {{ states('sensor.virtual_electricity_weekly_verdict')
+        }}\n  ({{ wchg | round(1) }} % vs last week).\n\nSee you tomorrow for the
+        next snapshot. \U0001F4AA\n– Your Home Assistant Energy Coach\n"
+  mode: single
+- id: '1765487125446'
+  alias: Heating Minute Counter
+  description: Increment heater active minutes every 1 minute
+  trigger:
+  - platform: time_pattern
+    minutes: /1
+  condition: []
+  action:
+  - service: homeassistant.update_entity
+    target:
+      entity_id:
+      - sensor.bedroom_heater_heating_minutes
+      - sensor.office_heater_heating_minutes
+  mode: single
+- id: '1767652410481'
+  alias: Spotify – Enforce Shuffle ON
+  description: Keep Spotify shuffle always ON while playing
+  triggers:
+  - trigger: state
+    entity_id: media_player.spotify_bhavya_rupani
+    attribute: shuffle
+    to: false
+  conditions:
+  - condition: state
+    entity_id: media_player.spotify_bhavya_rupani
+    state: playing
+  actions:
+  - action: media_player.shuffle_set
+    target:
+      entity_id: media_player.spotify_bhavya_rupani
+    data:
+      shuffle: true
+  mode: single
+- id: '1768425897109'
+  alias: Office Heater - Smart Weekday Heating (Weather + Temp-aware)
+  description: Preheats before 08:50 on workdays (BW holidays respected) if Bhavya's
+    iPhone is at home, then maintains 20C. Skips if you left early. Adapts to outdoor
+    temp and avoids heating if already warm.
+  triggers:
+  - minutes: /10
+    trigger: time_pattern
+  - entity_id: device_tracker.bhavyas_iphone
+    to: home
+    trigger: state
+  - at: 08:50:00
+    trigger: time
+  conditions:
+  - condition: state
+    entity_id: binary_sensor.workday_sensor
+    state: 'on'
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: not_home
+      sequence:
+      - target:
+          entity_id: climate.office_heater
+        data:
+          hvac_mode: 'off'
+        action: climate.set_hvac_mode
+    - conditions:
+      - condition: state
+        entity_id: input_boolean.skip_office_preheat_today
+        state: 'on'
+      sequence:
+      - target:
+          entity_id: climate.office_heater
+        data:
+          hvac_mode: 'off'
+        action: climate.set_hvac_mode
+    - conditions:
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: home
+      - condition: time
+        before: 08:50:00
+      sequence:
+      - condition: template
+        value_template: "{{ state_attr('climate.office_heater','current_temperature')
+          is number\n   and state_attr('climate.office_heater','current_temperature')
+          < 20.5 }}\n"
+      - variables:
+          outside_ok: '{{ states(''sensor.outdoor_temperature'') not in [''unknown'',''unavailable'',''none'','''']
+            }}
+
+            '
+          outside: '{{ states(''sensor.outdoor_temperature'') | float(99) }}
+
+            '
+          preheat_target: '{% if not outside_ok %} 22 {% elif outside < 5 %} 23 {%
+            elif outside < 12 %} 22 {% else %} 21 {% endif %}
+
+            '
+      - target:
+          entity_id: climate.office_heater
+        data:
+          hvac_mode: heat
+        action: climate.set_hvac_mode
+      - target:
+          entity_id: climate.office_heater
+        data:
+          temperature: '{{ preheat_target }}'
+        action: climate.set_temperature
+    - conditions:
+      - condition: state
+        entity_id: device_tracker.bhavyas_iphone
+        state: home
+      - condition: time
+        after: 08:50:00
+      sequence:
+      - target:
+          entity_id: climate.office_heater
+        data:
+          hvac_mode: heat
+        action: climate.set_hvac_mode
+      - target:
+          entity_id: climate.office_heater
+        data:
+          temperature: 20
+        action: climate.set_temperature
+  mode: single
+- id: '1768828283879'
+  alias: Kitchen Occupancy Lighting (Anti-flicker)
+  description: 'Automatically controls kitchen ceiling light using occupancy sensor.
+    Prevents flicker by turning lights off only after the kitchen remains unoccupied
+    for 5 minutes (ideal for cooking and standing still).
+
+    '
+  triggers:
+  - entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+    to: 'on'
+    trigger: state
+  - entity_id:
+    - binary_sensor.kitchen_presence_sensor_occupancy
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+        state: 'on'
+      sequence:
+      - action: light.turn_on
+        data:
+          color_temp_kelvin: 6500
+          brightness_pct: 100
+        target:
+          entity_id: light.local_kitchen_ceiling_light
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+        state: 'off'
+      sequence:
+      - condition: state
+        entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+        state: 'off'
+      - action: light.turn_off
+        data: {}
+        target:
+          entity_id: light.local_kitchen_ceiling_light
+  mode: restart
+- id: '1769036704899'
+  alias: Bedroom Heater – Eco after 1 hour in bed
+  description: 'After being in_bed for 1 hour at night, reduce heating to eco to save
+    gas.
+
+    '
+  triggers:
+  - entity_id: input_select.bedroom_presence_state
+    to: in_bed
+    for:
+      hours: 1
+    trigger: state
+  conditions:
+  - condition: time
+    after: '18:00:00'
+    before: 07:00:00
+  actions:
+  - target:
+      entity_id: climate.bedroom_heater
+    data:
+      temperature: 19
+    action: climate.set_temperature
+  mode: single
+- id: '1769036792996'
+  alias: Bedroom Heater – Day shutdown when not in bed
+  description: 'After 06:00, if bedroom presence state is NOT in_bed for 10 minutes,
+    reduce heating to daytime eco so it doesn''t run all day.
+
+    '
+  triggers:
+  - entity_id:
+    - input_select.bedroom_presence_state
+    for:
+      minutes: 10
+    trigger: state
+    to:
+    - out_of_bed
+    - awake_in_bed
+    - empty
+  conditions:
+  - condition: time
+    after: 06:00:00
+  - condition: template
+    value_template: '{{ states(''input_select.bedroom_presence_state'') != ''in_bed''
+      }}
+
+      '
+  actions:
+  - target:
+      entity_id: climate.bedroom_heater
+    data:
+      temperature: 17
+    action: climate.set_temperature
+  mode: single
+- id: '1769271547835'
+  alias: Corridor – Light
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.corridor_presence_sensor
+    to:
+    - 'on'
+  - trigger: state
+    entity_id:
+    - binary_sensor.corridor_presence_sensor
+    to:
+    - 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  conditions: []
+  actions:
+  - variables:
+      present: '{{ is_state(''binary_sensor.corridor_presence_sensor'', ''on'') }}'
+      light_on: '{{ is_state(''light.corridor_ceiling_lamp'', ''on'') }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ present }}'
+      sequence:
+      - condition: template
+        value_template: '{{ not light_on }}'
+      - target:
+          entity_id: light.corridor_ceiling_lamp
+        data:
+          color_temp_kelvin: 6500
+          brightness_pct: 100
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ (not present) and light_on }}'
+      sequence:
+      - target:
+          entity_id: light.corridor_ceiling_lamp
+        action: light.turn_off
+  mode: restart
+- id: living_room_ceiling_light_auto
+  alias: Living Room - Ceiling Light Auto (Presence + Motion + Distance)
+  description: ''
+  triggers:
+  - entity_id: sensor.living_room_presence_sensor
+    trigger: state
+  - entity_id: sensor.human_motion_state
+    trigger: state
+  - entity_id: sensor.target_distance
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: template
+          value_template: '{{ states(''sensor.living_room_presence_sensor'') | lower
+            not in [''clear'', ''none'', ''unknown'', ''unavailable''] }}
+
+            '
+        - condition: template
+          value_template: '{{ states(''sensor.human_motion_state'') | lower in [''on'',
+            ''motion'', ''detected'', ''active''] }}
+
+            '
+      - condition: template
+        value_template: '{% set d = states(''sensor.target_distance'') | float(99999)
+          %} {{ d <= 500 }}
+
+          '
+      sequence:
+      - condition: state
+        entity_id: light.living_room_ceiling_light
+        state: 'off'
+      - target:
+          entity_id: light.living_room_ceiling_light
+        data:
+          brightness_pct: 70
+          color_temp_kelvin: 4000
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.living_room_presence_sensor'') | lower
+          in [''clear'', ''none''] }}
+
+          '
+      - condition: template
+        value_template: '{{ states(''sensor.human_motion_state'') | lower in [''off'',
+          ''no_motion'', ''inactive'', ''clear''] }}
+
+          '
+      sequence:
+      - delay: 00:03:00
+      - condition: template
+        value_template: '{{ states(''sensor.living_room_presence_sensor'') | lower
+          in [''clear'', ''none''] }}
+
+          '
+      - condition: template
+        value_template: '{{ states(''sensor.human_motion_state'') | lower in [''off'',
+          ''no_motion'', ''inactive'', ''clear''] }}
+
+          '
+      - target:
+          entity_id: light.living_room_ceiling_light
+        action: light.turn_off
+    default: []
+  mode: restart
+- id: living_room_ceiling_light_auto
+  alias: Living Room - Ceiling Light Auto (Presence + Motion + Distance)
+  description: ''
+  triggers:
+  - entity_id: sensor.living_room_presence_sensor
+    trigger: state
+  - entity_id: sensor.human_motion_state
+    trigger: state
+  - entity_id: sensor.target_distance
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: template
+          value_template: '{{ states(''sensor.living_room_presence_sensor'') | lower
+            not in [''clear'', ''none'', ''unknown'', ''unavailable''] }}
+
+            '
+        - condition: template
+          value_template: '{{ states(''sensor.human_motion_state'') | lower in [''on'',
+            ''motion'', ''detected'', ''active''] }}
+
+            '
+      - condition: template
+        value_template: '{% set d = states(''sensor.target_distance'') | float(99999)
+          %} {{ d <= 500 }}
+
+          '
+      sequence:
+      - condition: state
+        entity_id: light.living_room_ceiling_light
+        state: 'off'
+      - target:
+          entity_id: light.living_room_ceiling_light
+        data:
+          brightness_pct: 70
+          color_temp_kelvin: 4000
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ states(''sensor.living_room_presence_sensor'') | lower
+          in [''clear'', ''none''] }}
+
+          '
+      - condition: template
+        value_template: '{{ states(''sensor.human_motion_state'') | lower in [''off'',
+          ''no_motion'', ''inactive'', ''clear''] }}
+
+          '
+      sequence:
+      - delay: 00:03:00
+      - condition: template
+        value_template: '{{ states(''sensor.living_room_presence_sensor'') | lower
+          in [''clear'', ''none''] }}
+
+          '
+      - condition: template
+        value_template: '{{ states(''sensor.human_motion_state'') | lower in [''off'',
+          ''no_motion'', ''inactive'', ''clear''] }}
+
+          '
+      - target:
+          entity_id: light.living_room_ceiling_light
+        action: light.turn_off
+    default: []
+  mode: restart
+- id: '1770475979293'
+  alias: Outside – Set Poor Natural Light Flag (Clouds + Weather)
+  description: ''
+  triggers:
+  - entity_id:
+    - weather.home
+    - sensor.cloud_impact
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{% set clouds = states('sensor.cloud_impact') | float(0)
+          %} {% set c = states('weather.home') %} {% set bad_conditions = [\n  'cloudy','rainy','pouring','fog','snowy','snowy-rainy','hail',\n
+          \ 'lightning','lightning-rainy','exceptional','windy-variant'\n] %} {{ clouds
+          >= 70 or c in bad_conditions }}\n"
+      sequence:
+      - target:
+          entity_id: input_boolean.poor_natural_light_outside
+        action: input_boolean.turn_on
+    default:
+    - target:
+        entity_id: input_boolean.poor_natural_light_outside
+      action: input_boolean.turn_off
+  mode: single
+- id: '1770476001160'
+  alias: South Room – Smart Daylight Lighting
+  description: ''
+  triggers:
+  - entity_id: sensor.south_room_daylight_score
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.south_room_daylight_score
+        below: 35
+      sequence:
+      - target:
+          entity_id: light.south_room_lights
+        data:
+          brightness_pct: 80
+        action: light.turn_on
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.south_room_daylight_score
+        above: 35
+        below: 70
+      sequence:
+      - target:
+          entity_id: light.south_room_lights
+        data:
+          brightness_pct: 40
+        action: light.turn_on
+    default:
+    - target:
+        entity_id: light.south_room_lights
+      action: light.turn_off
+  mode: single
+- id: '1770476030943'
+  alias: North Room – Smart Daylight Lighting
+  description: ''
+  triggers:
+  - entity_id: sensor.north_room_daylight_score
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.north_room_daylight_score
+        below: 50
+      sequence:
+      - target:
+          entity_id: light.north_room_lights
+        data:
+          brightness_pct: 85
+        action: light.turn_on
+    default:
+    - target:
+        entity_id: light.north_room_lights
+      action: light.turn_off
+  mode: single
+- id: '1770476577363'
+  alias: Living Room – Ceiling Light
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.living_room_presence_sensor
+  - trigger: state
+    entity_id: sensor.living_room_presence_sensor_human_motion_state
+    to: 'Off'
+    for: 00:01:00
+  - trigger: numeric_state
+    entity_id: sensor.living_room_natural_light
+    below: 20
+    for: 00:02:00
+  - trigger: numeric_state
+    entity_id: sensor.living_room_natural_light
+    above: 30
+    for: 00:02:00
+  - trigger: state
+    entity_id: input_boolean.poor_natural_light_outside
+  conditions: []
+  actions:
+  - variables:
+      present: '{{ not is_state(''binary_sensor.living_room_presence_sensor'', ''off'')
+        }}'
+      poor_light: '{{ is_state(''input_boolean.poor_natural_light_outside'', ''on'')
+        }}'
+      score: '{{ states(''sensor.living_room_natural_light'') | float(-1) }}'
+      dark_now: '{{ poor_light or score < 20 }}'
+      bright_now: '{{ (score > 30) and (not poor_light) }}'
+      light_on: '{{ is_state(''light.living_room_ceiling_light'', ''on'') }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ present and dark_now }}'
+      sequence:
+      - condition: template
+        value_template: '{{ not light_on }}'
+      - target:
+          entity_id: light.living_room_ceiling_light
+        data:
+          color_temp_kelvin: 6500
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: "{{\n  light_on\n  and\n  (\n    (not present)\n    or bright_now\n
+          \ )\n}}\n"
+      sequence:
+      - delay: 00:00:10
+      - condition: template
+        value_template: "{{\n  is_state('light.living_room_ceiling_light', 'on')\n
+          \ and\n  (\n    (is_state('binary_sensor.living_room_presence_sensor', 'off'))\n
+          \   or\n    (\n      (states('sensor.living_room_natural_light') | float(-1))
+          > 30\n      and is_state('input_boolean.poor_natural_light_outside', 'off')\n
+          \   )\n  )\n}}\n"
+      - target:
+          entity_id: light.living_room_ceiling_light
+        action: light.turn_off
+  mode: restart
+- id: '1770477766502'
+  alias: Bedroom – Smart Lights (Final Stable Logic)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.bedroom_presence_sensor
+  - trigger: state
+    entity_id: sensor.bedroom_presence_sensor_human_motion_state
+  - trigger: numeric_state
+    entity_id: sensor.bedroom_presence_sensor_distance
+    above: 140
+    for: 00:00:10
+  - trigger: state
+    entity_id:
+    - remote.bedroom_tv
+    - input_boolean.poor_natural_light_outside
+  - trigger: numeric_state
+    entity_id: sensor.south_room_daylight_score
+    below: 38
+    for: 00:02:00
+  - trigger: numeric_state
+    entity_id: sensor.south_room_daylight_score
+    above: 68
+    for: 00:05:00
+  conditions: []
+  actions:
+  - variables:
+      room_present: '{{ states(''binary_sensor.bedroom_presence_sensor'') != ''off''
+        }}'
+      motion_raw: '{{ states(''sensor.bedroom_presence_sensor_human_motion_state'')
+        }}'
+      motion: '{{ (motion_raw | string | lower) }}'
+      distance: '{{ states(''sensor.bedroom_presence_sensor_distance'') | float(0)
+        }}'
+      tv_on: '{{ not is_state(''remote.bedroom_tv'', ''off'') }}'
+      poor_light: '{{ is_state(''input_boolean.poor_natural_light_outside'', ''on'')
+        }}'
+      score: '{{ states(''sensor.south_room_daylight_score'') | float(-1) }}'
+      dark_now: '{{ poor_light or score < 38 }}'
+      bright_now: '{{ (score > 68) and (not poor_light) }}'
+      night_time: '{{ now().hour >= 22 or now().hour < 7 }}'
+      ceiling_on: '{{ is_state(''light.bedroom_ceiling_light'', ''on'') }}'
+      ambiance_on: '{{ is_state(''light.bed_ambiance'', ''on'') }}'
+      active_motion: '{{ room_present and motion in [''small'',''large''] }}'
+      bed_mode: "{{\n  room_present\n  and motion == 'off'\n  and distance < 130\n
+        \ and (night_time or not ceiling_on)\n}}\n"
+      wake_mode: "{{\n  active_motion\n  and distance > 140\n}}\n"
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ not room_present }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ ceiling_on }}'
+          sequence:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 10
+              milliseconds: 0
+          - condition: template
+            value_template: '{{ states(''binary_sensor.bedroom_presence_sensor'')
+              == ''off'' }}'
+          - target:
+              entity_id: light.bedroom_ceiling_light
+            action: light.turn_off
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ ambiance_on }}'
+          sequence:
+          - delay: 00:03:00
+          - condition: template
+            value_template: '{{ states(''binary_sensor.bedroom_presence_sensor'')
+              == ''off'' }}'
+          - target:
+              entity_id: light.bed_ambiance
+            action: light.turn_off
+    - conditions:
+      - condition: template
+        value_template: "{{\n  trigger.entity_id == 'binary_sensor.bedroom_presence_sensor'\n
+          \ and trigger.from_state is not none\n  and trigger.from_state.state ==
+          'off'\n  and room_present\n}}\n"
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ night_time or tv_on }}'
+          sequence:
+          - target:
+              entity_id: light.bed_ambiance
+            data:
+              brightness_pct: '{{ 5 if tv_on else 15 }}'
+              color_temp_kelvin: 2200
+            action: light.turn_on
+        - conditions:
+          - condition: template
+            value_template: '{{ not night_time and dark_now and not tv_on }}'
+          sequence:
+          - target:
+              entity_id: light.bedroom_ceiling_light
+            data:
+              color_temp_kelvin: 6500
+            action: light.turn_on
+      - stop: Entry handled
+    - conditions:
+      - condition: template
+        value_template: "{{\n  room_present\n  and not night_time\n  and not tv_on\n
+          \ and dark_now\n}}\n"
+      sequence:
+      - condition: template
+        value_template: '{{ not ceiling_on }}'
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        data:
+          color_temp_kelvin: 6500
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ bed_mode }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ ceiling_on }}'
+          sequence:
+          - delay: 00:02:00
+          - condition: template
+            value_template: "{{\n  (states('binary_sensor.bedroom_presence_sensor')
+              != 'off')\n  and ((states('sensor.bedroom_presence_sensor_human_motion_state')
+              | string | lower) == 'off')\n  and ((states('sensor.bedroom_presence_sensor_distance')
+              | float(0)) < 130)\n}}\n"
+          - target:
+              entity_id: light.bedroom_ceiling_light
+            action: light.turn_off
+      - target:
+          entity_id: light.bed_ambiance
+        data:
+          brightness_pct: '{{ 5 if tv_on else 10 }}'
+          color_temp_kelvin: 2200
+        action: light.turn_on
+      - delay: 00:05:00
+      - condition: template
+        value_template: "{{\n  (states('binary_sensor.bedroom_presence_sensor') !=
+          'off')\n  and ((states('sensor.bedroom_presence_sensor_human_motion_state')
+          | string | lower) == 'off')\n  and ((states('sensor.bedroom_presence_sensor_distance')
+          | float(0)) < 130)\n  and is_state('light.bed_ambiance','on')\n  and is_state('remote.bedroom_tv','off')\n}}\n"
+      - target:
+          entity_id: light.bed_ambiance
+        action: light.turn_off
+    - conditions:
+      - condition: template
+        value_template: '{{ wake_mode }}'
+      sequence:
+      - choose:
+        - conditions:
+          - condition: template
+            value_template: '{{ night_time }}'
+          sequence:
+          - target:
+              entity_id: light.bed_ambiance
+            data:
+              brightness_pct: 15
+              color_temp_kelvin: 2200
+            action: light.turn_on
+        - conditions:
+          - condition: template
+            value_template: '{{ not night_time and dark_now and not tv_on }}'
+          sequence:
+          - target:
+              entity_id: light.bedroom_ceiling_light
+            data:
+              color_temp_kelvin: 6500
+            action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: "{{\n  room_present\n  and ceiling_on\n  and bright_now\n
+          \ and not tv_on\n}}\n"
+      sequence:
+      - target:
+          entity_id: light.bedroom_ceiling_light
+        action: light.turn_off
+  mode: restart
+- id: '1770846670712'
+  alias: Balcony – Light (Motion + Natural Light)
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.balcony_motion_sensor_motion
+    to: 'on'
+  - trigger: state
+    entity_id: binary_sensor.balcony_motion_sensor_motion
+    to: clear
+    for: 00:03:00
+  - trigger: state
+    entity_id: binary_sensor.balcony_motion_sensor_motion
+    to: 'off'
+    for: 00:03:00
+  - trigger: numeric_state
+    entity_id: sensor.south_room_daylight_score
+    below: 38
+    for: 00:02:00
+  - trigger: state
+    entity_id: input_boolean.poor_natural_light_outside
+  conditions: []
+  actions:
+  - variables:
+      present: '{{ is_state(''binary_sensor.balcony_motion_sensor_motion'', ''on'')
+        }}'
+      poor_light: '{{ is_state(''input_boolean.poor_natural_light_outside'', ''on'')
+        }}'
+      score: '{{ states(''sensor.south_room_daylight_score'') | float(-1) }}'
+      light_on: '{{ is_state(''light.local_balcony_light'', ''on'') }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: "{{\n  present\n  and\n  (\n    poor_light\n    or score <
+          38\n  )\n}}\n"
+      sequence:
+      - condition: template
+        value_template: '{{ not light_on }}'
+      - target:
+          device_id: 38de24cc9f2fb46d7b05247fa1f0a0e6
+        action: light.turn_on
+        data: {}
+    - conditions:
+      - condition: template
+        value_template: "{{\n  light_on\n  and not present\n}}\n"
+      sequence:
+      - action: light.turn_off
+        data: {}
+        target:
+          device_id: 38de24cc9f2fb46d7b05247fa1f0a0e6
+  mode: restart
+- id: '1770847413833'
+  alias: Entrance – Ceiling Lamp
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.entrance_presence_sensor
+    to: 'on'
+  - trigger: state
+    entity_id: binary_sensor.entrance_presence_sensor
+    to: clear
+    for: 00:01:00
+  conditions: []
+  actions:
+  - variables:
+      present: '{{ is_state(''binary_sensor.entrance_presence_sensor'', ''on'') }}'
+      light_on: '{{ is_state(''light.entrance_ceiling_lamp'', ''on'') }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ present }}'
+      sequence:
+      - condition: template
+        value_template: '{{ not light_on }}'
+      - target:
+          entity_id: light.entrance_ceiling_lamp
+        data:
+          brightness_pct: 100
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ light_on and not present }}'
+      sequence:
+      - target:
+          entity_id: light.entrance_ceiling_lamp
+        action: light.turn_off
+  mode: restart
+- id: '1773775724063'
+  alias: NFC - Garba Beats
+  description: Play Garba Beats playlist shuffled
+  triggers:
+  - tag_id: e52452d3-51e9-4cc7-aef9-73cd34de0176
+    trigger: tag
+  conditions: []
+  actions:
+  - action: media_player.turn_on
+    target:
+      device_id: 60e08c0236662b8e972bd1effe1294cf
+  - delay: 00:00:03
+  - action: media_player.media_stop
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+    data:
+      volume_level: 0.45
+  - delay: 00:00:01
+  - action: music_assistant.play_media
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+    data:
+      media_id: ytmusic://playlist/PLlKU6nPJF78K4qvuM-OdbAaDvRbQxuPZx
+      media_type: playlist
+      enqueue: play
+  - delay: 00:00:02
+  - action: media_player.shuffle_set
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+    data:
+      shuffle: true
+  mode: single
+- id: '1773833285186'
+  alias: Living Room Lobby Light
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id: binary_sensor.living_room_lobby_presence_sensor
+  - trigger: state
+    entity_id: binary_sensor.corridor_presence_sensor
+    to: 'off'
+    for: 00:02:00
+  - trigger: numeric_state
+    entity_id: sensor.living_room_natural_light
+    below: 20
+    for: 00:02:00
+  - trigger: numeric_state
+    entity_id: sensor.living_room_natural_light
+    above: 30
+    for: 00:02:00
+  conditions: []
+  actions:
+  - variables:
+      present: '{{ is_state(''binary_sensor.living_room_lobby_presence_sensor'', ''on'')
+        }}'
+      score: '{{ states(''sensor.living_room_natural_light'') | float(-1) }}'
+      dark_now: '{{ score < 20 }}'
+      bright_now: '{{ score > 30 }}'
+      light_on: '{{ is_state(''light.living_room_lobby_ceiling_light'', ''on'') }}'
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ present and dark_now }}'
+      sequence:
+      - condition: template
+        value_template: '{{ not light_on }}'
+      - target:
+          entity_id: light.living_room_lobby_ceiling_light
+        data:
+          color_temp_kelvin: 6500
+          brightness_pct: 100
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: "{{\n  light_on\n  and\n  (\n    (not present)\n    or bright_now\n
+          \ )\n}}\n"
+      sequence:
+      - delay: 00:00:10
+      - condition: template
+        value_template: "{{\n  is_state('light.living_room_lobby_ceiling_light', 'on')\n
+          \ and\n  (\n    (not is_state('binary_sensor.living_room_lobby_presence_sensor',
+          'on'))\n    or\n    ((states('sensor.living_room_natural_light') | float(-1))
+          > 30)\n  )\n}}\n"
+      - target:
+          entity_id: light.living_room_lobby_ceiling_light
+        action: light.turn_off
+  mode: restart
+- id: '1773915173456'
+  alias: Living room volume increase
+  description: ''
+  triggers:
+  - device_id: 8cc3073bec0030957aec41f606104ad2
+    domain: zha
+    type: remote_button_short_press
+    subtype: button_1
+    trigger: device
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.denon_avr_s770h
+    data:
+      volume_level: '{{ [state_attr(''media_player.denon_avr_s770h'', ''volume_level'')
+        | float(0) + 0.05, 1] | min }}
+
+        '
+  mode: single
+- id: '1773915624272'
+  alias: Living room volume decrease
+  description: ''
+  triggers:
+  - device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+    domain: zha
+    type: remote_button_short_press
+    subtype: button_1
+    trigger: device
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.denon_avr_s770h
+    data:
+      volume_level: '{{ [state_attr(''media_player.denon_avr_s770h'', ''volume_level'')
+        | float(0) - 0.05, 0] | max }}
+
+        '
+  mode: single
+- id: '1773915804855'
+  alias: Living room previous track
+  description: ''
+  triggers:
+  - device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+    domain: zha
+    type: remote_button_double_press
+    subtype: button_1
+    trigger: device
+  conditions: []
+  actions:
+  - action: media_player.media_previous_track
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+  mode: single
+- id: '1773916290919'
+  alias: Living room next track
+  description: ''
+  triggers:
+  - device_id: 8cc3073bec0030957aec41f606104ad2
+    domain: zha
+    type: remote_button_double_press
+    subtype: button_1
+    trigger: device
+  conditions: []
+  actions:
+  - action: media_player.media_next_track
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+  mode: single
+- id: '1773919330341'
+  alias: NFC - Love Notes Shuffle
+  description: Play Love Notes playlist shuffled on Denon from NFC tag
+  triggers:
+  - tag_id: 5409db3d-00d5-4a57-a56b-bd171c8662fe
+    trigger: tag
+  conditions: []
+  actions:
+  - action: media_player.turn_on
+    target:
+      device_id: 60e08c0236662b8e972bd1effe1294cf
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: media_player.clear_playlist
+    metadata: {}
+    target:
+      entity_id:
+      - media_player.denon_avr_s770h_airplay
+    data: {}
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+    data:
+      volume_level: 0.32
+  - action: music_assistant.play_media
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+    data:
+      media_id: ytmusic://playlist/PLlKU6nPJF78IODYBG1Wpw7uvgEI36wlWZ
+      media_type: playlist
+      enqueue: play
+  - delay: 00:00:02
+  - action: media_player.shuffle_set
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+    data:
+      shuffle: true
+  mode: single
+- id: '1773920372658'
+  alias: Living room play pause toggle
+  description: ''
+  triggers:
+  - device_id: 8cc3073bec0030957aec41f606104ad2
+    domain: zha
+    type: remote_button_long_press
+    subtype: button_1
+    trigger: device
+  - device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+    domain: zha
+    type: remote_button_long_press
+    subtype: button_1
+    trigger: device
+  conditions: []
+  actions:
+  - action: media_player.media_play_pause
+    target:
+      entity_id: media_player.denon_avr_s770h_airplay
+  mode: single
+- id: '1773934300783'
+  alias: Mandir Lights
+  description: ''
+  triggers:
+  - trigger: time
+    at: 07:30:00
+    id: morning_on
+  - trigger: time
+    at: '13:00:00'
+    id: afternoon_off
+  - trigger: time
+    at: '16:30:00'
+    id: evening_on
+  - trigger: time
+    at: '22:00:00'
+    id: night_off
+  conditions:
+  - condition: zone
+    entity_id: device_tracker.bhavyas_iphone
+    zone: zone.home
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: morning_on
+      sequence:
+      - action: remote.send_command
+        target:
+          device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+        data:
+          device: mandir_cealing
+          command: lamp
+      - type: turn_on
+        device_id: ce57b261973eac2c7ceb43b4fe5fa09d
+        entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
+        domain: light
+    - conditions:
+      - condition: trigger
+        id: afternoon_off
+      sequence:
+      - action: remote.send_command
+        target:
+          device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+        data:
+          device: mandir_cealing
+          command: power_off
+      - type: turn_off
+        device_id: ce57b261973eac2c7ceb43b4fe5fa09d
+        entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
+        domain: light
+    - conditions:
+      - condition: trigger
+        id: evening_on
+      sequence:
+      - action: remote.send_command
+        target:
+          device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+        data:
+          device: mandir_cealing
+          command: lamp
+      - type: turn_on
+        device_id: ce57b261973eac2c7ceb43b4fe5fa09d
+        entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
+        domain: light
+    - conditions:
+      - condition: trigger
+        id: night_off
+      sequence:
+      - action: remote.send_command
+        target:
+          device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+        data:
+          device: mandir_cealing
+          command: power_off
+      - type: turn_off
+        device_id: ce57b261973eac2c7ceb43b4fe5fa09d
+        entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
+        domain: light
+  mode: single
+- id: '1773936626306'
+  alias: Mandir Speaker - Daily Song by Weekday
+  description: Play weekday-based mandir song on loop
+  triggers:
+  - trigger: time
+    at: 07:30:00
+  conditions: []
+  actions:
+  - action: media_player.turn_on
+    target:
+      device_id: f902b7f0e837d43de1c5b410d6daffb2
+    data: {}
+  - delay: 00:00:02
+  - action: media_player.volume_set
+    data:
+      volume_level: 0.25
+    target:
+      entity_id: media_player.mandir_speaker
+  - choose:
+    - conditions:
+      - condition: time
+        weekday:
+        - mon
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/EdEYnTN6rvg
+          media_type: track
+          enqueue: replace
+    - conditions:
+      - condition: time
+        weekday:
+        - tue
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/tgd4UmkF2NI
+          media_type: track
+          enqueue: replace
+    - conditions:
+      - condition: time
+        weekday:
+        - wed
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/OfcXkPGgaxE
+          media_type: track
+          enqueue: replace
+    - conditions:
+      - condition: time
+        weekday:
+        - thu
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/x7JCp92MgT8
+          media_type: track
+          enqueue: replace
+    - conditions:
+      - condition: time
+        weekday:
+        - fri
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/y7qXhMNNygI
+          media_type: track
+          enqueue: replace
+    - conditions:
+      - condition: time
+        weekday:
+        - sat
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/D0QxkcymF6I
+          media_type: track
+          enqueue: replace
+    - conditions:
+      - condition: time
+        weekday:
+        - sun
+      sequence:
+      - action: music_assistant.play_media
+        target:
+          device_id: f902b7f0e837d43de1c5b410d6daffb2
+        data:
+          media_id: ytmusic://track/wDEVLWJHBCU
+          media_type: track
+          enqueue: replace
+  - delay: 00:00:02
+  - action: media_player.repeat_set
+    target:
+      entity_id: media_player.googlehome1025_2
+    data:
+      repeat: one
+  mode: single
+- id: '1773937405673'
+  alias: Mandir Speaker - Lower Volume Afternoon
+  description: Lower mandir speaker volume at 1 PM
+  triggers:
+  - trigger: time
+    at: '13:00:00'
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.mandir_speaker
+    data:
+      volume_level: 0.1
+  mode: single
+- id: '1773937432348'
+  alias: Mandir Speaker - Restore Volume Evening
+  description: Restore mandir speaker volume at 4:30 PM
+  triggers:
+  - trigger: time
+    at: '16:30:00'
+  conditions: []
+  actions:
+  - action: media_player.volume_set
+    target:
+      entity_id: media_player.mandir_speaker
+    data:
+      volume_level: 0.32
+  mode: single
+- id: '1774099902703'
+  alias: Mandir Cleaning Daily (Vacuum → Mop)
+  description: Clean mandir every morning using ECOVACS API
+  triggers:
+  - at: 07:30:00
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: vacuum.kaamwalibai
+    data:
+      command: clean_V2
+      params:
+        act: start
+        content:
+          type: freeClean
+          value: 1,6
+    action: vacuum.send_command
+  - wait_template: '{{ is_state(''vacuum.kaamwalibai'', ''docked'') }}'
+    timeout: 01:30:00
+    continue_on_timeout: false
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.kaamwalibai_mop_attached
+        state: 'on'
+      sequence:
+      - delay: 00:00:02
+      - target:
+          entity_id: vacuum.kaamwalibai
+        data:
+          command: clean_V2
+          params:
+            act: start
+            content:
+              type: freeClean
+              value: 1,6
+        action: vacuum.send_command
+  mode: single
+- id: '1774101536966'
+  alias: Corridor Cleaning Daily
+  description: Clean corridor every day at 4:30 PM
+  triggers:
+  - at: '16:30:00'
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: vacuum.kaamwalibai
+    data:
+      command: clean_V2
+      params:
+        act: start
+        content:
+          type: freeClean
+          value: 1,7
+    action: vacuum.send_command
+  mode: single
+- id: '1774101744598'
+  alias: Entrance Cleaning Daily
+  description: Clean corridor every day at 6:40 am
+  triggers:
+  - at: 06:40:00
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: vacuum.kaamwalibai
+    data:
+      command: clean_V2
+      params:
+        act: start
+        content:
+          type: freeClean
+          value: 1,5
+    action: vacuum.send_command
+  mode: single
+- id: '1774111653387'
+  alias: Entrance Ambiance Light
+  description: Turn on from 5 PM to 8 PM when home
+  triggers:
+  - trigger: time
+    at: '17:00:00'
+  - trigger: time
+    at: '20:00:00'
+  conditions:
+  - condition: state
+    entity_id: device_tracker.bhavyas_iphone
+    state: home
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ now().strftime(''%H:%M:%S'') == ''17:00:00'' }}'
+      sequence:
+      - target:
+          entity_id: switch.entrance_ambiance_light
+        action: switch.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ now().strftime(''%H:%M:%S'') == ''20:00:00'' }}'
+      sequence:
+      - target:
+          entity_id: switch.entrance_ambiance_light
+        action: switch.turn_off
+  mode: single
