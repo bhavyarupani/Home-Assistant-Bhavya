@@ -816,9 +816,9 @@ class CloudFixes:
                             valueDescr_range.append(range_value)
                     value_dict["range"] = valueDescr_range
                     config_item["valueDesc"] = json.dumps(value_dict)
-                    
 
-    
+
+
     @staticmethod
     def _fix_missing_range_values_using_local_strategy(device: XTDevice):
         for local_strategy in device.local_strategy.values():

@@ -1,0 +1,8 @@
+# Known real Home Assistant device IDs referenced by this repo.
+38de24cc9f2fb46d7b05247fa1f0a0e6
+60e08c0236662b8e972bd1effe1294cf
+67bf23ea7ab434cf7c01bb98fa2b8e79
+82f6f96f6ced88b6dcc8802aa10e31c8
+8cc3073bec0030957aec41f606104ad2
+ce57b261973eac2c7ceb43b4fe5fa09d
+f902b7f0e837d43de1c5b410d6daffb2

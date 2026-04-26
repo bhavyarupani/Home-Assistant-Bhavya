@@ -21,7 +21,7 @@ class LeproSpeedNumber(NumberEntity):
         self._attr_translation_key = "speed"
         self._attr_unique_id = f"{light._did}_speed"
         self._attr_device_info = getattr(light, "_attr_device_info", None)
-        
+
         # native (0-100) slider configuration
         self._attr_native_min_value = 0
         self._attr_native_max_value = 100
@@ -44,7 +44,7 @@ class LeproSpeedNumber(NumberEntity):
                 await self._light._send_special_effect_command(self._light._effect)
             else:
                 await self._light._send_effect_command()
-                
+
         except Exception as e:
             _LOGGER.error("Error applying speed change for %s: %s", self._light.name, e)
 
@@ -83,7 +83,7 @@ class LeproSensitivityNumber(NumberEntity):
                 await self._light._send_special_effect_command(self._light._effect)
             else:
                 await self._light._send_effect_command()
-                
+
         except Exception as e:
             _LOGGER.error("Error applying sensitivity change for %s: %s", self._light.name, e)
 
@@ -92,7 +92,7 @@ class LeproSensitivityNumber(NumberEntity):
             self._light.async_write_ha_state()
         except Exception:
             pass
-            
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback):
     """Set up number entities for Lepro LED speeds."""
     # Wait a short while for light platform to populate hass.data, but keep attempts limited.
@@ -115,11 +115,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
 
     numbers = []
     for light in lights:
-        
+
         if not hasattr(light, "_did"):
             _LOGGER.debug("Skipping number for segment or non-parent entity: %s", getattr(light, "name", "unknown"))
             continue
-            
+
         try:
             numbers.append(LeproSpeedNumber(light))
             numbers.append(LeproSensitivityNumber(light))

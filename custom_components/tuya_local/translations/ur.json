@@ -39,7 +39,7 @@
                 "data": {
                     "host": "IP ایڈریس یا میزبان نام",
                     "or device_id of gateway for devices connected through gateway": "",
-                    
+
                     "device_id": "ڈیوائس کی شناخت(یا گیٹ وے کے ذریعے منسلک آلات کے لیے ڈیوائس آئی ڈی)",
                     "local_key": "مقامی کلید",
                     "protocol_version": "پروٹوکول ورژن (اگر معلوم نہ ہو تو خود کار طریقے سے آزمائیں)",

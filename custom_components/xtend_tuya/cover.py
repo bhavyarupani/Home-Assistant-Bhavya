@@ -417,7 +417,7 @@ class XTCoverEntity(XTEntity, TuyaCoverEntity):
                 self._set_position.get_update_commands(self.device, 100)
             )
             return
-        
+
         if (
             self._instruction_wrapper
             and (options := self._instruction_wrapper.options)
@@ -432,7 +432,7 @@ class XTCoverEntity(XTEntity, TuyaCoverEntity):
             await self._async_close_cover(**kwargs)
         else:
             await self._async_open_cover(**kwargs)
-    
+
     async def _async_close_cover(self, **kwargs: Any) -> None:
         """Close cover."""
         if self._set_position is not None:
@@ -440,7 +440,7 @@ class XTCoverEntity(XTEntity, TuyaCoverEntity):
                 self._set_position.get_update_commands(self.device, 0)
             )
             return
-        
+
         if (
             self._instruction_wrapper
             and (options := self._instruction_wrapper.options)

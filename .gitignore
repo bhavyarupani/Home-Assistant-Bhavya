@@ -1,4 +1,4 @@
-≈# Home Assistant should not track these
+# Home Assistant should not track these
 home-assistant_v2.db*
 *.db-shm
 *.db-wal
@@ -7,19 +7,22 @@ home-assistant_v2.db*
 .cloud/
 deps/
 tts/
-.git/
 Git Clones/
 secrets.yaml
 .vscode/
+.idea/
 
+# Home Assistant runtime/local state
+.HA_VERSION
+.ha_build_info
+.shopping_list.json
+known_devices.yaml
+zigbee.db*
+ha_github
+ha_github.pub
 
-# Home Assistant logs
+# Home Assistant logs and cache
 home-assistant.log*
-home-assistant_v2.db*
-*.db-shm
-*.db-wal
-
-# Home Assistant image/media cache
 image/
 media/
 
@@ -50,3 +53,6 @@ custom_components/hacs/hacs_frontend/
 # JS deps
 node_modules/
 node_modules/.cache/
+
+# OS files
+.DS_Store

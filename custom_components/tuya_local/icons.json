@@ -523,7 +523,7 @@
                     "drain_hot_water": "mdi:pipe-valve",
                     "drain_normal_water": "mdi:pipe-valve",
                     "high_temperature_emptying": "mdi:thermometer-high",
-                    "high_temperature_emptied": "mdi:thermometer-check"   
+                    "high_temperature_emptied": "mdi:thermometer-check"
                 }
             },
             "time_remaining": {

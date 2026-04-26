@@ -17,3 +17,19 @@ repos:
     hooks:
       - id: prettier
         files: ^(src/|\.github/).*\.(ya?ml|json|md)$
+
+  - repo: local
+    hooks:
+      - id: forbidden-tracked-files
+        name: Forbidden tracked files
+        entry: python3 scripts/check_forbidden_files.py
+        language: system
+        pass_filenames: false
+        always_run: true
+
+      - id: ha-reference-validation
+        name: Home Assistant reference validation
+        entry: python3 scripts/validate_ha_references.py
+        language: system
+        pass_filenames: false
+        files: \.(ya?ml|txt|py)$

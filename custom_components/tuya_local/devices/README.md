@@ -21,7 +21,7 @@ generic name for the type of device should go in the top level name.
 *Optional.*
 
 A list of products that this config applies to. Each product in the list must
-have an `id` specified, which corresponds to the product_id from cloud device 
+have an `id` specified, which corresponds to the product_id from cloud device
 info, or productKey from the local discovery. If these are different, it is
 recommended that listings are created for both.
 
@@ -733,7 +733,7 @@ no information will be available about which specific credential was used to unl
 
 ### `remote`
 - **send** (required, accepts a string): a dp to send remote codes.
-- **receive** (optional, returns strings): a dp to receive learned commands on. If not supplied, the `remote.learn_command` service call will not be available. 
+- **receive** (optional, returns strings): a dp to receive learned commands on. If not supplied, the `remote.learn_command` service call will not be available.
 - **control** (optional, accepts strings `"send_ir"`, `"study"`, `"study_exit"`): a dp to send commands seperately from ir codes. If not supplied, commands will be JSON formatted and sent through the **send** dp.
 - **delay** (optional, accepts numbers): a dp to set the delay in ms between buttons when there are multiple in the send string. This is only used when a separate **control** dp is also supplied, otherwise the parameter is included in the JSON sent to the **send** dp.
 - **code_type** (optional, accepts integers): a dp to set the type of code being sent. The current implementation only supports type `0`. This is only used when a separate **control** dp is also supplied, otherwise the parameter is included in the JSON sent to the **send** dp.
@@ -805,4 +805,3 @@ to use it for other length timers.
 - **max_temperature** (optional, number): a dp that reports the maximum temperature the water heater can be set to, in case this is not a fixed value.
 
 - **away_mode** (optional, boolean): a dp to control whether the water heater is in away mode.
-

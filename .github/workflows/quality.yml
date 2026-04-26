@@ -1,0 +1,56 @@
+name: Quality checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  quality:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Node tools
+        run: npm ci
+
+      - name: Install Python tools
+        run: python -m pip install -r requirements/base.txt
+
+      - name: Prettier
+        run: npm run format:check
+
+      - name: yamllint
+        run: yamllint -c .yamllint .
+
+      - name: actionlint
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) latest /tmp
+          /tmp/actionlint -color
+
+      - name: Forbidden tracked files
+        run: python scripts/check_forbidden_files.py
+
+      - name: Home Assistant reference validation
+        run: python scripts/validate_ha_references.py
+
+      - name: Home Assistant reference baseline drift
+        run: python scripts/validate_ha_references.py --check-baseline
+
+      - name: Pre-commit hooks
+        run: pre-commit run --all-files

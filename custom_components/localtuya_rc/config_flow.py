@@ -110,7 +110,7 @@ class LocalTuyaIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             return self.async_show_menu(
                 step_id="ip_method",
                 menu_options=["pre_scan", "config"])
-        
+
     async def async_step_ask_ip(self, user_input=None, errors={}):
         """Ask user to enter the IP manually."""
         if user_input is not None:
@@ -256,7 +256,7 @@ class LocalTuyaIRConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class LocalTuyaIROptionsFlow(config_entries.OptionsFlow):
     """Options flow for LocalTuyaIR Remote Control."""
-    
+
     def __init__(self, entry):
         """Initialize the options flow."""
         self.entry = entry

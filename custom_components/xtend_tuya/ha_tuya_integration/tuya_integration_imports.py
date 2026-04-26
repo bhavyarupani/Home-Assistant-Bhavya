@@ -197,7 +197,7 @@ try:
     )
 except ImportError:
     from homeassistant.components.tuya.entity import (
-        TuyaEntity as TuyaEntity, 
+        TuyaEntity as TuyaEntity,
         EnumTypeData as TuyaEnumTypeData,
         IntegerTypeData as TuyaIntegerTypeData,
         _DPTYPE_MAPPING as TUYA_DPTYPE_MAPPING,
