@@ -53,17 +53,17 @@ class MQTTClientWrapper:
                 clean_session=True
             ) as client:
                 self.client = client
-                
+
                 # Process pending subscriptions
                 for topic in self._pending_subscriptions:
                     await client.subscribe(topic)
                 self._pending_subscriptions = []
-                
+
                 # Process pending messages
                 for topic, payload in self._pending_messages:
                     await client.publish(topic, payload)
                 self._pending_messages = []
-                
+
                 # Start message loop
                 async for message in client.messages:
                     if self._message_callback:
@@ -76,7 +76,7 @@ class MQTTClientWrapper:
     async def connect(self):
         if self._loop_task and not self._loop_task.done():
             return
-            
+
         self._pending_subscriptions = []
         self._pending_messages = []
         self._loop_task = asyncio.create_task(self._connect_and_run())
@@ -181,7 +181,7 @@ class LeproLedLight(LightEntity):
 
     # Set of special effects for quick checks
     SPECIAL_EFFECTS = set(SPECIAL_EFFECT_TO_D60_PREFIX.keys())
-    
+
     def __init__(self, device, mqtt_client, entry_id):
         self._device = device
         # self._attr_name = device["name"]
@@ -197,7 +197,7 @@ class LeproLedLight(LightEntity):
             "name": device["name"],
             "manufacturer": "Lepro",
             "model": device.get("series", "Lepro LED"),
-        }        
+        }
         # State variables
         self._is_on = bool(device.get("switch", 0))
         self._mode = device.get("d2", 2)  # Default to static mode
@@ -206,7 +206,7 @@ class LeproLedLight(LightEntity):
         # store 25 segments internally; main light mirrors segment 0
         self._segment_colors = [(255, 255, 255)] * 25  # Default all white
         self._sensitivity = 50  # For music mode
-        
+
         # Initialize from device data
         if "d50" in device:
             self._parse_d50(device["d50"])
@@ -216,7 +216,7 @@ class LeproLedLight(LightEntity):
             self._brightness = 255
         if "d60" in device:
             self._sensitivity = self._parse_d60(device["d60"])
-        
+
         # Entity attributes
         self._attr_supported_features = LightEntityFeature.EFFECT
         self._attr_color_mode = ColorMode.RGB
@@ -240,18 +240,18 @@ class LeproLedLight(LightEntity):
         ]
         # main light color is the first segment color
         self._attr_rgb_color = self._segment_colors[0]  # First segment as primary color
-            
+
     def _map_device_brightness(self, device_brightness):
         """Map device brightness (100-1000) to HA brightness (0-255)"""
         _LOGGER.info("device_brightness: %s", str(device_brightness))
         # return int((device_brightness - 100) * 255 / 900)
         return int((device_brightness - 0) * 255 / 1000)
-    
+
     def _map_ha_brightness(self, ha_brightness):
         """Map HA brightness (0-255) to device brightness (100-1000)"""
         # return 100 + int(ha_brightness * 900 / 255)
         return 0 + int(ha_brightness * 1000 / 255)
-    
+
     def _parse_d60(self, d60_str):
         """
         Parse d60 string for special-effects and sensitivity.
@@ -294,20 +294,20 @@ class LeproLedLight(LightEntity):
         brightness = kwargs.get(ATTR_BRIGHTNESS, self._brightness)
         rgb_color = kwargs.get(ATTR_RGB_COLOR, self._attr_rgb_color)
         effect = kwargs.get(ATTR_EFFECT, self._effect)
-        
+
         # Update state optimistically
         self._is_on = True
         self._brightness = brightness
-        
+
         # When color changes on the main light, set all segments to the same color
         if ATTR_RGB_COLOR in kwargs:
             self._attr_rgb_color = rgb_color
             # set all segment colors to the main color
             self._segment_colors = [tuple(int(c) for c in rgb_color)] * 25
-        
+
         if ATTR_EFFECT in kwargs:
             self._effect = effect
-        
+
         # Send command based on effect
         if effect in self.SPECIAL_EFFECTS:
             # special effects use d2=3 (d60)
@@ -316,7 +316,7 @@ class LeproLedLight(LightEntity):
             # regular effects use d2=2 (d50)
             await self._send_effect_command()
 
-        
+
         # update HA states: main + segments
         self.async_write_ha_state()
         # update segment entities attached to this device if present
@@ -346,7 +346,7 @@ class LeproLedLight(LightEntity):
             return "1000"
         raw = int(round(-117.41 * np.log(speed + 1) + 597.75))
         return f"0{raw:03X}"
-    
+
     def _generate_d50_string(self):
         """
         Generate d50 string following the grouped-color format:
@@ -579,7 +579,7 @@ class LeproLedLight(LightEntity):
         """Send command for effect modes"""
         # Generate d50 string with current colors/groups
         d50_str = self._generate_d50_string()
-        
+
         payload = {
             "d1": 1,
             "d2": 2,
@@ -608,7 +608,7 @@ class LeproLedLight(LightEntity):
             _LOGGER.debug("Sent MQTT command: %s - %s", topic, full_payload)
         except Exception as e:
             _LOGGER.error("Failed to send MQTT command: %s", e)
-            
+
     async def async_added_to_hass(self):
         """Run when entity is added to hass."""
         await super().async_added_to_hass()
@@ -644,7 +644,7 @@ class LeproSegmentLight(LightEntity):
     @property
     def translation_placeholders(self) -> dict:
         return {"index": str(self._index + 1).rjust(2, "0")}
-        
+
     @property
     def is_on(self):
         return self._parent._is_on
@@ -677,7 +677,7 @@ class LeproSegmentLight(LightEntity):
             self._parent._brightness = new_brightness
 
         # Update color if provided
-        if ATTR_RGB_COLOR in kwargs:            
+        if ATTR_RGB_COLOR in kwargs:
             # read new color, default to current segment color
             new_color = kwargs.get(ATTR_RGB_COLOR, self.rgb_color)
             # update parent's segment color
@@ -694,7 +694,7 @@ class LeproSegmentLight(LightEntity):
                 await self._parent._send_special_effect_command(self._parent._effect)
             else:
                 await self._parent._send_effect_command()
-                
+
         except Exception as e:
             _LOGGER.error("Error sending d50 after segment change: %s", e)
         # update states: parent + all segments
@@ -735,29 +735,29 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     config = hass.data["lepro_led"][entry.entry_id]
     account = config["account"]
     password = config["password"]
-    
+
     # Create a mutable copy of the config
     config_data = dict(config)
-    
+
     # Generate persistent MAC if not exists
     if "persistent_mac" not in config_data:
         # Create a hash of the account to generate a persistent MAC
         mac_hash = hashlib.md5(config_data["account"].encode()).hexdigest()
         persistent_mac = f"02:{mac_hash[0:2]}:{mac_hash[2:4]}:{mac_hash[4:6]}:{mac_hash[6:8]}:{mac_hash[8:10]}"
         config_data["persistent_mac"] = persistent_mac
-        
+
         # Save updated config to the entry
         hass.config_entries.async_update_entry(entry, data=config_data)
         _LOGGER.info("Generated persistent MAC: %s", persistent_mac)
-    
+
     # Use the persistent MAC from config_data
     mac = config_data["persistent_mac"]
     language = config_data.get("language", "it")
     fcm_token = config_data.get("fcm_token", "dfi8s76mRTCxRxm3UtNp2z:APA91bHWMEWKT9CgNfGJ961jot2qgfYdWePbO5sQLovSFDI7U_H-ulJiqIAB2dpZUUrhzUNWR3OE_eM83i9IDLk1a5ZRwHDxMA_TnGqdpE8H-0_JML8pBFA")
-    
+
     # Update hass.data with the new config
     hass.data["lepro_led"][entry.entry_id] = config_data
-    
+
     # ... rest of the setup code ...
     # 1) Create certificate directory
     cert_dir = os.path.join(hass.config.config_dir, ".lepro_led")
@@ -794,7 +794,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         user_url = USER_PROFILE_URL
         timestamp = str(int(time.time()))
         headers["Timestamp"] = timestamp
-        
+
         async with session.get(user_url, headers=headers) as resp:
             if resp.status != 200:
                 _LOGGER.error("Failed to get user profile from Lepro API")
@@ -849,9 +849,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     # 6) Create SSL context in executor thread
     try:
         ssl_context = await hass.async_add_executor_job(
-            create_ssl_context, 
-            root_ca_path, 
-            client_cert_path, 
+            create_ssl_context,
+            root_ca_path,
+            client_cert_path,
             keyfile_path
         )
     except Exception as e:
@@ -861,7 +861,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
     # 7) Create MQTT client
     client_id_suffix = hashlib.sha256(entry.entry_id.encode()).hexdigest()[:32]
     client_id = f"lepro-app-{client_id_suffix}"
-    
+
     mqtt_client = MQTTClientWrapper(
         hass,
         host=mqtt_info["host"],
@@ -869,13 +869,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         ssl_context=ssl_context,
         client_id=client_id
     )
-    
+
     try:
         await mqtt_client.connect()
     except Exception as e:
         _LOGGER.error("MQTT connection failed: %s", e)
         return
-    
+
     # 8) Create entities
     entities = []
     device_entity_map = {}
@@ -894,7 +894,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
                 entities.append(seg_entity)
                 segs.append(seg_entity)
             segments_map[str(device['did'])] = segs
-    
+
     # 9) Message handler
     # Update the message handler to process all relevant fields
     async def handle_mqtt_message(message):
@@ -902,39 +902,39 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
             topic = message.topic.value
             payload = json.loads(message.payload.decode())
             _LOGGER.debug("Received MQTT message: %s - %s", topic, payload)
-            
+
             parts = topic.split('/')
             if len(parts) < 4 or parts[0] != "le":
                 return
-                
+
             did = parts[1]
             message_type = parts[3]
             entity = device_entity_map.get(did)
-            
+
             if not entity:
                 return
-                
+
             # Handle different message types
             if message_type in ["rpt", "set", "getr"]:
                 data = payload.get('d', {})
-                
+
                 # Update basic state
                 if 'd1' in data:
                     entity._is_on = bool(data['d1'])
-                
+
                 # Update mode
                 if 'd2' in data:
                     entity._mode = data['d2']
-                
+
                 # Update brightness
                 if 'd52' in data:
                     entity._brightness = entity._map_device_brightness(data['d52'])
                     entity._attr_brightness = entity._brightness
-                
+
                 # Update effect and colors
                 if 'd50' in data:
                     entity._parse_d50(data['d50'])
-                
+
                 # Update d60: special effects and sensitivity
                 if 'd60' in data:
                     sens, parsed_effect = entity._parse_d60(data['d60'])
@@ -969,19 +969,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
                 except Exception:
                     pass
 
-                _LOGGER.debug("Updated state for %s: on=%s, mode=%s, effect=%s, brightness=%s, speed=%s, rgb=%s, sensitivity=%s", 
+                _LOGGER.debug("Updated state for %s: on=%s, mode=%s, effect=%s, brightness=%s, speed=%s, rgb=%s, sensitivity=%s",
                              entity.name, entity._is_on, entity._mode, entity._effect, entity._brightness, entity._speed, entity._segment_colors[0], entity._sensitivity)
-                    
+
         except Exception as e:
             _LOGGER.error("Error processing MQTT message: %s", e)
-   
+
     mqtt_client.set_message_callback(handle_mqtt_message)
-    
+
     # 10) Subscribe and start
     await mqtt_client.subscribe(f"le/{client_id_suffix}/act/app/exe")
     for did in device_entity_map.keys():
         await mqtt_client.subscribe(f"le/{did}/prp/#")
-    
+
     # Store for cleanup
     if DOMAIN not in hass.data:
         hass.data[DOMAIN] = {}
@@ -990,7 +990,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_e
         'entities': entities,
         'segments': segments_map
     }
-    
+
     async_add_entities(entities)
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -998,14 +998,13 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     data = hass.data[DOMAIN].get(entry.entry_id)
     if not data:
         return True
-        
+
     # Disconnect MQTT client
     await data['mqtt_client'].disconnect()
-    
+
     # Remove entities
     for entity in data['entities']:
         await entity.async_remove()
-        
+
     hass.data[DOMAIN].pop(entry.entry_id)
     return True
-    

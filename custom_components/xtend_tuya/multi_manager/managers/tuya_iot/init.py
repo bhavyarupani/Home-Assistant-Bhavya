@@ -522,7 +522,7 @@ class XTTuyaIOTDeviceManagerInterface(XTDeviceManagerInterface):
                         self.iot_account.device_manager.send_property_update(
                             device_id, command_list
                         )
-                
+
                 # If the command fails, the caller returns an exception, so we assume it worked if we reach here
                 return True
             except Exception as e:

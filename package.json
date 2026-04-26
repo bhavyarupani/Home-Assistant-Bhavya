@@ -1,18 +1,17 @@
 {
   "name": "ha-config",
   "private": true,
+  "version": "1.0.0",
   "devDependencies": {
     "prettier": "^3.7.4"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{yml,yaml,json,md}\"",
     "format:check": "prettier --check \"**/*.{yml,yaml,json,md}\"",
-    "fix": "pre-commit run -a || true && npx prettier -w \"**/*.{yml,yaml,json,md}\"",
+    "fix": "pre-commit run --all-files && npm run format",
     "check": "pre-commit run --all-files"
   },
-  "version": "1.0.0",
-  "description": "",
-  "main": "my-cards.js",
+  "description": "Home Assistant configuration",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bhavyarupani/Home-Assistant-Bhavya.git"

@@ -14,7 +14,7 @@
                 "default": "mdi:fan-alert",
                 "state": {
                     "0": "mdi:fan-off",
-                    "1": "mdi:air-purifier", 
+                    "1": "mdi:air-purifier",
                     "2": "mdi:air-humidifier"
                 }
             }

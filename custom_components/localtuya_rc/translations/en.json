@@ -34,7 +34,7 @@
             },
             "ip_method": {
                 "title": "How to obtain the device IP address",
-                "description": "To obtain the device IP address, you can either scan your local network or enter it manually.",                
+                "description": "To obtain the device IP address, you can either scan your local network or enter it manually.",
                 "menu_options": {
                     "pre_scan": "Scan the local network (recommended)",
                     "ask_ip": "Enter the IP address manually",

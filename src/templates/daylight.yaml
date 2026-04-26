@@ -1,5 +1,4 @@
 - sensor:
-
     - name: "Natural Light Base"
       unit_of_measurement: "%"
       state: >

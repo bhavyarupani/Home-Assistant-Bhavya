@@ -277,7 +277,7 @@ def _get_dpcode_wrapper(
 
     if bool_type := TuyaDPCodeBooleanWrapper.find_dpcode(device, dpcode):
         return bool_type
-    
+
     if description.is_on is not None:
         if int_type := TuyaDPCodeIntegerWrapper.find_dpcode(device, dpcode):
             return int_type

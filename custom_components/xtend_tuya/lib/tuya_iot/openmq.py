@@ -207,7 +207,7 @@ class TuyaOpenMQ(threading.Thread):
         # Don't do anything if already connected
         if self.client and self.client.is_connected():
             return
-        
+
         # if we don't have a valid mq_config, get a new one
         if self.mq_config.is_valid() is False:
             self.mq_config = self._get_mqtt_config()
@@ -280,7 +280,7 @@ class TuyaOpenMQ(threading.Thread):
     ):
         pass
 
-    def _start(self) -> mqtt.Client | None:      
+    def _start(self) -> mqtt.Client | None:
         mqttc = mqtt.Client(
             callback_api_version=mqtt_CallbackAPIVersion.VERSION2,
             client_id=self.mq_config.client_id,

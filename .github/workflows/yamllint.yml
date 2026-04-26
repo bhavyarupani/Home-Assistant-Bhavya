@@ -12,5 +12,4 @@ jobs:
       - uses: actions/checkout@v4
       - run: pipx install yamllint
       - name: yamllint
-        run: |
-          yamllint -d "{extends: default, rules: {line-length: {max: 160, level: warning}}}" .
+        run: yamllint -c .yamllint .

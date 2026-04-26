@@ -17,6 +17,7 @@ jobs:
         run: |
           set -euo pipefail
           printf '%s\n' 'gmail_app_password: "dummy"' > secrets.yaml
+          printf '%s\n' 'xiaomi_device_tracker_password: "dummy"' >> secrets.yaml
 
       - name: Home Assistant configuration check
         uses: frenck/action-home-assistant@v1

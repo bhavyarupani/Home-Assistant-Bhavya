@@ -13,7 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm i -g prettier
+      - run: npm ci
       - name: prettier --check
-        run: |
-          prettier --check "**/*.{yml,yaml,json,md}" --ignore-path .gitignore
+        run: npm run format:check

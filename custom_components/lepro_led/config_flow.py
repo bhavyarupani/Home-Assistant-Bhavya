@@ -17,7 +17,7 @@ class LeproLedConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             # Create a new mutable dictionary for the user input
             data = dict(user_input)
-            
+
             # Don't include persistent_mac here - it will be generated later
             return self.async_create_entry(title="Lepro LED", data=data)
 

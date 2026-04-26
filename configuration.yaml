@@ -7,9 +7,7 @@ homeassistant:
 frontend:
   themes: !include_dir_merge_named src/frontend/themes
 
-# ✅ FIX: only ONE script key allowed
-# Put all your script YAML files inside /config/src/scripts/
-script: !include_dir_merge_named src/scripts
+script: !include src/scripts.yaml
 
 automation: !include automations.yaml
 scene: !include src/scenes.yaml
@@ -30,7 +28,7 @@ device_tracker:
   - platform: bluetooth_le_tracker
   - platform: xiaomi
     host: 192.168.0.243
-    password: KashtbhanjanDev
+    password: !secret xiaomi_device_tracker_password
 
 tts:
   - platform: google_translate

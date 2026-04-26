@@ -92,7 +92,7 @@ def width_decode(pulses, leading_pulse, leading_gap, gap, pulse_0, pulse_1, bit_
         raise ValueError(f"Invalid leading gap length: {pulses[1]}")
     if len(pulses) < 2 + bit_length * 2:
         raise ValueError(f"Invalid data length: {len(pulses)} (must be at least {2 + bit_length * 2})")
-    
+
     long_pulse_v = True if pulse_1 > pulse_0 else False
     short_pulse_v = not long_pulse_v
     decoded = 0
@@ -200,4 +200,3 @@ def width_encode(values, leading_pulse, leading_gap, gap, pulse_0, pulse_1, bit_
         if bit_length is not None and total >= bit_length:
             break
     return pulses
-
