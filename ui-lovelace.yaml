@@ -577,3 +577,4 @@ views:
             template: footer
 
   - !include dashboards/mobile.yaml
+  - !include dashboards/kpi.yaml

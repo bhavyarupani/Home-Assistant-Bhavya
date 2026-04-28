@@ -5,7 +5,7 @@ sensor:
     unit_of_measurement: "min"
     state: >
       {% if is_state('binary_sensor.bedroom_heater_active', 'on') %}
-        {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}
+        {{ (now().timestamp() / 60) | round(2) }}
       {% else %}
         0
       {% endif %}
@@ -15,7 +15,7 @@ sensor:
     unit_of_measurement: "min"
     state: >
       {% if is_state('binary_sensor.office_heater_active', 'on') %}
-        {{ (states('sensor.time') | as_timestamp / 60) | round(2) }}
+        {{ (now().timestamp() / 60) | round(2) }}
       {% else %}
         0
       {% endif %}

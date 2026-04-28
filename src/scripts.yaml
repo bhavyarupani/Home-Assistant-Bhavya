@@ -2,7 +2,7 @@ normalize_weather:
   alias: Normalize weather for background
   mode: single
   fields:
-    raw_weather:
+    raw_weather: {}
   sequence:
     - variables:
         weather_bucket: >
@@ -20,7 +20,7 @@ normalize_weather:
           {% else %}
             cloudy
           {% endif %}
-    - service: python_script.set_dashboard_background
+    - action: python_script.set_dashboard_background
       data:
         time_phase: "{{ states('input_text.current_time_phase') }}"
         weather: "{{ weather_bucket }}"
@@ -29,13 +29,13 @@ deploy_home_assistant_main:
   alias: Deploy Home Assistant main (prod)
   mode: single
   sequence:
-    - service: shell_command.ha_deploy_main
+    - action: shell_command.ha_deploy_main
 
 deploy_home_assistant_develop:
   alias: Deploy Home Assistant develop (preprod)
   mode: single
   sequence:
-    - service: shell_command.ha_deploy_develop
+    - action: shell_command.ha_deploy_develop
 
 deploy_home_assistant_selected_branch:
   alias: Deploy selected Home Assistant branch
@@ -47,6 +47,6 @@ deploy_home_assistant_selected_branch:
               entity_id: input_select.ha_deploy_branch
               state: develop
           sequence:
-            - service: shell_command.ha_deploy_develop
+            - action: shell_command.ha_deploy_develop
       default:
-        - service: shell_command.ha_deploy_main
+        - action: shell_command.ha_deploy_main
