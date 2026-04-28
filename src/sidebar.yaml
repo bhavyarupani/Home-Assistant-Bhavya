@@ -39,22 +39,20 @@ sensor:
       active: >
         <b>
         {% set lights = [
-          states.light.vardagsrum_tv,
-          states.light.vardagsrum_golv,
+          states.light.living_room_ceiling_light,
+          states.light.living_room_lobby_ceiling_light,
+          states.light.big_lamp,
+          states.light.lamp_post,
           states.light.vardagsrum_horna,
+          states.light.bedroom_ceiling_light,
+          states.light.bed_ambiance,
+          states.light.local_kitchen_ceiling_light,
+          states.light.local_balcony_light,
+          states.light.corridor_ceiling_lamp,
+          states.light.entrance_ceiling_lamp,
           states.light.studio_dator,
-          states.light.badrum_vask_2,
-          states.light.badrum_vask_1,
-          states.light.sovrum_tv,
           states.light.garderob_lampa,
-          states.light.hall_spot_1,
-          states.light.hall_spot_2,
-          states.light.hall_spot_3,
-          states.light.sovrum_mattias,
-          states.light.sovrum_sanja,
-          states.light.studio_spot_1,
-          states.light.studio_spot_2,
-          states.switch.deltaco_sh_p01_socket
+          states.switch.entrance_ambiance_light
         ] %}
 
         {% set devices = [

@@ -26,9 +26,10 @@ bluetooth:
 
 device_tracker:
   - platform: bluetooth_le_tracker
-  - platform: xiaomi
-    host: 192.168.0.243
-    password: !secret xiaomi_device_tracker_password
+  # xiaomi platform is deprecated — migrate to Xiaomi Miio integration via UI
+  # - platform: xiaomi
+  #   host: 192.168.0.243
+  #   password: !secret xiaomi_device_tracker_password
 
 tts:
   - platform: google_translate
@@ -60,8 +61,7 @@ template:
   - !include src/templates/electricity.yaml
   - !include src/templates/water.yaml
   - !include src/templates/heating.yaml
-  # (Optional) add later when you create it:
-  # - !include src/templates/daylight.yaml
+  - !include src/templates/daylight.yaml
 
 input_text:
   global_dashboard_background:
@@ -74,6 +74,15 @@ input_select:
       - main
       - develop
     initial: main
+
+  kpi_period:
+    name: KPI Period
+    options:
+      - Daily
+      - Weekly
+      - Monthly
+    initial: Daily
+    icon: mdi:calendar-filter
 
 shell_command:
   ha_deploy_main: "bash /config/scripts/ha_branch_deploy.sh main"

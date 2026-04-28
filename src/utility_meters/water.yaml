@@ -1,1 +1,15 @@
-{}
+water_daily:
+  source: sensor.water_total_today
+  cycle: daily
+
+water_weekly:
+  source: sensor.water_total_today
+  cycle: weekly
+
+water_monthly:
+  source: sensor.water_total_today
+  cycle: monthly
+
+water_yearly:
+  source: sensor.water_total_today
+  cycle: yearly

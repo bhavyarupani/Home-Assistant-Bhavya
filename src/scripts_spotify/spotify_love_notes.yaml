@@ -3,7 +3,7 @@ spotify_play_love_notes_denon_shuffle:
   mode: restart
   sequence:
     # Force output to Denon
-    - service: media_player.select_source
+    - action: media_player.select_source
       target:
         entity_id: media_player.spotify_bhavya_rupani
       data:
@@ -12,14 +12,14 @@ spotify_play_love_notes_denon_shuffle:
     - delay: "00:00:01"
 
     # Force shuffle ON
-    - service: media_player.shuffle_set
+    - action: media_player.shuffle_set
       target:
         entity_id: media_player.spotify_bhavya_rupani
       data:
         shuffle: true
 
     # Play playlist
-    - service: media_player.play_media
+    - action: media_player.play_media
       target:
         entity_id: media_player.spotify_bhavya_rupani
       data:

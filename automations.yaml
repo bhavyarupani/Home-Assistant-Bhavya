@@ -26,11 +26,11 @@
       trigger: state
   conditions:
     - condition: state
-      entity_id: binary_sensor.living_room_presence
+      entity_id: binary_sensor.living_room_presence_sensor
       state: "off"
       for: 00:02:00
     - condition: state
-      entity_id: binary_sensor.bedroom_presence
+      entity_id: binary_sensor.bedroom_presence_sensor
       state: "off"
       for: 00:02:00
     - condition: state
@@ -80,7 +80,7 @@
         stop_actions: false
       action: automation.turn_off
   variables:
-    exclude_entities:
+    exclude_entities: []
     delay_media: 00:00:03
     delay_lights: 00:00:02
     delay_switches: 00:00:04
@@ -118,32 +118,32 @@
   alias: Bhavya - Sleep Mode Manager
   description: Automatically set Bhavya sleep mode on/off based on time and iPhone
     activity only.
-  trigger:
-    - platform: state
+  triggers:
+    - trigger: state
       entity_id: sensor.bhavyas_iphone_activity
       to: stationary
       for: 00:45:00
       id: maybe_sleep
-    - platform: state
+    - trigger: state
       entity_id: sensor.bhavyas_iphone_activity
       id: phone_activity
-    - platform: time
-      at: 09:00:00
+    - trigger: time
+      at: "09:00:00"
       id: wake_time
-  condition: []
-  action:
+  conditions: []
+  actions:
     - choose:
         - conditions:
             - condition: trigger
               id: maybe_sleep
             - condition: time
               after: "22:30:00"
-              before: 09:00:00
+              before: "09:00:00"
             - condition: state
               entity_id: input_boolean.bhavya_sleep_mode
               state: "off"
           sequence:
-            - service: input_boolean.turn_on
+            - action: input_boolean.turn_on
               target:
                 entity_id: input_boolean.bhavya_sleep_mode
         - conditions:
@@ -159,149 +159,13 @@
                     - condition: trigger
                       id: phone_activity
                     - condition: template
-                      value_template: "{{ states('sensor.bhavyas_iphone_activity') not in
-                        ['stationary','unknown','unavailable'] }}
-
-                        "
+                      value_template: "{{ states('sensor.bhavyas_iphone_activity') not in ['stationary','unknown','unavailable'] }}"
                     - condition: time
-                      after: 05:30:00
+                      after: "05:30:00"
           sequence:
-            - service: input_boolean.turn_off
+            - action: input_boolean.turn_off
               target:
                 entity_id: input_boolean.bhavya_sleep_mode
-  mode: restart
-- id: "1765235434928"
-  alias: Bedroom - Smart Motion Lights (Bhavya)
-  description: Control bedroom ceiling light based on motion, natural light, Bhavya's
-    presence and sleep mode.
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.bedroom_motion_sensor_motion
-      from: "off"
-      to: "on"
-      id: motion_on_raw
-    - platform: state
-      entity_id: binary_sensor.bedroom_motion_sensor_motion
-      from: "off"
-      to: "on"
-      for: 00:00:03
-      id: motion_on_stable
-    - platform: state
-      entity_id: binary_sensor.bedroom_motion_sensor_motion
-      from: "on"
-      to: "off"
-      for: 00:00:10
-      id: motion_clear_10sec
-    - platform: state
-      entity_id: binary_sensor.bedroom_motion_sensor_motion
-      from: "on"
-      to: "off"
-      for: 00:00:10
-      id: motion_clear_3min
-    - platform: state
-      entity_id: binary_sensor.bedroom_motion_sensor_motion
-      from: "on"
-      to: "off"
-      for: 00:10:00
-      id: motion_clear_10min
-    - platform: state
-      entity_id: device_tracker.bhavyas_iphone
-      to: not_home
-      id: bhavya_left_home
-  condition: []
-  action:
-    - variables:
-        light_level: "{% set s = states('sensor.bedroom_natural_light_level') %} {%
-          if s in ['bright','medium','dark'] %}{{ s }}{% else %}medium{% endif
-          %}"
-    - choose:
-        - conditions:
-            - condition: trigger
-              id: motion_on_stable
-            - condition: state
-              entity_id: device_tracker.bhavyas_iphone
-              state: home
-            - condition: state
-              entity_id: input_boolean.bhavya_sleep_mode
-              state: "on"
-            - condition: template
-              value_template: "{{ light_level == 'dark' }}"
-          sequence:
-            - service: light.turn_on
-              target:
-                entity_id: light.bedroom_ceiling_light
-              data:
-                brightness_pct: 8
-        - conditions:
-            - condition: trigger
-              id: motion_on_stable
-            - condition: state
-              entity_id: device_tracker.bhavyas_iphone
-              state: home
-            - condition: state
-              entity_id: input_boolean.bhavya_sleep_mode
-              state: "off"
-            - condition: template
-              value_template: "{{ light_level != 'bright' }}"
-          sequence:
-            - choose:
-                - conditions:
-                    - condition: template
-                      value_template: "{{ light_level == 'medium' }}"
-                  sequence:
-                    - service: light.turn_on
-                      target:
-                        entity_id: light.bedroom_ceiling_light
-                      data:
-                        brightness_pct: 80
-                - conditions:
-                    - condition: template
-                      value_template: "{{ light_level == 'dark' }}"
-                  sequence:
-                    - service: light.turn_on
-                      target:
-                        entity_id: light.bedroom_ceiling_light
-                      data:
-                        brightness_pct: 25
-              default: []
-        - conditions:
-            - condition: trigger
-              id: motion_clear_10sec
-            - condition: state
-              entity_id: input_boolean.bhavya_sleep_mode
-              state: "on"
-            - condition: template
-              value_template: "{{ light_level == 'dark' }}"
-          sequence:
-            - service: light.turn_off
-              target:
-                entity_id: light.bedroom_ceiling_light
-        - conditions:
-            - condition: trigger
-              id: motion_clear_3min
-            - condition: template
-              value_template: "{{ light_level == 'dark' }}"
-          sequence:
-            - service: light.turn_off
-              target:
-                entity_id: light.bedroom_ceiling_light
-        - conditions:
-            - condition: trigger
-              id: motion_clear_10min
-            - condition: template
-              value_template: "{{ light_level in ['medium','bright'] }}"
-          sequence:
-            - service: light.turn_off
-              target:
-                entity_id: light.bedroom_ceiling_light
-        - conditions:
-            - condition: trigger
-              id: bhavya_left_home
-          sequence:
-            - service: light.turn_off
-              target:
-                entity_id: light.bedroom_ceiling_light
-      default: []
   mode: restart
 - id: "1765305534323"
   alias: Energy – Daily Email Summary
@@ -311,7 +175,7 @@
       at: "21:30:00"
   condition: []
   action:
-    - service: notify.bhavya_email
+    - action: notify.bhavya_email
       data:
         title: "\U0001F3E0 Daily Energy Report – {{ states('sensor.day_en') }} {{ states('sensor.date_en')
           }}\n"
@@ -373,12 +237,12 @@
 - id: "1765487125446"
   alias: Heating Minute Counter
   description: Increment heater active minutes every 1 minute
-  trigger:
-    - platform: time_pattern
+  triggers:
+    - trigger: time_pattern
       minutes: /1
-  condition: []
-  action:
-    - service: homeassistant.update_entity
+  conditions: []
+  actions:
+    - action: homeassistant.update_entity
       target:
         entity_id:
           - sensor.bedroom_heater_heating_minutes
@@ -636,144 +500,6 @@
             - target:
                 entity_id: light.corridor_ceiling_lamp
               action: light.turn_off
-  mode: restart
-- id: living_room_ceiling_light_auto
-  alias: Living Room - Ceiling Light Auto (Presence + Motion + Distance)
-  description: ""
-  triggers:
-    - entity_id: sensor.living_room_presence_sensor
-      trigger: state
-    - entity_id: sensor.human_motion_state
-      trigger: state
-    - entity_id: sensor.target_distance
-      trigger: state
-  conditions: []
-  actions:
-    - choose:
-        - conditions:
-            - condition: or
-              conditions:
-                - condition: template
-                  value_template: "{{ states('sensor.living_room_presence_sensor') | lower
-                    not in ['clear', 'none', 'unknown', 'unavailable'] }}
-
-                    "
-                - condition: template
-                  value_template: "{{ states('sensor.human_motion_state') | lower in ['on',
-                    'motion', 'detected', 'active'] }}
-
-                    "
-            - condition: template
-              value_template: "{% set d = states('sensor.target_distance') | float(99999)
-                %} {{ d <= 500 }}
-
-                "
-          sequence:
-            - condition: state
-              entity_id: light.living_room_ceiling_light
-              state: "off"
-            - target:
-                entity_id: light.living_room_ceiling_light
-              data:
-                brightness_pct: 70
-                color_temp_kelvin: 4000
-              action: light.turn_on
-        - conditions:
-            - condition: template
-              value_template: "{{ states('sensor.living_room_presence_sensor') | lower
-                in ['clear', 'none'] }}
-
-                "
-            - condition: template
-              value_template: "{{ states('sensor.human_motion_state') | lower in ['off',
-                'no_motion', 'inactive', 'clear'] }}
-
-                "
-          sequence:
-            - delay: 00:03:00
-            - condition: template
-              value_template: "{{ states('sensor.living_room_presence_sensor') | lower
-                in ['clear', 'none'] }}
-
-                "
-            - condition: template
-              value_template: "{{ states('sensor.human_motion_state') | lower in ['off',
-                'no_motion', 'inactive', 'clear'] }}
-
-                "
-            - target:
-                entity_id: light.living_room_ceiling_light
-              action: light.turn_off
-      default: []
-  mode: restart
-- id: living_room_ceiling_light_auto
-  alias: Living Room - Ceiling Light Auto (Presence + Motion + Distance)
-  description: ""
-  triggers:
-    - entity_id: sensor.living_room_presence_sensor
-      trigger: state
-    - entity_id: sensor.human_motion_state
-      trigger: state
-    - entity_id: sensor.target_distance
-      trigger: state
-  conditions: []
-  actions:
-    - choose:
-        - conditions:
-            - condition: or
-              conditions:
-                - condition: template
-                  value_template: "{{ states('sensor.living_room_presence_sensor') | lower
-                    not in ['clear', 'none', 'unknown', 'unavailable'] }}
-
-                    "
-                - condition: template
-                  value_template: "{{ states('sensor.human_motion_state') | lower in ['on',
-                    'motion', 'detected', 'active'] }}
-
-                    "
-            - condition: template
-              value_template: "{% set d = states('sensor.target_distance') | float(99999)
-                %} {{ d <= 500 }}
-
-                "
-          sequence:
-            - condition: state
-              entity_id: light.living_room_ceiling_light
-              state: "off"
-            - target:
-                entity_id: light.living_room_ceiling_light
-              data:
-                brightness_pct: 70
-                color_temp_kelvin: 4000
-              action: light.turn_on
-        - conditions:
-            - condition: template
-              value_template: "{{ states('sensor.living_room_presence_sensor') | lower
-                in ['clear', 'none'] }}
-
-                "
-            - condition: template
-              value_template: "{{ states('sensor.human_motion_state') | lower in ['off',
-                'no_motion', 'inactive', 'clear'] }}
-
-                "
-          sequence:
-            - delay: 00:03:00
-            - condition: template
-              value_template: "{{ states('sensor.living_room_presence_sensor') | lower
-                in ['clear', 'none'] }}
-
-                "
-            - condition: template
-              value_template: "{{ states('sensor.human_motion_state') | lower in ['off',
-                'no_motion', 'inactive', 'clear'] }}
-
-                "
-            - target:
-                entity_id: light.living_room_ceiling_light
-              action: light.turn_off
-      default: []
   mode: restart
 - id: "1770475979293"
   alias: Outside – Set Poor Natural Light Flag (Clouds + Weather)
@@ -1136,23 +862,20 @@
     - choose:
         - conditions:
             - condition: template
-              value_template: "{{\n  present\n  and\n  (\n    poor_light\n    or score <
-                38\n  )\n}}\n"
+              value_template: "{{ present and (poor_light or score < 38) }}"
           sequence:
             - condition: template
               value_template: "{{ not light_on }}"
             - target:
-                device_id: 38de24cc9f2fb46d7b05247fa1f0a0e6
+                entity_id: light.local_balcony_light
               action: light.turn_on
-              data: {}
         - conditions:
             - condition: template
-              value_template: "{{\n  light_on\n  and not present\n}}\n"
+              value_template: "{{ light_on and not present }}"
           sequence:
             - action: light.turn_off
-              data: {}
               target:
-                device_id: 38de24cc9f2fb46d7b05247fa1f0a0e6
+                entity_id: light.local_balcony_light
   mode: restart
 - id: "1770847413833"
   alias: Entrance – Ceiling Lamp
@@ -1200,7 +923,7 @@
   actions:
     - action: media_player.turn_on
       target:
-        device_id: 60e08c0236662b8e972bd1effe1294cf
+        entity_id: media_player.denon_avr_s770h
     - delay: 00:00:03
     - action: media_player.media_stop
       target:
@@ -1360,7 +1083,7 @@
   actions:
     - action: media_player.turn_on
       target:
-        device_id: 60e08c0236662b8e972bd1effe1294cf
+        entity_id: media_player.denon_avr_s770h
     - delay:
         hours: 0
         minutes: 0
@@ -1500,8 +1223,7 @@
   actions:
     - action: media_player.turn_on
       target:
-        device_id: f902b7f0e837d43de1c5b410d6daffb2
-      data: {}
+        entity_id: media_player.mandir_speaker
     - delay: 00:00:02
     - action: media_player.volume_set
       data:
@@ -1516,7 +1238,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/EdEYnTN6rvg
                 media_type: track
@@ -1528,7 +1250,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/tgd4UmkF2NI
                 media_type: track
@@ -1540,7 +1262,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/OfcXkPGgaxE
                 media_type: track
@@ -1552,7 +1274,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/x7JCp92MgT8
                 media_type: track
@@ -1564,7 +1286,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/y7qXhMNNygI
                 media_type: track
@@ -1576,7 +1298,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/D0QxkcymF6I
                 media_type: track
@@ -1588,7 +1310,7 @@
           sequence:
             - action: music_assistant.play_media
               target:
-                device_id: f902b7f0e837d43de1c5b410d6daffb2
+                entity_id: media_player.mandir_speaker
               data:
                 media_id: ytmusic://track/wDEVLWJHBCU
                 media_type: track
@@ -1596,7 +1318,7 @@
     - delay: 00:00:02
     - action: media_player.repeat_set
       target:
-        entity_id: media_player.googlehome1025_2
+        entity_id: media_player.mandir_speaker
       data:
         repeat: one
   mode: single
@@ -1632,9 +1354,12 @@
   alias: Mandir Cleaning Daily (Vacuum → Mop)
   description: Clean mandir every morning using ECOVACS API
   triggers:
-    - at: 07:30:00
+    - at: "07:30:00"
       trigger: time
-  conditions: []
+  conditions:
+    - condition: state
+      entity_id: vacuum.kaamwalibai
+      state: docked
   actions:
     - target:
         entity_id: vacuum.kaamwalibai
@@ -1673,7 +1398,10 @@
   triggers:
     - at: "16:30:00"
       trigger: time
-  conditions: []
+  conditions:
+    - condition: state
+      entity_id: vacuum.kaamwalibai
+      state: docked
   actions:
     - target:
         entity_id: vacuum.kaamwalibai
@@ -1688,11 +1416,14 @@
   mode: single
 - id: "1774101744598"
   alias: Entrance Cleaning Daily
-  description: Clean corridor every day at 6:40 am
+  description: Clean entrance every day at 6:40 AM
   triggers:
-    - at: 06:40:00
+    - at: "06:40:00"
       trigger: time
-  conditions: []
+  conditions:
+    - condition: state
+      entity_id: vacuum.kaamwalibai
+      state: docked
   actions:
     - target:
         entity_id: vacuum.kaamwalibai
@@ -1711,8 +1442,10 @@
   triggers:
     - trigger: time
       at: "17:00:00"
+      id: evening_on
     - trigger: time
       at: "20:00:00"
+      id: evening_off
   conditions:
     - condition: state
       entity_id: device_tracker.bhavyas_iphone
@@ -1720,15 +1453,15 @@
   actions:
     - choose:
         - conditions:
-            - condition: template
-              value_template: "{{ now().strftime('%H:%M:%S') == '17:00:00' }}"
+            - condition: trigger
+              id: evening_on
           sequence:
             - target:
                 entity_id: switch.entrance_ambiance_light
               action: switch.turn_on
         - conditions:
-            - condition: template
-              value_template: "{{ now().strftime('%H:%M:%S') == '20:00:00' }}"
+            - condition: trigger
+              id: evening_off
           sequence:
             - target:
                 entity_id: switch.entrance_ambiance_light
