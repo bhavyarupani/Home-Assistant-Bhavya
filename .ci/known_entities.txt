@@ -8,8 +8,6 @@ automation.tv_on_lights
 binary_sensor.balcony_motion_sensor_motion
 binary_sensor.bathroom_water_leak_sensor_moisture
 binary_sensor.bedroom_heater_active
-binary_sensor.bedroom_motion_sensor_motion
-binary_sensor.bedroom_presence
 binary_sensor.bedroom_presence_sensor
 binary_sensor.corridor_presence_sensor
 binary_sensor.entrance_presence_sensor
@@ -18,7 +16,6 @@ binary_sensor.hall_motion
 binary_sensor.kaamwalibai_mop_attached
 binary_sensor.kitchen_presence_sensor_occupancy
 binary_sensor.living_room_lobby_presence_sensor
-binary_sensor.living_room_presence
 binary_sensor.living_room_presence_sensor
 binary_sensor.monitors_mute_state
 binary_sensor.nas_security_status
@@ -86,7 +83,6 @@ light.vardagsrum_horna
 media_player.bhavya_s_google_hub
 media_player.denon_avr_s770h
 media_player.denon_avr_s770h_airplay
-media_player.googlehome1025_2
 media_player.kok
 media_player.mandir_speaker
 media_player.samsung
@@ -109,7 +105,6 @@ script.home_leave
 script.samsung_tv_energy_saving
 select.conditional_media
 sensor.bedroom_heater_heating_minutes
-sensor.bedroom_natural_light_level
 sensor.bedroom_presence_sensor_distance
 sensor.bedroom_presence_sensor_human_motion_state
 sensor.bhavyas_iphone_activity
@@ -138,7 +133,6 @@ sensor.hacs_installed
 sensor.hass_release_notes
 sensor.hass_release_notes_beta
 sensor.home_assistant_log_size
-sensor.human_motion_state
 sensor.imac_cpu
 sensor.imac_ip
 sensor.imac_mem
@@ -146,7 +140,6 @@ sensor.imac_uptime
 sensor.last_boot
 sensor.laundry_data
 sensor.living_room_natural_light
-sensor.living_room_presence_sensor
 sensor.living_room_presence_sensor_human_motion_state
 sensor.mailbox
 sensor.matte_last_changed
@@ -173,7 +166,6 @@ sensor.shower_water_today
 sensor.south_room_daylight_score
 sensor.sun_solar_azimuth
 sensor.sun_solar_elevation
-sensor.target_distance
 sensor.template_domain_counter
 sensor.template_fullykiosk_memory
 sensor.template_fullykiosk_storage

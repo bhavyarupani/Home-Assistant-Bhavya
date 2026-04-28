@@ -19,6 +19,7 @@ ENTITY_BASELINE = BASELINE_DIR / "known_entities.txt"
 DEVICE_BASELINE = BASELINE_DIR / "known_devices.txt"
 
 SKIP_DIRS = {
+    ".claude",
     ".git",
     ".idea",
     ".venv",
