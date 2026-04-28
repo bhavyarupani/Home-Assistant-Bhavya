@@ -2,7 +2,7 @@ normalize_weather:
   alias: Normalize weather for background
   mode: single
   fields:
-    raw_weather:
+    raw_weather: {}
   sequence:
     - variables:
         weather_bucket: >

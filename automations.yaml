@@ -1007,11 +1007,11 @@
   alias: Living room volume increase
   description: ""
   triggers:
-    - device_id: 8cc3073bec0030957aec41f606104ad2
-      domain: zha
-      type: remote_button_short_press
-      subtype: button_1
-      trigger: device
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 8cc3073bec0030957aec41f606104ad2
+        command: remote_button_short_press
   conditions: []
   actions:
     - action: media_player.volume_set
@@ -1027,11 +1027,11 @@
   alias: Living room volume decrease
   description: ""
   triggers:
-    - device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
-      domain: zha
-      type: remote_button_short_press
-      subtype: button_1
-      trigger: device
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+        command: remote_button_short_press
   conditions: []
   actions:
     - action: media_player.volume_set
@@ -1047,11 +1047,11 @@
   alias: Living room previous track
   description: ""
   triggers:
-    - device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
-      domain: zha
-      type: remote_button_double_press
-      subtype: button_1
-      trigger: device
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+        command: remote_button_double_press
   conditions: []
   actions:
     - action: media_player.media_previous_track
@@ -1062,11 +1062,11 @@
   alias: Living room next track
   description: ""
   triggers:
-    - device_id: 8cc3073bec0030957aec41f606104ad2
-      domain: zha
-      type: remote_button_double_press
-      subtype: button_1
-      trigger: device
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 8cc3073bec0030957aec41f606104ad2
+        command: remote_button_double_press
   conditions: []
   actions:
     - action: media_player.media_next_track
@@ -1118,16 +1118,16 @@
   alias: Living room play pause toggle
   description: ""
   triggers:
-    - device_id: 8cc3073bec0030957aec41f606104ad2
-      domain: zha
-      type: remote_button_long_press
-      subtype: button_1
-      trigger: device
-    - device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
-      domain: zha
-      type: remote_button_long_press
-      subtype: button_1
-      trigger: device
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 8cc3073bec0030957aec41f606104ad2
+        command: remote_button_long_press
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+        command: remote_button_long_press
   conditions: []
   actions:
     - action: media_player.media_play_pause
@@ -1166,10 +1166,6 @@
               data:
                 device: mandir_cealing
                 command: lamp
-            - type: turn_on
-              device_id: ce57b261973eac2c7ceb43b4fe5fa09d
-              entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
-              domain: light
         - conditions:
             - condition: trigger
               id: afternoon_off
@@ -1180,10 +1176,6 @@
               data:
                 device: mandir_cealing
                 command: power_off
-            - type: turn_off
-              device_id: ce57b261973eac2c7ceb43b4fe5fa09d
-              entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
-              domain: light
         - conditions:
             - condition: trigger
               id: evening_on
@@ -1194,10 +1186,6 @@
               data:
                 device: mandir_cealing
                 command: lamp
-            - type: turn_on
-              device_id: ce57b261973eac2c7ceb43b4fe5fa09d
-              entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
-              domain: light
         - conditions:
             - condition: trigger
               id: night_off
@@ -1208,10 +1196,6 @@
               data:
                 device: mandir_cealing
                 command: power_off
-            - type: turn_off
-              device_id: ce57b261973eac2c7ceb43b4fe5fa09d
-              entity_id: 9c377fc97a2f8a8e1f7f645303e7c417
-              domain: light
   mode: single
 - id: "1773936626306"
   alias: Mandir Speaker - Daily Song by Weekday
