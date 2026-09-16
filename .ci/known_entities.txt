@@ -141,7 +141,6 @@ sensor.electricity_estimated_share
 sensor.electricity_registry_coverage
 sensor.electricity_registry_health
 sensor.energy_real_power_sensors_w
-sensor.ha_deployed_version
 sensor.galaxy_tab_a_battery
 sensor.galaxy_tab_a_battery_level
 sensor.hacs_installed
