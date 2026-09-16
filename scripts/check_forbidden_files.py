@@ -11,6 +11,7 @@ FORBIDDEN_PATTERNS = (
     ".DS_Store",
     ".HA_VERSION",
     ".ha_build_info",
+    ".ha_build_info.json",
     ".shopping_list.json",
     ".storage/*",
     ".cloud/*",

@@ -1,0 +1,14 @@
+- sensor:
+    name: HA Deployed Version
+    unique_id: ha_deployed_version
+    command: >-
+      cat /config/.ha_build_info.json 2>/dev/null ||
+      printf '{"mode":"unknown","branch":"unknown","tag":"","sha":"unknown","timestamp":""}'
+    value_template: "{{ value_json.sha | default('unknown') }}"
+    json_attributes:
+      - mode
+      - branch
+      - tag
+      - sha
+      - timestamp
+    scan_interval: 300
