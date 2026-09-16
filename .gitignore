@@ -54,5 +54,11 @@ custom_components/hacs/hacs_frontend/
 node_modules/
 node_modules/.cache/
 
+# Local live Home Assistant inspection output
+.env
+.env.*
+artifacts/ha-*.json
+artifacts/ha-*.md
+
 # OS files
 .DS_Store

@@ -1,0 +1,551 @@
+title: Home KPIs
+path: kpi
+icon: mdi:chart-line-variant
+type: masonry
+cards:
+  # ═══════════════════════════════════════════════════════════════
+  # LIVE STATUS — always visible, real-time
+  # ═══════════════════════════════════════════════════════════════
+  - type: glance
+    title: Live Now
+    show_name: true
+    show_state: true
+    show_icon: true
+    columns: 5
+    entities:
+      - entity: sensor.total_electricity_power
+        name: Total power
+        icon: mdi:lightning-bolt
+      - entity: climate.bedroom_heater
+        name: Bedroom
+        icon: mdi:radiator
+      - entity: climate.office_heater
+        name: Office
+        icon: mdi:radiator
+      - entity: binary_sensor.bedroom_heater_active
+        name: Bedroom heat
+        icon: mdi:fire
+      - entity: binary_sensor.office_heater_active
+        name: Office heat
+        icon: mdi:fire
+
+  # ═══════════════════════════════════════════════════════════════
+  # PERIOD FILTER — tab buttons
+  # ═══════════════════════════════════════════════════════════════
+  - type: horizontal-stack
+    cards:
+      - type: custom:button-card
+        name: Daily
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.kpi_period
+            option: Daily
+        styles:
+          card:
+            - height: 44px
+            - border-radius: 10px
+            - background-color: >
+                [[[
+                  return states['input_select.kpi_period']?.state === 'Daily'
+                    ? 'var(--primary-color)' : 'var(--card-background-color)';
+                ]]]
+            - border: 1px solid var(--primary-color)
+          name:
+            - font-size: 13px
+            - font-weight: bold
+            - color: >
+                [[[
+                  return states['input_select.kpi_period']?.state === 'Daily'
+                    ? 'white' : 'var(--primary-color)';
+                ]]]
+
+      - type: custom:button-card
+        name: Weekly
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.kpi_period
+            option: Weekly
+        styles:
+          card:
+            - height: 44px
+            - border-radius: 10px
+            - background-color: >
+                [[[
+                  return states['input_select.kpi_period']?.state === 'Weekly'
+                    ? 'var(--primary-color)' : 'var(--card-background-color)';
+                ]]]
+            - border: 1px solid var(--primary-color)
+          name:
+            - font-size: 13px
+            - font-weight: bold
+            - color: >
+                [[[
+                  return states['input_select.kpi_period']?.state === 'Weekly'
+                    ? 'white' : 'var(--primary-color)';
+                ]]]
+
+      - type: custom:button-card
+        name: Monthly
+        tap_action:
+          action: call-service
+          service: input_select.select_option
+          service_data:
+            entity_id: input_select.kpi_period
+            option: Monthly
+        styles:
+          card:
+            - height: 44px
+            - border-radius: 10px
+            - background-color: >
+                [[[
+                  return states['input_select.kpi_period']?.state === 'Monthly'
+                    ? 'var(--primary-color)' : 'var(--card-background-color)';
+                ]]]
+            - border: 1px solid var(--primary-color)
+          name:
+            - font-size: 13px
+            - font-weight: bold
+            - color: >
+                [[[
+                  return states['input_select.kpi_period']?.state === 'Monthly'
+                    ? 'white' : 'var(--primary-color)';
+                ]]]
+
+  # ═══════════════════════════════════════════════════════════════
+  # ⚡ ELECTRICITY KPIs
+  # ═══════════════════════════════════════════════════════════════
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Daily
+    card:
+      type: entities
+      title: ⚡ Electricity — Today
+      show_header_toggle: false
+      entities:
+        - entity: sensor.total_electricity_daily
+          name: Total tracked
+          icon: mdi:counter
+        - entity: sensor.real_electricity_daily
+          name: Measured plugs
+          icon: mdi:power-plug
+        - entity: sensor.virtual_electricity_daily
+          name: Estimated lights/switches
+          icon: mdi:lightbulb-on
+        - entity: sensor.total_electricity_daily_change
+          name: vs Yesterday
+          icon: mdi:delta
+        - entity: sensor.total_electricity_daily_verdict
+          name: Verdict
+          icon: mdi:comment-check
+        - entity: sensor.total_electricity_power
+          name: Current total draw
+          icon: mdi:lightning-bolt
+        - entity: sensor.measured_electricity_power
+          name: Current measured draw
+          icon: mdi:meter-electric
+        - entity: sensor.virtual_electricity_power
+          name: Current estimated draw
+          icon: mdi:lightbulb-on
+        - entity: sensor.electricity_registry_coverage
+          name: Devices counted
+          icon: mdi:format-list-checks
+        - entity: sensor.electricity_registry_health
+          name: Registry health
+          icon: mdi:clipboard-check
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Weekly
+    card:
+      type: entities
+      title: ⚡ Electricity — This Week
+      show_header_toggle: false
+      entities:
+        - entity: sensor.total_electricity_weekly
+          name: Total this week
+          icon: mdi:counter
+        - entity: sensor.real_electricity_weekly
+          name: Measured plugs
+          icon: mdi:power-plug
+        - entity: sensor.virtual_electricity_weekly
+          name: Estimated lights/switches
+          icon: mdi:lightbulb-on
+        - entity: sensor.total_electricity_weekly_change
+          name: vs Last Week
+          icon: mdi:delta
+        - entity: sensor.total_electricity_weekly_verdict
+          name: Verdict
+          icon: mdi:comment-check
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Monthly
+    card:
+      type: entities
+      title: ⚡ Electricity — This Month
+      show_header_toggle: false
+      entities:
+        - entity: sensor.total_electricity_monthly
+          name: Total this month
+          icon: mdi:counter
+        - entity: sensor.real_electricity_monthly
+          name: Measured plugs
+          icon: mdi:power-plug
+        - entity: sensor.virtual_electricity_monthly
+          name: Estimated lights/switches
+          icon: mdi:lightbulb-on
+        - entity: sensor.total_electricity_monthly_change
+          name: vs Last Month
+          icon: mdi:delta
+        - entity: sensor.total_electricity_monthly_verdict
+          name: Verdict
+          icon: mdi:comment-check
+
+  # ⚡ Electricity trend graph — period-aware
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Daily
+    card:
+      type: statistics-graph
+      title: ⚡ Electricity — Last 14 days
+      chart_type: bar
+      stat_types:
+        - max
+      period: day
+      days_to_show: 14
+      entities:
+        - entity: sensor.total_electricity_daily
+          name: Total tracked
+        - entity: sensor.real_electricity_daily
+          name: Measured
+        - entity: sensor.virtual_electricity_daily
+          name: Estimated
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Weekly
+    card:
+      type: statistics-graph
+      title: ⚡ Electricity — Last 12 weeks
+      chart_type: bar
+      stat_types:
+        - max
+      period: week
+      days_to_show: 84
+      entities:
+        - entity: sensor.total_electricity_weekly
+          name: Total tracked
+        - entity: sensor.real_electricity_weekly
+          name: Measured
+        - entity: sensor.virtual_electricity_weekly
+          name: Estimated
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Monthly
+    card:
+      type: statistics-graph
+      title: ⚡ Electricity — Last 12 months
+      chart_type: bar
+      stat_types:
+        - max
+      period: month
+      days_to_show: 365
+      entities:
+        - entity: sensor.total_electricity_monthly
+          name: Total tracked
+        - entity: sensor.real_electricity_monthly
+          name: Measured
+        - entity: sensor.virtual_electricity_monthly
+          name: Estimated
+
+  # ═══════════════════════════════════════════════════════════════
+  # 💧 WATER KPIs
+  # ═══════════════════════════════════════════════════════════════
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Daily
+    card:
+      type: entities
+      title: 💧 Water — Today
+      show_header_toggle: false
+      entities:
+        - entity: sensor.shower_water_today
+          name: Shower
+          icon: mdi:shower-head
+        - entity: sensor.washing_machine_water_today
+          name: Washing machine
+          icon: mdi:washing-machine
+        - entity: sensor.water_daily
+          name: Total today
+          icon: mdi:water
+        - entity: sensor.water_daily_change
+          name: vs Yesterday
+          icon: mdi:delta
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Weekly
+    card:
+      type: entities
+      title: 💧 Water — This Week
+      show_header_toggle: false
+      entities:
+        - entity: sensor.water_weekly
+          name: Total this week
+          icon: mdi:water
+        - entity: sensor.water_weekly_change
+          name: vs Last Week
+          icon: mdi:delta
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Monthly
+    card:
+      type: entities
+      title: 💧 Water — This Month
+      show_header_toggle: false
+      entities:
+        - entity: sensor.water_monthly
+          name: Total this month
+          icon: mdi:water
+        - entity: sensor.water_monthly_change
+          name: vs Last Month
+          icon: mdi:delta
+
+  # 💧 Water trend graph — period-aware
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Daily
+    card:
+      type: statistics-graph
+      title: 💧 Water — Last 14 days
+      chart_type: bar
+      stat_types:
+        - max
+      period: day
+      days_to_show: 14
+      entities:
+        - entity: sensor.water_daily
+          name: Daily total (L)
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Weekly
+    card:
+      type: statistics-graph
+      title: 💧 Water — Last 12 weeks
+      chart_type: bar
+      stat_types:
+        - max
+      period: week
+      days_to_show: 84
+      entities:
+        - entity: sensor.water_weekly
+          name: Weekly total (L)
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Monthly
+    card:
+      type: statistics-graph
+      title: 💧 Water — Last 12 months
+      chart_type: bar
+      stat_types:
+        - max
+      period: month
+      days_to_show: 365
+      entities:
+        - entity: sensor.water_monthly
+          name: Monthly total (L)
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🔥 HEATING KPIs
+  # ═══════════════════════════════════════════════════════════════
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Daily
+    card:
+      type: entities
+      title: 🔥 Heating — Today
+      show_header_toggle: false
+      entities:
+        - entity: sensor.bedroom_heater_heating_minutes_daily
+          name: Bedroom heater (min)
+          icon: mdi:radiator
+        - entity: sensor.office_heater_heating_minutes_daily
+          name: Office heater (min)
+          icon: mdi:radiator
+        - type: divider
+        - entity: climate.bedroom_heater
+          name: Bedroom target temp
+        - entity: climate.office_heater
+          name: Office target temp
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Weekly
+    card:
+      type: entities
+      title: 🔥 Heating — This Week
+      show_header_toggle: false
+      entities:
+        - entity: sensor.bedroom_heater_heating_minutes_weekly
+          name: Bedroom heater (min)
+          icon: mdi:radiator
+        - entity: sensor.office_heater_heating_minutes_weekly
+          name: Office heater (min)
+          icon: mdi:radiator
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Monthly
+    card:
+      type: entities
+      title: 🔥 Heating — This Month
+      show_header_toggle: false
+      entities:
+        - entity: sensor.bedroom_heater_heating_minutes_monthly
+          name: Bedroom heater (min)
+          icon: mdi:radiator
+        - entity: sensor.office_heater_heating_minutes_monthly
+          name: Office heater (min)
+          icon: mdi:radiator
+
+  # 🔥 Heating trend graph — period-aware
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Daily
+    card:
+      type: statistics-graph
+      title: 🔥 Heating — Last 14 days
+      chart_type: bar
+      stat_types:
+        - max
+      period: day
+      days_to_show: 14
+      entities:
+        - entity: sensor.bedroom_heater_heating_minutes_daily
+          name: Bedroom (min/day)
+        - entity: sensor.office_heater_heating_minutes_daily
+          name: Office (min/day)
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Weekly
+    card:
+      type: statistics-graph
+      title: 🔥 Heating — Last 12 weeks
+      chart_type: bar
+      stat_types:
+        - max
+      period: week
+      days_to_show: 84
+      entities:
+        - entity: sensor.bedroom_heater_heating_minutes_weekly
+          name: Bedroom (min/week)
+        - entity: sensor.office_heater_heating_minutes_weekly
+          name: Office (min/week)
+
+  - type: conditional
+    conditions:
+      - entity: input_select.kpi_period
+        state: Monthly
+    card:
+      type: statistics-graph
+      title: 🔥 Heating — Last 12 months
+      chart_type: bar
+      stat_types:
+        - max
+      period: month
+      days_to_show: 365
+      entities:
+        - entity: sensor.bedroom_heater_heating_minutes_monthly
+          name: Bedroom (min/month)
+        - entity: sensor.office_heater_heating_minutes_monthly
+          name: Office (min/month)
+
+  # ═══════════════════════════════════════════════════════════════
+  # 📊 ALL-TIME OVERVIEW — always visible regardless of filter
+  # ═══════════════════════════════════════════════════════════════
+  - type: entities
+    title: 📊 Summary — All Periods
+    show_header_toggle: false
+    entities:
+      - type: section
+        label: ⚡ Electricity
+      - entity: sensor.total_electricity_daily
+        name: Today
+      - entity: sensor.total_electricity_weekly
+        name: This Week
+      - entity: sensor.total_electricity_monthly
+        name: This Month
+      - type: section
+        label: 💧 Water
+      - entity: sensor.water_daily
+        name: Today
+      - entity: sensor.water_weekly
+        name: This Week
+      - entity: sensor.water_monthly
+        name: This Month
+      - type: section
+        label: 🔥 Heating (bedroom)
+      - entity: sensor.bedroom_heater_heating_minutes_daily
+        name: Today
+      - entity: sensor.bedroom_heater_heating_minutes_weekly
+        name: This Week
+      - entity: sensor.bedroom_heater_heating_minutes_monthly
+        name: This Month
+      - type: section
+        label: 🔥 Heating (office)
+      - entity: sensor.office_heater_heating_minutes_daily
+        name: Today
+      - entity: sensor.office_heater_heating_minutes_weekly
+        name: This Week
+      - entity: sensor.office_heater_heating_minutes_monthly
+        name: This Month
+
+  # ═══════════════════════════════════════════════════════════════
+  # 🌡️ TEMPERATURE & ENVIRONMENT — always visible
+  # ═══════════════════════════════════════════════════════════════
+  - type: glance
+    title: Environment
+    show_name: true
+    columns: 4
+    entities:
+      - entity: sensor.outdoor_temperature
+        name: Outside
+        icon: mdi:thermometer
+      - entity: sensor.broadlink_temperature
+        name: Indoor
+        icon: mdi:home-thermometer
+      - entity: sensor.broadlink_humidity
+        name: Humidity
+        icon: mdi:water-percent
+      - entity: weather.forecast_home
+        name: Weather
+        icon: mdi:weather-partly-cloudy

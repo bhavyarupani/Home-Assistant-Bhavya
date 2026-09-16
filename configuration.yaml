@@ -53,6 +53,7 @@ notify:
     sender_name: "Home Assistant"
 
 input_number: !include_dir_merge_named src/helpers
+group: !include src/energy_devices.yaml
 sensor: !include_dir_merge_list src/sensors
 utility_meter: !include_dir_merge_named src/utility_meters
 
@@ -62,6 +63,7 @@ template:
   - !include src/templates/water.yaml
   - !include src/templates/heating.yaml
   - !include src/templates/daylight.yaml
+  - !include src/templates/automation_health.yaml
 
 input_text:
   global_dashboard_background:

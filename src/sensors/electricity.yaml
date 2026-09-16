@@ -1,0 +1,126 @@
+# SENSORS - ELECTRICITY
+
+# Measured power from real watt sensors listed in src/energy_devices.yaml.
+- platform: template
+  sensors:
+    measured_electricity_power:
+      friendly_name: "Measured Electricity Power"
+      unit_of_measurement: "W"
+      device_class: power
+      attribute_templates:
+        active_entities: >
+          {% set ns = namespace(count=0) %}
+          {% for e in expand('group.energy_measured_power_sensors') %}
+            {% if e.state | float(0) > 0 %}
+              {% set ns.count = ns.count + 1 %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.count }}
+        tracked_entities: >
+          {{ expand('group.energy_measured_power_sensors') | list | count }}
+        active_detail: >
+          {% set ns = namespace(items=[]) %}
+          {% for e in expand('group.energy_measured_power_sensors') %}
+            {% set watts = e.state | float(0) %}
+            {% if watts > 0 %}
+              {% set ns.items = ns.items + [e.name ~ ' ' ~ (watts | round(0)) ~ ' W'] %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.items | join(', ') if ns.items | length > 0 else 'None' }}
+      value_template: >
+        {% set ns = namespace(total=0) %}
+        {% for e in expand('group.energy_measured_power_sensors') %}
+          {% set ns.total = ns.total + (e.state | float(0)) %}
+        {% endfor %}
+        {{ ns.total | round(1) }}
+
+    # Estimated power for entities without real watt sensors.
+    virtual_electricity_power:
+      friendly_name: "Estimated Electricity Power"
+      unit_of_measurement: "W"
+      device_class: power
+      attribute_templates:
+        active_entities: >
+          {% set ns = namespace(count=0) %}
+          {% for e in expand('group.energy_estimated_devices') %}
+            {% set active = e.state not in ['off', 'unavailable', 'unknown', 'none', 'idle', 'standby'] %}
+            {% if active %}
+              {% set ns.count = ns.count + 1 %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.count }}
+        tracked_entities: >
+          {{ expand('group.energy_estimated_devices') | list | count }}
+        active_detail: >
+          {% set ns = namespace(items=[]) %}
+          {% for e in expand('group.energy_estimated_devices') %}
+            {% set active = e.state not in ['off', 'unavailable', 'unknown', 'none', 'idle', 'standby'] %}
+            {% set watt = state_attr(e.entity_id, 'assumed_watt') | float(0) %}
+            {% if active and watt > 0 %}
+              {% set ns.items = ns.items + [e.name ~ ' ' ~ (watt | round(0)) ~ ' W'] %}
+            {% endif %}
+          {% endfor %}
+          {{ ns.items | join(', ') if ns.items | length > 0 else 'None' }}
+      value_template: >
+        {% set ns = namespace(total=0) %}
+        {% for e in expand('group.energy_estimated_devices') %}
+          {% set watt = state_attr(e.entity_id, 'assumed_watt') | float(0) %}
+          {% set active = e.state not in ['off', 'unavailable', 'unknown', 'none', 'idle', 'standby'] %}
+          {% if active and watt > 0 %}
+            {% set brightness = state_attr(e.entity_id, 'brightness') %}
+            {% if brightness is number %}
+              {% set ns.total = ns.total + (watt * (brightness | float(0) / 255)) %}
+            {% else %}
+              {% set ns.total = ns.total + watt %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.total | round(1) }}
+
+    total_electricity_power:
+      friendly_name: "Total Electricity Power"
+      unit_of_measurement: "W"
+      device_class: power
+      attribute_templates:
+        measured_power_w: "{{ states('sensor.measured_electricity_power') | float(0) | round(1) }}"
+        estimated_power_w: "{{ states('sensor.virtual_electricity_power') | float(0) | round(1) }}"
+        measured_active_entities: "{{ state_attr('sensor.measured_electricity_power', 'active_entities') | int(0) }}"
+        estimated_active_entities: "{{ state_attr('sensor.virtual_electricity_power', 'active_entities') | int(0) }}"
+        source_status: >
+          {% set real = states('sensor.measured_electricity_power') %}
+          {% set estimated = states('sensor.virtual_electricity_power') %}
+          {% if real in ['unknown', 'unavailable', 'none'] and estimated in ['unknown', 'unavailable', 'none'] %}
+            unavailable
+          {% elif real in ['unknown', 'unavailable', 'none'] %}
+            estimated_only
+          {% elif estimated in ['unknown', 'unavailable', 'none'] %}
+            measured_only
+          {% else %}
+            measured_plus_estimated
+          {% endif %}
+      value_template: >
+        {% set measured = states('sensor.measured_electricity_power') | float(0) %}
+        {% set estimated = states('sensor.virtual_electricity_power') | float(0) %}
+        {{ (measured + estimated) | round(1) }}
+
+# Integration sensors - convert power (W) to energy (kWh).
+- platform: integration
+  source: sensor.virtual_electricity_power
+  name: "Virtual Electricity Energy"
+  unit_prefix: k
+  method: left
+  round: 3
+
+- platform: integration
+  source: sensor.measured_electricity_power
+  name: "Real Electricity Energy"
+  unit_prefix: k
+  method: left
+  round: 3
+
+- platform: integration
+  source: sensor.total_electricity_power
+  name: "Total Electricity Energy"
+  unit_prefix: k
+  method: left
+  round: 3

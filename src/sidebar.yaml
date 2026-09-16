@@ -49,10 +49,10 @@ sensor:
           states.light.local_kitchen_ceiling_light,
           states.light.local_balcony_light,
           states.light.corridor_ceiling_lamp,
-          states.light.entrance_ceiling_lamp,
+          states.light.entrance_ceiling_lamp_2,
           states.light.studio_dator,
           states.light.garderob_lampa,
-          states.switch.entrance_ambiance_light
+          states.switch.entrance_ambiance_socket_1
         ] %}
 
         {% set devices = [

@@ -1,0 +1,66 @@
+# Devices counted by the daily energy email and KPI dashboard.
+#
+# Add devices here when Home Assistant exposes something useful:
+# - If a device has a real power sensor in watts, add that sensor to
+#   energy_measured_power_sensors.
+# - If a device only exposes on/off or active/inactive state, add that entity
+#   to energy_estimated_devices and add an assumed_watt value in
+#   src/customize.yaml.
+# - Avoid listing both a real power sensor and its parent switch here, or the
+#   device will be counted twice.
+
+energy_measured_power_sensors:
+  name: Energy measured power sensors
+  entities:
+    # Real per-device watt sensors from the live Home Assistant registry.
+    - sensor.bed_ambiance_power
+    - sensor.living_room_main_plug_1_power
+    - sensor.living_room_main_plug_2_power
+    - sensor.office_desk_main_plug_power
+    - sensor.office_sitting_main_plug_power
+
+energy_estimated_devices:
+  name: Energy estimated devices
+  entities:
+    # Lights without measured power.
+    - light.bedroom_ceiling_light_bulb_1
+    - light.bedroom_ceiling_light_bulb_2
+    - light.bedroom_ceiling_light_bulb_3
+    - light.living_room_lobby_celing_light_bulb_1
+    - light.living_room_lobby_celing_light_bulb_2
+    - light.living_room_lobby_celing_light_bulb_3
+    - light.livingroom_ceiling_lamp_1
+    - light.living_room_ceiling_lamp_2
+    - light.livingroom_ceiling_lamp_3
+    - light.livingroom_ceiling_lamp_4
+    - light.local_balcony_light
+    - light.corridor_lamp_1
+    - light.corridor_lamp_2
+    - light.entrance_ceiling_lamp_2
+    - light.music_aurora_light
+    - light.mandir_spot_light
+
+    # Switches / appliances without measured power.
+    - switch.entrance_ambiance_socket_1
+    - switch.kitchen_main_plug_1
+    - switch.kitchen_main_plug_2
+    - switch.kitchen_plug_2
+    - switch.living_room_lobby_main_plug
+    - switch.main_plug_bedroom_socket_1
+    - switch.main_plug_bedroom_socket_2
+    - switch.powerstrip_main
+    - switch.powerstrip_socket_2
+    - switch.powerstrip_usb_hub
+    - switch.balcony_lights
+
+    # Media / climate entities without direct energy sensors.
+    - media_player.samsung_7_series_65_2
+    - media_player.denon_avr_s770h
+    - media_player.mandir_speaker
+    - media_player.kitchen_google_hub
+    - media_player.bedroom_display_3
+
+    # Electric heating estimates use active-heating binary sensors, not climate
+    # mode, so idle thermostats are not counted as full heater load.
+    - binary_sensor.bedroom_heater_active
+    - binary_sensor.office_heater_active

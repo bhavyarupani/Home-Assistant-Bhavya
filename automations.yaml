@@ -8,6 +8,38 @@
     - action: script.deploy_home_assistant_main
   mode: single
 
+- id: automation_health_weekly_email
+  alias: Automation - Weekly Health Email
+  description: Weekly report for disabled, unavailable, never-triggered, and stale automations.
+  triggers:
+    - trigger: time
+      at: "18:00:00"
+  conditions:
+    - condition: time
+      weekday:
+        - sun
+    - condition: template
+      value_template: "{{ states('sensor.automation_health') != 'OK' }}"
+  actions:
+    - action: notify.bhavya_email
+      data:
+        title: "Home Assistant Automation Health"
+        message: >
+          Automation health: {{ states('sensor.automation_health') }}
+
+          Unavailable ({{ state_attr('sensor.automation_health', 'unavailable_count') }}):
+          {{ state_attr('sensor.automation_health', 'unavailable_automations') }}
+
+          Disabled ({{ state_attr('sensor.automation_health', 'disabled_count') }}):
+          {{ state_attr('sensor.automation_health', 'disabled_automations') }}
+
+          Never triggered ({{ state_attr('sensor.automation_health', 'never_triggered_count') }}):
+          {{ state_attr('sensor.automation_health', 'never_triggered_automations') }}
+
+          Not triggered in 30+ days ({{ state_attr('sensor.automation_health', 'stale_count') }}):
+          {{ state_attr('sensor.automation_health', 'stale_automations') }}
+  mode: single
+
 - id: "1718898933157"
   alias: Leave Home - Full Away Mode (per-device stagger)
   description: Leave home only if no occupancy; then turn off devices one-by-one with
@@ -168,8 +200,8 @@
                 entity_id: input_boolean.bhavya_sleep_mode
   mode: restart
 - id: "1765305534323"
-  alias: Energy – Daily Email Summary
-  description: Send a daily electricity report with trends and simple insights
+  alias: Energy - Daily Email Summary
+  description: Send a daily electricity report with totals, data quality, and trend insights
   trigger:
     - platform: time
       at: "21:30:00"
@@ -177,62 +209,87 @@
   action:
     - action: notify.bhavya_email
       data:
-        title: "\U0001F3E0 Daily Energy Report – {{ states('sensor.day_en') }} {{ states('sensor.date_en')
-          }}\n"
-        message: "Hi Bhavya,\nHere’s your daily home energy snapshot. \U0001F48C\n\n\U0001F50C
-          Electricity today\n{% set daily = states('sensor.virtual_electricity_daily')
-          | float(0) %}\n{% set dchg  = states('sensor.virtual_electricity_daily_change')
-          | float(0) %}\n{% if dchg > 5 %}\n  {% set demoji = '\U0001F4C8' %}\n{% elif
-          dchg < -5 %}\n  {% set demoji = '\U0001F4C9' %}\n{% else %}\n  {% set demoji
-          = '➖' %}\n{% endif %}\n{% set real_daily = states('sensor.real_electricity_daily')
-          | float(0) %}\n{% set share_real = (real_daily / daily * 100) if daily > 0
-          else 0 %}\n• Total: {{ daily | round(2) }} kWh\n• Change vs yesterday: {{
-          demoji }} {{ dchg | round(1) }} %\n• Verdict: {{ states('sensor.virtual_electricity_daily_verdict')
-          }}\n\n\U0001F4CA Today vs yesterday\n{% set yesterday = state_attr('sensor.virtual_electricity_daily',
-          'last_period') | float(0) %}\n{% set week_total = states('sensor.virtual_electricity_weekly')
-          | float(0) %}\n{% set week_avg = (week_total / 7) if week_total > 0 else 0
-          %}\n{% set t_blocks = (daily * 3) | round(0) %}\n{% set y_blocks = (yesterday
-          * 3) | round(0) %}\n{% set w_blocks = (week_avg * 3) | round(0) %}\nToday
-          \      {{ '▇' * t_blocks }}   {{ daily | round(2) }} kWh\nYesterday   {{ '▇'
-          * y_blocks }}   {{ yesterday | round(2) }} kWh\nWeek avg    {{ '▇' * w_blocks
-          }}   {{ week_avg | round(2) }} kWh\n\n\U0001F4C6 Weekly & monthly trend\n{%
-          set weekly  = states('sensor.virtual_electricity_weekly') | float(0) %}\n{%
-          set wchg    = states('sensor.virtual_electricity_weekly_change') | float(0)
-          %}\n{% if wchg > 5 %}\n  {% set wemoji = '\U0001F4C8' %}\n{% elif wchg < -5
-          %}\n  {% set wemoji = '\U0001F4C9' %}\n{% else %}\n  {% set wemoji = '➖' %}\n{%
-          endif %}\n{% set monthly = states('sensor.virtual_electricity_monthly') |
-          float(0) %}\n{% set mchg    = states('sensor.virtual_electricity_monthly_change')
-          | float(0) %}\n{% if mchg > 5 %}\n  {% set memoji = '\U0001F4C8' %}\n{% elif
-          mchg < -5 %}\n  {% set memoji = '\U0001F4C9' %}\n{% else %}\n  {% set memoji
-          = '➖' %}\n{% endif %}\n• This week: {{ weekly | round(2) }} kWh\n  → {{ wemoji
-          }} {{ states('sensor.virtual_electricity_weekly_verdict') }}\n    ({{ wchg
-          | round(1) }} % vs last week)\n\n• This month: {{ monthly | round(1) }} kWh\n
-          \ → {{ memoji }} {{ states('sensor.virtual_electricity_monthly_verdict') }}\n
-          \   ({{ mchg | round(1) }} % vs last month)\n\n\U0001F4A1 Why it was higher
-          or lower\n{% set real_devices = expand('sensor.energy_real_power_sensors_w')
-          %}\n{% if dchg > 10 %}\n  • You used noticeably more electricity than yesterday.\n
-          \ {% if share_real > 40 and real_devices | length > 0 %}\n    Devices that
-          likely contributed most today:\n    {% for d in real_devices %}\n      - {{
-          d.name }} (now {{ d.state }} W)\n    {% endfor %}\n  {% else %}\n    The difference
-          is probably from overall lighting and background\n    usage in multiple rooms.\n
-          \ {% endif %}\n{% elif dchg < -10 %}\n  • Nice! Your electricity usage was
-          clearly lower than yesterday.\n  {% if share_real > 40 and real_devices |
-          length > 0 %}\n    Larger plugged devices also seem calmer today, such as:\n
-          \   {% for d in real_devices %}\n      - {{ d.name }} (now {{ d.state }} W)\n
-          \   {% endfor %}\n  {% else %}\n    This is likely thanks to reduced lighting
-          / background usage or\n    spending less time with many devices on at once.\n
-          \ {% endif %}\n{% else %}\n  • Usage was roughly similar to yesterday – no
-          big change in your pattern.\n{% endif %}\n\n✅ What you can try next\n{% if
-          share_real > 40 and real_devices | length > 0 %}\n  • Pay extra attention
-          to these devices on busy days:\n  {% for d in real_devices %}\n    - {{ d.name
-          }}\n  {% endfor %}\n  Turning them off earlier in the evening or putting them
-          behind simple\n  time/presence automations can reduce your total quite a bit.\n{%
-          else %}\n  • Most of your usage is spread across lights and smaller devices.\n
-          \   Using motion-based lighting, scenes, and making sure unused rooms stay\n
-          \   dark will help keep your daily number steady or lower.\n{% endif %}\n•
-          Overall weekly trend: {{ states('sensor.virtual_electricity_weekly_verdict')
-          }}\n  ({{ wchg | round(1) }} % vs last week).\n\nSee you tomorrow for the
-          next snapshot. \U0001F4AA\n– Your Home Assistant Energy Coach\n"
+        title: "Home Energy - {{ states('sensor.day_en') }} {{ states('sensor.date_en') }}"
+        message: >
+          {% set total = states('sensor.total_electricity_daily') | float(0) %}
+          {% set measured = states('sensor.real_electricity_daily') | float(0) %}
+          {% set estimated = states('sensor.virtual_electricity_daily') | float(0) %}
+          {% set yesterday = state_attr('sensor.total_electricity_daily', 'last_period') | float(0) %}
+          {% set weekly = states('sensor.total_electricity_weekly') | float(0) %}
+          {% set monthly = states('sensor.total_electricity_monthly') | float(0) %}
+          {% set daily_change = states('sensor.total_electricity_daily_change') | float(0) %}
+          {% set weekly_change = states('sensor.total_electricity_weekly_change') | float(0) %}
+          {% set monthly_change = states('sensor.total_electricity_monthly_change') | float(0) %}
+          {% set estimated_share = states('sensor.electricity_estimated_share') | float(0) %}
+          {% set live_power = states('sensor.total_electricity_power') | float(0) %}
+          {% set measured_power = state_attr('sensor.total_electricity_power', 'measured_power_w') | float(0) %}
+          {% set estimated_power = state_attr('sensor.total_electricity_power', 'estimated_power_w') | float(0) %}
+          {% set measured_detail = state_attr('sensor.measured_electricity_power', 'active_detail') %}
+          {% set estimated_detail = state_attr('sensor.virtual_electricity_power', 'active_detail') %}
+          {% set active_estimated = state_attr('sensor.virtual_electricity_power', 'active_entities') | int(0) %}
+          {% set tracked_total = states('sensor.electricity_registry_coverage') | int(0) %}
+          {% set tracked_measured = state_attr('sensor.electricity_registry_coverage', 'measured_devices') | int(0) %}
+          {% set tracked_estimated = state_attr('sensor.electricity_registry_coverage', 'estimated_devices') | int(0) %}
+          {% set data_quality = states('sensor.electricity_data_quality') %}
+          {% set registry_health = states('sensor.electricity_registry_health') %}
+          {% set missing_watts = state_attr('sensor.electricity_registry_health', 'missing_assumed_watt') %}
+          {% set max_bar = [total, yesterday, (weekly / 7 if weekly > 0 else 0)] | max %}
+          {% set scale = 12 / max_bar if max_bar > 0 else 0 %}
+          {% set today_bar = (total * scale) | round(0) | int %}
+          {% set yesterday_bar = (yesterday * scale) | round(0) | int %}
+          {% set week_avg = (weekly / 7) if weekly > 0 else 0 %}
+          {% set week_bar = (week_avg * scale) | round(0) | int %}
+          Hi Bhavya,
+
+          Here is tonight's energy snapshot.
+
+          TODAY
+          Total tracked: {{ total | round(2) }} kWh
+          Measured plugs: {{ measured | round(2) }} kWh
+          Estimated lights/switches: {{ estimated | round(2) }} kWh ({{ estimated_share | round(0) }}%)
+          Live power now: {{ live_power | round(0) }} W
+
+          TREND
+          Today      {{ '█' * today_bar }} {{ total | round(2) }} kWh
+          Yesterday  {{ '█' * yesterday_bar }} {{ yesterday | round(2) }} kWh
+          Week avg   {{ '█' * week_bar }} {{ week_avg | round(2) }} kWh
+
+          Daily change: {{ daily_change | round(1) }}% - {{ states('sensor.total_electricity_daily_verdict') }}
+          This week: {{ weekly | round(2) }} kWh ({{ weekly_change | round(1) }}%) - {{ states('sensor.total_electricity_weekly_verdict') }}
+          This month: {{ monthly | round(1) }} kWh ({{ monthly_change | round(1) }}%) - {{ states('sensor.total_electricity_monthly_verdict') }}
+
+          DATA QUALITY
+          {{ data_quality }}
+          Registry health: {{ registry_health }}
+          Tracked devices: {{ tracked_total }} total ({{ tracked_measured }} measured, {{ tracked_estimated }} estimated)
+          Measured now: {{ measured_power | round(0) }} W
+          Estimated now: {{ estimated_power | round(0) }} W across {{ active_estimated }} active estimated entities
+          Active measured: {{ measured_detail }}
+          Active estimated: {{ estimated_detail }}
+          {% if registry_health != 'OK' %}
+          Missing watt assumptions: {{ missing_watts }}
+          {% endif %}
+
+          {% if total == 0 %}
+          This is still reading 0 kWh. That usually means the running Home Assistant has not loaded the electricity sensors,
+          the source power sensor is unavailable, or the utility meters were just created and have not had time to accumulate.
+          {% elif daily_change > 10 %}
+          Usage is meaningfully higher than yesterday. The fastest thing to check tonight is anything left on through the evening:
+          plugs, monitor/TV gear, fans, and bright grouped lights.
+          {% elif daily_change < -10 %}
+          Nice drop versus yesterday. Whatever changed today is worth repeating: fewer always-on devices, shorter evening lighting, or less plug load.
+          {% else %}
+          Usage is steady. The best next improvement is increasing measured coverage so the report can separate real device loads from estimates.
+          {% endif %}
+
+          SMALL NEXT STEP
+          {% if estimated_share > 50 %}
+          More than half of today's number is estimated. Adding real power sensors for the biggest plugs would make this report much more accurate.
+          {% elif measured == 0 %}
+          Measured plug energy is 0 today. Check sensor.energy_real_power_sensors_w and the plugs feeding it.
+          {% else %}
+          The report has both measured and estimated data. Next useful upgrade would be naming the largest measured contributors individually.
+          {% endif %}
   mode: single
 - id: "1765487125446"
   alias: Heating Minute Counter
@@ -506,7 +563,7 @@
   description: ""
   triggers:
     - entity_id:
-        - weather.home
+        - weather.forecast_home
         - sensor.cloud_impact
       trigger: state
   conditions: []
@@ -515,7 +572,7 @@
         - conditions:
             - condition: template
               value_template: "{% set clouds = states('sensor.cloud_impact') | float(0)
-                %} {% set c = states('weather.home') %} {% set bad_conditions = [\n  'cloudy','rainy','pouring','fog','snowy','snowy-rainy','hail',\n
+                %} {% set c = states('weather.forecast_home') %} {% set bad_conditions = [\n  'cloudy','rainy','pouring','fog','snowy','snowy-rainy','hail',\n
                 \ 'lightning','lightning-rainy','exceptional','windy-variant'\n] %} {{ clouds
                 >= 70 or c in bad_conditions }}\n"
           sequence:
@@ -892,7 +949,7 @@
   actions:
     - variables:
         present: "{{ is_state('binary_sensor.entrance_presence_sensor', 'on') }}"
-        light_on: "{{ is_state('light.entrance_ceiling_lamp', 'on') }}"
+        light_on: "{{ is_state('light.entrance_ceiling_lamp_2', 'on') }}"
     - choose:
         - conditions:
             - condition: template
@@ -901,7 +958,7 @@
             - condition: template
               value_template: "{{ not light_on }}"
             - target:
-                entity_id: light.entrance_ceiling_lamp
+                entity_id: light.entrance_ceiling_lamp_2
               data:
                 brightness_pct: 100
               action: light.turn_on
@@ -910,7 +967,7 @@
               value_template: "{{ light_on and not present }}"
           sequence:
             - target:
-                entity_id: light.entrance_ceiling_lamp
+                entity_id: light.entrance_ceiling_lamp_2
               action: light.turn_off
   mode: restart
 - id: "1773775724063"
@@ -927,16 +984,16 @@
     - delay: 00:00:03
     - action: media_player.media_stop
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
     - action: media_player.volume_set
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
       data:
         volume_level: 0.45
     - delay: 00:00:01
     - action: music_assistant.play_media
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
       data:
         media_id: ytmusic://playlist/PLlKU6nPJF78K4qvuM-OdbAaDvRbQxuPZx
         media_type: playlist
@@ -944,7 +1001,7 @@
     - delay: 00:00:02
     - action: media_player.shuffle_set
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
       data:
         shuffle: true
   mode: single
@@ -1056,7 +1113,7 @@
   actions:
     - action: media_player.media_previous_track
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
   mode: single
 - id: "1773916290919"
   alias: Living room next track
@@ -1071,7 +1128,7 @@
   actions:
     - action: media_player.media_next_track
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
   mode: single
 - id: "1773919330341"
   alias: NFC - Love Notes Shuffle
@@ -1093,16 +1150,16 @@
       metadata: {}
       target:
         entity_id:
-          - media_player.denon_avr_s770h_airplay
+          - media_player.denon_avr_s770h_2
       data: {}
     - action: media_player.volume_set
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
       data:
         volume_level: 0.32
     - action: music_assistant.play_media
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
       data:
         media_id: ytmusic://playlist/PLlKU6nPJF78IODYBG1Wpw7uvgEI36wlWZ
         media_type: playlist
@@ -1110,7 +1167,7 @@
     - delay: 00:00:02
     - action: media_player.shuffle_set
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
       data:
         shuffle: true
   mode: single
@@ -1132,7 +1189,7 @@
   actions:
     - action: media_player.media_play_pause
       target:
-        entity_id: media_player.denon_avr_s770h_airplay
+        entity_id: media_player.denon_avr_s770h_2
   mode: single
 - id: "1773934300783"
   alias: Mandir Lights
@@ -1441,13 +1498,13 @@
               id: evening_on
           sequence:
             - target:
-                entity_id: switch.entrance_ambiance_light
+                entity_id: switch.entrance_ambiance_socket_1
               action: switch.turn_on
         - conditions:
             - condition: trigger
               id: evening_off
           sequence:
             - target:
-                entity_id: switch.entrance_ambiance_light
+                entity_id: switch.entrance_ambiance_socket_1
               action: switch.turn_off
   mode: single

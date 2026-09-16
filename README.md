@@ -33,6 +33,21 @@ npm run update:ha-refs
 
 Generated/runtime files such as `.storage/`, databases, private keys, `.DS_Store`, and `__pycache__` must not be committed.
 
+## Live Home Assistant Inspection
+
+For work that needs the running Home Assistant device registry, entity registry, exposed entities, or live states, use:
+
+```sh
+HA_URL=http://homeassistant.local:8123 HA_TOKEN=... npm run ha:live
+```
+
+`HA_TOKEN` should be a Home Assistant long-lived access token from your Home Assistant profile page. The script reads:
+
+- REST API: `/api/`, `/api/config`, `/api/states`, `/api/services`
+- WebSocket API: entity registry, device registry, area registry, labels, and exposed entities
+
+The snapshot is written to `artifacts/ha-live-snapshot.json`, which is ignored by git. Do not commit tokens or live snapshots.
+
 ## Deploying Home Assistant
 
 Home Assistant can deploy either branch from `/config`:

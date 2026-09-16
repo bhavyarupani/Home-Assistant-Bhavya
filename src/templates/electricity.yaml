@@ -1,4 +1,157 @@
 sensor:
+  # ----- TOTAL ELECTRICITY CHANGE & VERDICTS -----
+
+  - name: "Total Electricity Daily Change"
+    unique_id: total_electricity_daily_change
+    unit_of_measurement: "%"
+    state: >
+      {% set today = states('sensor.total_electricity_daily')|float(0) %}
+      {% set yesterday = state_attr('sensor.total_electricity_daily', 'last_period')|float(0) %}
+      {% if yesterday == 0 %}
+        0
+      {% else %}
+        {{ ((today - yesterday) / yesterday * 100) | round(1) }}
+      {% endif %}
+
+  - name: "Total Electricity Daily Verdict"
+    unique_id: total_electricity_daily_verdict
+    state: >
+      {% set change = states('sensor.total_electricity_daily_change')|float(0) %}
+      {% if change < -10 %}
+        Clearly lower than yesterday
+      {% elif change < -3 %}
+        A little lower than yesterday
+      {% elif change <= 3 %}
+        About the same as yesterday
+      {% elif change <= 10 %}
+        A little higher than yesterday
+      {% else %}
+        Clearly higher than yesterday
+      {% endif %}
+
+  - name: "Total Electricity Weekly Change"
+    unique_id: total_electricity_weekly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.total_electricity_weekly')|float(0) %}
+      {% set last = state_attr('sensor.total_electricity_weekly', 'last_period')|float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        {{ ((this - last) / last * 100) | round(1) }}
+      {% endif %}
+
+  - name: "Total Electricity Weekly Verdict"
+    unique_id: total_electricity_weekly_verdict
+    state: >
+      {% set change = states('sensor.total_electricity_weekly_change')|float(0) %}
+      {% if change < -10 %}
+        Trending down strongly
+      {% elif change < -3 %}
+        Trending down
+      {% elif change <= 3 %}
+        Stable
+      {% elif change <= 10 %}
+        Trending up
+      {% else %}
+        Trending up strongly
+      {% endif %}
+
+  - name: "Total Electricity Monthly Change"
+    unique_id: total_electricity_monthly_change
+    unit_of_measurement: "%"
+    state: >
+      {% set this = states('sensor.total_electricity_monthly')|float(0) %}
+      {% set last = state_attr('sensor.total_electricity_monthly', 'last_period')|float(0) %}
+      {% if last == 0 %}
+        0
+      {% else %}
+        {{ ((this - last) / last * 100) | round(1) }}
+      {% endif %}
+
+  - name: "Total Electricity Monthly Verdict"
+    unique_id: total_electricity_monthly_verdict
+    state: >
+      {% set change = states('sensor.total_electricity_monthly_change')|float(0) %}
+      {% if change < -10 %}
+        Month is much lower
+      {% elif change < -3 %}
+        Month is lower
+      {% elif change <= 3 %}
+        Month is steady
+      {% elif change <= 10 %}
+        Month is higher
+      {% else %}
+        Month is much higher
+      {% endif %}
+
+  - name: "Electricity Data Quality"
+    unique_id: electricity_data_quality
+    state: >
+      {% set source_status = state_attr('sensor.total_electricity_power', 'source_status') %}
+      {% set total = states('sensor.total_electricity_daily') | float(0) %}
+      {% set measured = states('sensor.real_electricity_daily') | float(0) %}
+      {% set estimated = states('sensor.virtual_electricity_daily') | float(0) %}
+      {% if source_status == 'unavailable' %}
+        No live power source
+      {% elif total == 0 %}
+        No energy accumulated today
+      {% elif measured == 0 and estimated > 0 %}
+        Estimated only
+      {% elif estimated == 0 and measured > 0 %}
+        Measured only
+      {% else %}
+        Measured + estimated
+      {% endif %}
+
+  - name: "Electricity Registry Coverage"
+    unique_id: electricity_registry_coverage
+    state: >
+      {% set measured = expand('group.energy_measured_power_sensors') | list | count %}
+      {% set estimated = expand('group.energy_estimated_devices') | list | count %}
+      {{ measured + estimated }}
+    attributes:
+      measured_devices: "{{ expand('group.energy_measured_power_sensors') | list | count }}"
+      estimated_devices: "{{ expand('group.energy_estimated_devices') | list | count }}"
+      active_measured_devices: "{{ state_attr('sensor.measured_electricity_power', 'active_entities') | int(0) }}"
+      active_estimated_devices: "{{ state_attr('sensor.virtual_electricity_power', 'active_entities') | int(0) }}"
+
+  - name: "Electricity Registry Health"
+    unique_id: electricity_registry_health
+    state: >
+      {% set ns = namespace(missing=[]) %}
+      {% for e in expand('group.energy_estimated_devices') %}
+        {% if state_attr(e.entity_id, 'assumed_watt') | float(0) <= 0 %}
+          {% set ns.missing = ns.missing + [e.name] %}
+        {% endif %}
+      {% endfor %}
+      {% if ns.missing | length == 0 %}
+        OK
+      {% else %}
+        Missing watt assumptions
+      {% endif %}
+    attributes:
+      missing_assumed_watt: >
+        {% set ns = namespace(missing=[]) %}
+        {% for e in expand('group.energy_estimated_devices') %}
+          {% if state_attr(e.entity_id, 'assumed_watt') | float(0) <= 0 %}
+            {% set ns.missing = ns.missing + [e.name] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.missing | join(', ') if ns.missing | length > 0 else 'None' }}
+
+  - name: "Electricity Estimated Share"
+    unique_id: electricity_estimated_share
+    unit_of_measurement: "%"
+    state: >
+      {% set total = states('sensor.total_electricity_daily') | float(0) %}
+      {% set estimated = states('sensor.virtual_electricity_daily') | float(0) %}
+      {% if total == 0 %}
+        0
+      {% else %}
+        {{ (estimated / total * 100) | round(1) }}
+      {% endif %}
+
   # ----- VIRTUAL ELECTRICITY CHANGE & VERDICTS -----
 
   - name: "Virtual Electricity Daily Change"
