@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "devDependencies": {
-    "prettier": "^3.7.4"
+    "prettier": "^3.9.7"
   },
   "scripts": {
     "format": "prettier --write \"**/*.{yml,yaml,json,md}\"",
