@@ -41,13 +41,10 @@ jobs:
             set -euo pipefail
 
             BRANCH="${{ inputs.branch }}"
-            case "$BRANCH" in
-              main|develop) ;;
-              *)
-                echo "Unsupported branch: $BRANCH" >&2
-                exit 2
-                ;;
-            esac
+            if [ "$BRANCH" != "main" ] && [ "$BRANCH" != "develop" ]; then
+              echo "Unsupported branch: $BRANCH" >&2
+              exit 2
+            fi
 
             cd /config
             bash scripts/ha_branch_deploy.sh "$BRANCH" /config
