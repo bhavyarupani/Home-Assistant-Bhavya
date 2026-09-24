@@ -1,6 +1,23 @@
-# UTILITY METERS – ELECTRICITY
+# UTILITY METERS - ELECTRICITY
 
-# Virtual electricity (all devices)
+# Total tracked electricity (real measured sensors + estimated no-power devices)
+total_electricity_daily:
+  source: sensor.total_electricity_energy
+  cycle: daily
+
+total_electricity_weekly:
+  source: sensor.total_electricity_energy
+  cycle: weekly
+
+total_electricity_monthly:
+  source: sensor.total_electricity_energy
+  cycle: monthly
+
+total_electricity_yearly:
+  source: sensor.total_electricity_energy
+  cycle: yearly
+
+# Estimated electricity (devices without real power sensors)
 virtual_electricity_daily:
   source: sensor.virtual_electricity_energy
   cycle: daily
@@ -17,7 +34,7 @@ virtual_electricity_yearly:
   source: sensor.virtual_electricity_energy
   cycle: yearly
 
-# Real electricity (only real power sensors)
+# Real electricity (only measured power sensors)
 real_electricity_daily:
   source: sensor.real_electricity_energy
   cycle: daily

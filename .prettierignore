@@ -12,6 +12,7 @@ www/
 themes/
 src/frontend/themes/
 blueprints/
+artifacts/
 
 # root files that use HA tags/includes
 configuration.yaml

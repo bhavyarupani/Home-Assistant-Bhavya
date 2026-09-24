@@ -15,6 +15,7 @@ secrets.yaml
 # Home Assistant runtime/local state
 .HA_VERSION
 .ha_build_info
+.ha_build_info.json
 .shopping_list.json
 known_devices.yaml
 zigbee.db*
@@ -53,6 +54,12 @@ custom_components/hacs/hacs_frontend/
 # JS deps
 node_modules/
 node_modules/.cache/
+
+# Local live Home Assistant inspection output
+.env
+.env.*
+artifacts/ha-*.json
+artifacts/ha-*.md
 
 # OS files
 .DS_Store

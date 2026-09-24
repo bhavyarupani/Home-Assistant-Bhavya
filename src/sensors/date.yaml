@@ -1,0 +1,13 @@
+# SENSORS – DATE / DAY HELPERS
+
+- platform: template
+  sensors:
+    day_en:
+      value_template: >
+        {{ ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][now().weekday()] }}
+
+    date_en:
+      value_template: >
+        {% set months = ['January', 'February', 'March', 'April', 'May', 'June',
+                         'July', 'August', 'September', 'October', 'November', 'December'] %}
+        {{ now().day | string + ' ' + months[now().month-1] }}

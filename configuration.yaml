@@ -9,7 +9,7 @@ frontend:
 
 script: !include src/scripts.yaml
 
-automation: !include automations.yaml
+automation: !include_dir_merge_list src/automations
 scene: !include src/scenes.yaml
 
 emulated_hue:
@@ -53,8 +53,10 @@ notify:
     sender_name: "Home Assistant"
 
 input_number: !include_dir_merge_named src/helpers
+group: !include src/energy_devices.yaml
 sensor: !include_dir_merge_list src/sensors
 utility_meter: !include_dir_merge_named src/utility_meters
+command_line: !include src/command_line.yaml
 
 template:
   - !include src/sidebar.yaml
@@ -62,6 +64,7 @@ template:
   - !include src/templates/water.yaml
   - !include src/templates/heating.yaml
   - !include src/templates/daylight.yaml
+  - !include src/templates/automation_health.yaml
 
 input_text:
   global_dashboard_background:

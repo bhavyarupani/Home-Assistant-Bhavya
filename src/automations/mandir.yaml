@@ -1,0 +1,200 @@
+- id: "1773934300783"
+  alias: Mandir Lights
+  description: ""
+  triggers:
+    - trigger: time
+      at: 07:30:00
+      id: morning_on
+    - trigger: time
+      at: "13:00:00"
+      id: afternoon_off
+    - trigger: time
+      at: "16:30:00"
+      id: evening_on
+    - trigger: time
+      at: "22:00:00"
+      id: night_off
+  conditions:
+    - condition: zone
+      entity_id: device_tracker.bhavyas_iphone
+      zone: zone.home
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: morning_on
+          sequence:
+            - action: remote.send_command
+              target:
+                device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+              data:
+                device: mandir_cealing
+                command: lamp
+        - conditions:
+            - condition: trigger
+              id: afternoon_off
+          sequence:
+            - action: remote.send_command
+              target:
+                device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+              data:
+                device: mandir_cealing
+                command: power_off
+        - conditions:
+            - condition: trigger
+              id: evening_on
+          sequence:
+            - action: remote.send_command
+              target:
+                device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+              data:
+                device: mandir_cealing
+                command: lamp
+        - conditions:
+            - condition: trigger
+              id: night_off
+          sequence:
+            - action: remote.send_command
+              target:
+                device_id: 67bf23ea7ab434cf7c01bb98fa2b8e79
+              data:
+                device: mandir_cealing
+                command: power_off
+  mode: single
+- id: "1773936626306"
+  alias: Mandir Speaker - Daily Song by Weekday
+  description: Play weekday-based mandir song on loop
+  triggers:
+    - trigger: time
+      at: 07:30:00
+  conditions: []
+  actions:
+    - action: media_player.turn_on
+      target:
+        entity_id: media_player.mandir_speaker
+    - delay: 00:00:02
+    - action: media_player.volume_set
+      data:
+        volume_level: 0.25
+      target:
+        entity_id: media_player.mandir_speaker
+    - choose:
+        - conditions:
+            - condition: time
+              weekday:
+                - mon
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/EdEYnTN6rvg
+                media_type: track
+                enqueue: replace
+        - conditions:
+            - condition: time
+              weekday:
+                - tue
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/tgd4UmkF2NI
+                media_type: track
+                enqueue: replace
+        - conditions:
+            - condition: time
+              weekday:
+                - wed
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/OfcXkPGgaxE
+                media_type: track
+                enqueue: replace
+        - conditions:
+            - condition: time
+              weekday:
+                - thu
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/x7JCp92MgT8
+                media_type: track
+                enqueue: replace
+        - conditions:
+            - condition: time
+              weekday:
+                - fri
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/y7qXhMNNygI
+                media_type: track
+                enqueue: replace
+        - conditions:
+            - condition: time
+              weekday:
+                - sat
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/D0QxkcymF6I
+                media_type: track
+                enqueue: replace
+        - conditions:
+            - condition: time
+              weekday:
+                - sun
+          sequence:
+            - action: music_assistant.play_media
+              target:
+                entity_id: media_player.mandir_speaker
+              data:
+                media_id: ytmusic://track/wDEVLWJHBCU
+                media_type: track
+                enqueue: replace
+    - delay: 00:00:02
+    - action: media_player.repeat_set
+      target:
+        entity_id: media_player.mandir_speaker
+      data:
+        repeat: one
+  mode: single
+- id: "1773937405673"
+  alias: Mandir Speaker - Lower Volume Afternoon
+  description: Lower mandir speaker volume at 1 PM
+  triggers:
+    - trigger: time
+      at: "13:00:00"
+  conditions: []
+  actions:
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.mandir_speaker
+      data:
+        volume_level: 0.1
+  mode: single
+- id: "1773937432348"
+  alias: Mandir Speaker - Restore Volume Evening
+  description: Restore mandir speaker volume at 4:30 PM
+  triggers:
+    - trigger: time
+      at: "16:30:00"
+  conditions: []
+  actions:
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.mandir_speaker
+      data:
+        volume_level: 0.32
+  mode: single

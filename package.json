@@ -12,8 +12,9 @@
     "update:ha-refs": "python3 scripts/validate_ha_references.py --update-baseline",
     "check:ha-refs:baseline": "python3 scripts/validate_ha_references.py --check-baseline",
     "check:forbidden-files": "python3 scripts/check_forbidden_files.py",
-    "fix": "pre-commit run --all-files && npm run format",
-    "check": "pre-commit run --all-files"
+    "ha:live": "node scripts/ha_live_snapshot.mjs",
+    "fix": ".venv/bin/pre-commit run --all-files && npm run format",
+    "check": ".venv/bin/pre-commit run --all-files"
   },
   "description": "Home Assistant configuration",
   "repository": {

@@ -1,0 +1,279 @@
+- id: "1770476577363"
+  alias: Living Room – Ceiling Light
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.living_room_presence_sensor
+    - trigger: state
+      entity_id: sensor.living_room_presence_sensor_human_motion_state
+      to: "Off"
+      for: 00:01:00
+    - trigger: numeric_state
+      entity_id: sensor.living_room_natural_light
+      below: 20
+      for: 00:02:00
+    - trigger: numeric_state
+      entity_id: sensor.living_room_natural_light
+      above: 30
+      for: 00:02:00
+    - trigger: state
+      entity_id: input_boolean.poor_natural_light_outside
+  conditions: []
+  actions:
+    - variables:
+        present: "{{ not is_state('binary_sensor.living_room_presence_sensor', 'off')
+          }}"
+        poor_light: "{{ is_state('input_boolean.poor_natural_light_outside', 'on')
+          }}"
+        score: "{{ states('sensor.living_room_natural_light') | float(-1) }}"
+        dark_now: "{{ poor_light or score < 20 }}"
+        bright_now: "{{ (score > 30) and (not poor_light) }}"
+        light_on: "{{ is_state('light.living_room_ceiling_light', 'on') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ present and dark_now }}"
+          sequence:
+            - condition: template
+              value_template: "{{ not light_on }}"
+            - target:
+                entity_id: light.living_room_ceiling_light
+              data:
+                color_temp_kelvin: 6500
+              action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{\n  light_on\n  and\n  (\n    (not present)\n    or bright_now\n
+                \ )\n}}\n"
+          sequence:
+            - delay: 00:00:10
+            - condition: template
+              value_template: "{{\n  is_state('light.living_room_ceiling_light', 'on')\n
+                \ and\n  (\n    (is_state('binary_sensor.living_room_presence_sensor', 'off'))\n
+                \   or\n    (\n      (states('sensor.living_room_natural_light') | float(-1))
+                > 30\n      and is_state('input_boolean.poor_natural_light_outside', 'off')\n
+                \   )\n  )\n}}\n"
+            - target:
+                entity_id: light.living_room_ceiling_light
+              action: light.turn_off
+  mode: restart
+- id: "1773775724063"
+  alias: NFC - Garba Beats
+  description: Play Garba Beats playlist shuffled
+  triggers:
+    - tag_id: e52452d3-51e9-4cc7-aef9-73cd34de0176
+      trigger: tag
+  conditions: []
+  actions:
+    - action: media_player.turn_on
+      target:
+        entity_id: media_player.denon_avr_s770h
+    - delay: 00:00:03
+    - action: media_player.media_stop
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+      data:
+        volume_level: 0.45
+    - delay: 00:00:01
+    - action: music_assistant.play_media
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+      data:
+        media_id: ytmusic://playlist/PLlKU6nPJF78K4qvuM-OdbAaDvRbQxuPZx
+        media_type: playlist
+        enqueue: play
+    - delay: 00:00:02
+    - action: media_player.shuffle_set
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+      data:
+        shuffle: true
+  mode: single
+- id: "1773833285186"
+  alias: Living Room Lobby Light
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.living_room_lobby_presence_sensor
+    - trigger: state
+      entity_id: binary_sensor.corridor_presence_sensor
+      to: "off"
+      for: 00:02:00
+    - trigger: numeric_state
+      entity_id: sensor.living_room_natural_light
+      below: 20
+      for: 00:02:00
+    - trigger: numeric_state
+      entity_id: sensor.living_room_natural_light
+      above: 30
+      for: 00:02:00
+  conditions: []
+  actions:
+    - variables:
+        present: "{{ is_state('binary_sensor.living_room_lobby_presence_sensor', 'on')
+          }}"
+        score: "{{ states('sensor.living_room_natural_light') | float(-1) }}"
+        dark_now: "{{ score < 20 }}"
+        bright_now: "{{ score > 30 }}"
+        light_on: "{{ is_state('light.living_room_lobby_ceiling_light', 'on') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ present and dark_now }}"
+          sequence:
+            - condition: template
+              value_template: "{{ not light_on }}"
+            - target:
+                entity_id: light.living_room_lobby_ceiling_light
+              data:
+                color_temp_kelvin: 6500
+                brightness_pct: 100
+              action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{\n  light_on\n  and\n  (\n    (not present)\n    or bright_now\n
+                \ )\n}}\n"
+          sequence:
+            - delay: 00:00:10
+            - condition: template
+              value_template: "{{\n  is_state('light.living_room_lobby_ceiling_light', 'on')\n
+                \ and\n  (\n    (not is_state('binary_sensor.living_room_lobby_presence_sensor',
+                'on'))\n    or\n    ((states('sensor.living_room_natural_light') | float(-1))
+                > 30)\n  )\n}}\n"
+            - target:
+                entity_id: light.living_room_lobby_ceiling_light
+              action: light.turn_off
+  mode: restart
+- id: "1773915173456"
+  alias: Living room volume increase
+  description: ""
+  triggers:
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 8cc3073bec0030957aec41f606104ad2
+        command: remote_button_short_press
+  conditions: []
+  actions:
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.denon_avr_s770h
+      data:
+        volume_level: "{{ [state_attr('media_player.denon_avr_s770h', 'volume_level')
+          | float(0) + 0.05, 1] | min }}
+
+          "
+  mode: single
+- id: "1773915624272"
+  alias: Living room volume decrease
+  description: ""
+  triggers:
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+        command: remote_button_short_press
+  conditions: []
+  actions:
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.denon_avr_s770h
+      data:
+        volume_level: "{{ [state_attr('media_player.denon_avr_s770h', 'volume_level')
+          | float(0) - 0.05, 0] | max }}
+
+          "
+  mode: single
+- id: "1773915804855"
+  alias: Living room previous track
+  description: ""
+  triggers:
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+        command: remote_button_double_press
+  conditions: []
+  actions:
+    - action: media_player.media_previous_track
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+  mode: single
+- id: "1773916290919"
+  alias: Living room next track
+  description: ""
+  triggers:
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 8cc3073bec0030957aec41f606104ad2
+        command: remote_button_double_press
+  conditions: []
+  actions:
+    - action: media_player.media_next_track
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+  mode: single
+- id: "1773919330341"
+  alias: NFC - Love Notes Shuffle
+  description: Play Love Notes playlist shuffled on Denon from NFC tag
+  triggers:
+    - tag_id: 5409db3d-00d5-4a57-a56b-bd171c8662fe
+      trigger: tag
+  conditions: []
+  actions:
+    - action: media_player.turn_on
+      target:
+        entity_id: media_player.denon_avr_s770h
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - action: media_player.clear_playlist
+      metadata: {}
+      target:
+        entity_id:
+          - media_player.denon_avr_s770h_2
+      data: {}
+    - action: media_player.volume_set
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+      data:
+        volume_level: 0.32
+    - action: music_assistant.play_media
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+      data:
+        media_id: ytmusic://playlist/PLlKU6nPJF78IODYBG1Wpw7uvgEI36wlWZ
+        media_type: playlist
+        enqueue: play
+    - delay: 00:00:02
+    - action: media_player.shuffle_set
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+      data:
+        shuffle: true
+  mode: single
+- id: "1773920372658"
+  alias: Living room play pause toggle
+  description: ""
+  triggers:
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 8cc3073bec0030957aec41f606104ad2
+        command: remote_button_long_press
+    - trigger: event
+      event_type: zha_event
+      event_data:
+        device_id: 82f6f96f6ced88b6dcc8802aa10e31c8
+        command: remote_button_long_press
+  conditions: []
+  actions:
+    - action: media_player.media_play_pause
+      target:
+        entity_id: media_player.denon_avr_s770h_2
+  mode: single

@@ -1,0 +1,159 @@
+- id: "1718898933157"
+  alias: Leave Home - Full Away Mode (per-device stagger)
+  description: Leave home only if no occupancy; then turn off devices one-by-one with
+    delays, set climate to 5C, disable away-managed automations
+  triggers:
+    - entity_id:
+        - device_tracker.bhavyas_iphone
+      from:
+        - home
+      to:
+        - not_home
+      for:
+        hours: 0
+        minutes: 2
+        seconds: 0
+      trigger: state
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.living_room_presence_sensor
+      state: "off"
+      for: 00:02:00
+    - condition: state
+      entity_id: binary_sensor.bedroom_presence_sensor
+      state: "off"
+      for: 00:02:00
+    - condition: state
+      entity_id: binary_sensor.hall_motion
+      state: "off"
+      for: 00:02:00
+  actions:
+    - repeat:
+        for_each: "{{ media_players }}"
+        sequence:
+          - target:
+              entity_id: "{{ repeat.item }}"
+            action: media_player.turn_off
+          - delay: "{{ delay_media }}"
+    - repeat:
+        for_each: "{{ lights }}"
+        sequence:
+          - target:
+              entity_id: "{{ repeat.item }}"
+            action: light.turn_off
+          - delay: "{{ delay_lights }}"
+    - repeat:
+        for_each: "{{ switches }}"
+        sequence:
+          - target:
+              entity_id: "{{ repeat.item }}"
+            action: switch.turn_off
+          - delay: "{{ delay_switches }}"
+    - repeat:
+        for_each: "{{ climates }}"
+        sequence:
+          - target:
+              entity_id: "{{ repeat.item }}"
+            data:
+              hvac_mode: heat
+            action: climate.set_hvac_mode
+          - delay: "{{ delay_climate }}"
+          - target:
+              entity_id: "{{ repeat.item }}"
+            data:
+              temperature: 5
+            action: climate.set_temperature
+          - delay: "{{ delay_climate }}"
+    - target:
+        label_id: away_managed
+      data:
+        stop_actions: false
+      action: automation.turn_off
+  variables:
+    exclude_entities: []
+    delay_media: 00:00:03
+    delay_lights: 00:00:02
+    delay_switches: 00:00:04
+    delay_climate: 00:00:03
+    media_players: "{{ states.media_player\n  | map(attribute='entity_id')\n  | list
+      }}"
+    lights: "{{ states.light\n  | map(attribute='entity_id')\n  | reject('in', exclude_entities)\n
+      \ | list }}"
+    switches: "{{ states.switch\n  | map(attribute='entity_id')\n  | reject('in',
+      exclude_entities)\n  | list }}"
+    climates: "{{ states.climate\n  | map(attribute='entity_id')\n  | list }}"
+  mode: single
+- id: "1765221110611"
+  alias: Enter Home - Enable Away-Managed Automations
+  description: When I enter home, enable only the automations that were disabled on
+    leave
+  triggers:
+    - entity_id:
+        - device_tracker.bhavyas_iphone
+      from:
+        - not_home
+      to:
+        - home
+      for:
+        hours: 0
+        minutes: 1
+        seconds: 0
+      trigger: state
+  actions:
+    - target:
+        label_id: away_managed
+      action: automation.turn_on
+  mode: single
+- id: "1765234997681"
+  alias: Bhavya - Sleep Mode Manager
+  description: Automatically set Bhavya sleep mode on/off based on time and iPhone
+    activity only.
+  triggers:
+    - trigger: state
+      entity_id: sensor.bhavyas_iphone_activity
+      to: stationary
+      for: 00:45:00
+      id: maybe_sleep
+    - trigger: state
+      entity_id: sensor.bhavyas_iphone_activity
+      id: phone_activity
+    - trigger: time
+      at: "09:00:00"
+      id: wake_time
+  conditions: []
+  actions:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: maybe_sleep
+            - condition: time
+              after: "22:30:00"
+              before: "09:00:00"
+            - condition: state
+              entity_id: input_boolean.bhavya_sleep_mode
+              state: "off"
+          sequence:
+            - action: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.bhavya_sleep_mode
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.bhavya_sleep_mode
+              state: "on"
+            - condition: or
+              conditions:
+                - condition: trigger
+                  id: wake_time
+                - condition: and
+                  conditions:
+                    - condition: trigger
+                      id: phone_activity
+                    - condition: template
+                      value_template: "{{ states('sensor.bhavyas_iphone_activity') not in ['stationary','unknown','unavailable'] }}"
+                    - condition: time
+                      after: "05:30:00"
+          sequence:
+            - action: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.bhavya_sleep_mode
+  mode: restart

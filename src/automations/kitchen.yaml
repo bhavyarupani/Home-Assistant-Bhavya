@@ -1,0 +1,46 @@
+- id: "1768828283879"
+  alias: Kitchen Occupancy Lighting (Anti-flicker)
+  description: "Automatically controls kitchen ceiling light using occupancy sensor.
+    Prevents flicker by turning lights off only after the kitchen remains unoccupied
+    for 5 minutes (ideal for cooking and standing still).
+
+    "
+  triggers:
+    - entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+      to: "on"
+      trigger: state
+    - entity_id:
+        - binary_sensor.kitchen_presence_sensor_occupancy
+      to:
+        - "off"
+      for:
+        hours: 0
+        minutes: 3
+        seconds: 0
+      trigger: state
+  actions:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+              state: "on"
+          sequence:
+            - action: light.turn_on
+              data:
+                color_temp_kelvin: 6500
+                brightness_pct: 100
+              target:
+                entity_id: light.local_kitchen_ceiling_light
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+              state: "off"
+          sequence:
+            - condition: state
+              entity_id: binary_sensor.kitchen_presence_sensor_occupancy
+              state: "off"
+            - action: light.turn_off
+              data: {}
+              target:
+                entity_id: light.local_kitchen_ceiling_light
+  mode: restart

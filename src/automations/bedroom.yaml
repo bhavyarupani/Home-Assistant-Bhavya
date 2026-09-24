@@ -1,0 +1,185 @@
+- id: "1770477766502"
+  alias: Bedroom – Smart Lights (Final Stable Logic)
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.bedroom_presence_sensor
+    - trigger: state
+      entity_id: sensor.bedroom_presence_sensor_human_motion_state
+    - trigger: numeric_state
+      entity_id: sensor.bedroom_presence_sensor_distance
+      above: 140
+      for: 00:00:10
+    - trigger: state
+      entity_id:
+        - remote.bedroom_tv
+        - input_boolean.poor_natural_light_outside
+    - trigger: numeric_state
+      entity_id: sensor.south_room_daylight_score
+      below: 38
+      for: 00:02:00
+    - trigger: numeric_state
+      entity_id: sensor.south_room_daylight_score
+      above: 68
+      for: 00:05:00
+  conditions: []
+  actions:
+    - variables:
+        room_present: "{{ states('binary_sensor.bedroom_presence_sensor') != 'off'
+          }}"
+        motion_raw: "{{ states('sensor.bedroom_presence_sensor_human_motion_state')
+          }}"
+        motion: "{{ (motion_raw | string | lower) }}"
+        distance: "{{ states('sensor.bedroom_presence_sensor_distance') | float(0)
+          }}"
+        tv_on: "{{ not is_state('remote.bedroom_tv', 'off') }}"
+        poor_light: "{{ is_state('input_boolean.poor_natural_light_outside', 'on')
+          }}"
+        score: "{{ states('sensor.south_room_daylight_score') | float(-1) }}"
+        dark_now: "{{ poor_light or score < 38 }}"
+        bright_now: "{{ (score > 68) and (not poor_light) }}"
+        night_time: "{{ now().hour >= 22 or now().hour < 7 }}"
+        ceiling_on: "{{ is_state('light.bedroom_ceiling_light', 'on') }}"
+        ambiance_on: "{{ is_state('light.bed_ambiance', 'on') }}"
+        active_motion: "{{ room_present and motion in ['small','large'] }}"
+        bed_mode: "{{\n  room_present\n  and motion == 'off'\n  and distance < 130\n
+          \ and (night_time or not ceiling_on)\n}}\n"
+        wake_mode: "{{\n  active_motion\n  and distance > 140\n}}\n"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ not room_present }}"
+          sequence:
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ceiling_on }}"
+                  sequence:
+                    - delay:
+                        hours: 0
+                        minutes: 0
+                        seconds: 10
+                        milliseconds: 0
+                    - condition: template
+                      value_template: "{{ states('binary_sensor.bedroom_presence_sensor')
+                        == 'off' }}"
+                    - target:
+                        entity_id: light.bedroom_ceiling_light
+                      action: light.turn_off
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ambiance_on }}"
+                  sequence:
+                    - delay: 00:03:00
+                    - condition: template
+                      value_template: "{{ states('binary_sensor.bedroom_presence_sensor')
+                        == 'off' }}"
+                    - target:
+                        entity_id: light.bed_ambiance
+                      action: light.turn_off
+        - conditions:
+            - condition: template
+              value_template: "{{\n  trigger.entity_id == 'binary_sensor.bedroom_presence_sensor'\n
+                \ and trigger.from_state is not none\n  and trigger.from_state.state ==
+                'off'\n  and room_present\n}}\n"
+          sequence:
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ night_time or tv_on }}"
+                  sequence:
+                    - target:
+                        entity_id: light.bed_ambiance
+                      data:
+                        brightness_pct: "{{ 5 if tv_on else 15 }}"
+                        color_temp_kelvin: 2200
+                      action: light.turn_on
+                - conditions:
+                    - condition: template
+                      value_template: "{{ not night_time and dark_now and not tv_on }}"
+                  sequence:
+                    - target:
+                        entity_id: light.bedroom_ceiling_light
+                      data:
+                        color_temp_kelvin: 6500
+                      action: light.turn_on
+            - stop: Entry handled
+        - conditions:
+            - condition: template
+              value_template: "{{\n  room_present\n  and not night_time\n  and not tv_on\n
+                \ and dark_now\n}}\n"
+          sequence:
+            - condition: template
+              value_template: "{{ not ceiling_on }}"
+            - target:
+                entity_id: light.bedroom_ceiling_light
+              data:
+                color_temp_kelvin: 6500
+              action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{ bed_mode }}"
+          sequence:
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ ceiling_on }}"
+                  sequence:
+                    - delay: 00:02:00
+                    - condition: template
+                      value_template: "{{\n  (states('binary_sensor.bedroom_presence_sensor')
+                        != 'off')\n  and ((states('sensor.bedroom_presence_sensor_human_motion_state')
+                        | string | lower) == 'off')\n  and ((states('sensor.bedroom_presence_sensor_distance')
+                        | float(0)) < 130)\n}}\n"
+                    - target:
+                        entity_id: light.bedroom_ceiling_light
+                      action: light.turn_off
+            - target:
+                entity_id: light.bed_ambiance
+              data:
+                brightness_pct: "{{ 5 if tv_on else 10 }}"
+                color_temp_kelvin: 2200
+              action: light.turn_on
+            - delay: 00:05:00
+            - condition: template
+              value_template: "{{\n  (states('binary_sensor.bedroom_presence_sensor') !=
+                'off')\n  and ((states('sensor.bedroom_presence_sensor_human_motion_state')
+                | string | lower) == 'off')\n  and ((states('sensor.bedroom_presence_sensor_distance')
+                | float(0)) < 130)\n  and is_state('light.bed_ambiance','on')\n  and is_state('remote.bedroom_tv','off')\n}}\n"
+            - target:
+                entity_id: light.bed_ambiance
+              action: light.turn_off
+        - conditions:
+            - condition: template
+              value_template: "{{ wake_mode }}"
+          sequence:
+            - choose:
+                - conditions:
+                    - condition: template
+                      value_template: "{{ night_time }}"
+                  sequence:
+                    - target:
+                        entity_id: light.bed_ambiance
+                      data:
+                        brightness_pct: 15
+                        color_temp_kelvin: 2200
+                      action: light.turn_on
+                - conditions:
+                    - condition: template
+                      value_template: "{{ not night_time and dark_now and not tv_on }}"
+                  sequence:
+                    - target:
+                        entity_id: light.bedroom_ceiling_light
+                      data:
+                        color_temp_kelvin: 6500
+                      action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{\n  room_present\n  and ceiling_on\n  and bright_now\n
+                \ and not tv_on\n}}\n"
+          sequence:
+            - target:
+                entity_id: light.bedroom_ceiling_light
+              action: light.turn_off
+  mode: restart

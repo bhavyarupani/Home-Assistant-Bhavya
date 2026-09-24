@@ -4,6 +4,7 @@ set -euo pipefail
 BRANCH="${1:-}"
 CONFIG_DIR="${2:-/config}"
 MARKER_FILE="${CONFIG_DIR}/.ha_build_info"
+JSON_MARKER_FILE="${CONFIG_DIR}/.ha_build_info.json"
 
 case "$BRANCH" in
   main|develop) ;;
@@ -41,6 +42,10 @@ branch=${BRANCH}
 tag=${TAG}
 sha=${SHA}
 timestamp=${TS}
+EOF
+
+cat > "$JSON_MARKER_FILE" <<EOF
+{"mode":"${MODE}","branch":"${BRANCH}","tag":"${TAG}","sha":"${SHA}","timestamp":"${TS}"}
 EOF
 
 ha core restart

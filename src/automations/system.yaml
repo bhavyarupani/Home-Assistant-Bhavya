@@ -1,0 +1,40 @@
+- id: ha_sync_main_midnight
+  alias: Home Assistant - sync main at midnight
+  description: Pulls and deploys the latest main branch every night at 00:00.
+  triggers:
+    - trigger: time
+      at: "00:00:00"
+  actions:
+    - action: script.deploy_home_assistant_main
+  mode: single
+- id: automation_health_weekly_email
+  alias: Automation - Weekly Health Email
+  description: Weekly report for disabled, unavailable, never-triggered, and stale automations.
+  triggers:
+    - trigger: time
+      at: "18:00:00"
+  conditions:
+    - condition: time
+      weekday:
+        - sun
+    - condition: template
+      value_template: "{{ states('sensor.automation_health') != 'OK' }}"
+  actions:
+    - action: notify.bhavya_email
+      data:
+        title: "Home Assistant Automation Health"
+        message: >
+          Automation health: {{ states('sensor.automation_health') }}
+
+          Unavailable ({{ state_attr('sensor.automation_health', 'unavailable_count') }}):
+          {{ state_attr('sensor.automation_health', 'unavailable_automations') }}
+
+          Disabled ({{ state_attr('sensor.automation_health', 'disabled_count') }}):
+          {{ state_attr('sensor.automation_health', 'disabled_automations') }}
+
+          Never triggered ({{ state_attr('sensor.automation_health', 'never_triggered_count') }}):
+          {{ state_attr('sensor.automation_health', 'never_triggered_automations') }}
+
+          Not triggered in 30+ days ({{ state_attr('sensor.automation_health', 'stale_count') }}):
+          {{ state_attr('sensor.automation_health', 'stale_automations') }}
+  mode: single

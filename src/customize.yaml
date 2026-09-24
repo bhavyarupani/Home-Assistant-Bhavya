@@ -16,14 +16,86 @@ light.living_room_lobby_celing_light_bulb_2:
 light.living_room_lobby_celing_light_bulb_3:
   assumed_watt: 9
 
-light.living_room_ceiling_light_bulb_1:
+light.livingroom_ceiling_lamp_1:
   assumed_watt: 9
 
-light.living_room_ceiling_light_bulb_2:
+light.living_room_ceiling_lamp_2:
   assumed_watt: 9
 
-light.living_room_ceiling_light_bulb_3:
+light.livingroom_ceiling_lamp_3:
   assumed_watt: 9
 
-light.living_room_ceiling_light_bulb_4:
+light.livingroom_ceiling_lamp_4:
   assumed_watt: 9
+
+light.local_balcony_light:
+  assumed_watt: 9
+
+light.corridor_lamp_1:
+  assumed_watt: 6
+
+light.corridor_lamp_2:
+  assumed_watt: 6
+
+light.entrance_ceiling_lamp_2:
+  assumed_watt: 9
+
+light.music_aurora_light:
+  assumed_watt: 10
+
+light.mandir_spot_light:
+  assumed_watt: 6
+
+switch.entrance_ambiance_socket_1:
+  assumed_watt: 5
+
+switch.kitchen_main_plug_1:
+  assumed_watt: 25
+
+switch.kitchen_main_plug_2:
+  assumed_watt: 15
+
+switch.kitchen_plug_2:
+  assumed_watt: 15
+
+switch.living_room_lobby_main_plug:
+  assumed_watt: 25
+
+switch.main_plug_bedroom_socket_1:
+  assumed_watt: 20
+
+switch.main_plug_bedroom_socket_2:
+  assumed_watt: 20
+
+switch.powerstrip_main:
+  assumed_watt: 15
+
+switch.powerstrip_socket_2:
+  assumed_watt: 15
+
+switch.powerstrip_usb_hub:
+  assumed_watt: 10
+
+switch.balcony_lights:
+  assumed_watt: 9
+
+media_player.samsung_7_series_65_2:
+  assumed_watt: 80
+
+media_player.denon_avr_s770h:
+  assumed_watt: 70
+
+media_player.mandir_speaker:
+  assumed_watt: 6
+
+media_player.kitchen_google_hub:
+  assumed_watt: 6
+
+media_player.bedroom_display_3:
+  assumed_watt: 6
+
+binary_sensor.bedroom_heater_active:
+  assumed_watt: 1000
+
+binary_sensor.office_heater_active:
+  assumed_watt: 1000

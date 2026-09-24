@@ -1,0 +1,80 @@
+- id: "1770847413833"
+  alias: Entrance – Ceiling Lamp
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.entrance_presence_sensor
+      to: "on"
+    - trigger: state
+      entity_id: binary_sensor.entrance_presence_sensor
+      to:
+        - "off"
+        - clear
+      for: 00:01:00
+  conditions: []
+  actions:
+    - variables:
+        present: "{{ is_state('binary_sensor.entrance_presence_sensor', 'on') }}"
+        light_on: "{{ is_state('light.entrance_ceiling_lamp_2', 'on') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ present }}"
+          sequence:
+            - condition: template
+              value_template: "{{ not light_on }}"
+            - target:
+                entity_id: light.entrance_ceiling_lamp_2
+              data:
+                brightness_pct: 100
+              action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{ light_on and not present }}"
+          sequence:
+            - target:
+                entity_id: light.entrance_ceiling_lamp_2
+              action: light.turn_off
+  mode: restart
+- id: "1774111653387"
+  alias: Entrance Ambiance Light
+  description: Keep Ram ambiance on during the day, and mirror entrance presence overnight.
+  triggers:
+    - trigger: time
+      at: "07:00:00"
+      id: daytime_on
+    - trigger: time
+      at: "22:30:00"
+      id: night_mode
+    - trigger: state
+      entity_id: binary_sensor.entrance_presence_sensor
+      to: "on"
+      id: presence_on
+    - trigger: state
+      entity_id: binary_sensor.entrance_presence_sensor
+      to:
+        - "off"
+        - clear
+      for: 00:01:00
+      id: presence_off
+    - trigger: homeassistant
+      event: start
+      id: startup_restore
+  conditions: []
+  actions:
+    - variables:
+        present: "{{ is_state('binary_sensor.entrance_presence_sensor', 'on') }}"
+        daytime: "{{ today_at('07:00:00') <= now() < today_at('22:30:00') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ daytime or present }}"
+          sequence:
+            - target:
+                entity_id: switch.entrance_ambiance_socket_1
+              action: switch.turn_on
+      default:
+        - target:
+            entity_id: switch.entrance_ambiance_socket_1
+          action: switch.turn_off
+  mode: single

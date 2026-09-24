@@ -1,0 +1,71 @@
+sensor:
+  - name: "Automation Health"
+    unique_id: automation_health
+    icon: mdi:home-automation
+    state: >
+      {% set unavailable = states.automation | selectattr('state', 'eq', 'unavailable') | list %}
+      {% set disabled = states.automation | selectattr('state', 'eq', 'off') | list %}
+      {% set ns = namespace(never=[], stale=[]) %}
+      {% for automation in states.automation %}
+        {% set entity_id = automation | attr('entity_id') %}
+        {% set name = automation | attr('name') %}
+        {% set last = state_attr(entity_id, 'last_triggered') %}
+        {% if last is none %}
+          {% set ns.never = ns.never + [name] %}
+        {% elif (as_timestamp(now()) - as_timestamp(last)) > 2592000 %}
+          {% set ns.stale = ns.stale + [name] %}
+        {% endif %}
+      {% endfor %}
+      {% set total_issues = unavailable | length + disabled | length + ns.never | length + ns.stale | length %}
+      {{ 'OK' if total_issues == 0 else 'Needs attention' }}
+    attributes:
+      unavailable_count: >
+        {{ states.automation | selectattr('state', 'eq', 'unavailable') | list | length }}
+      disabled_count: >
+        {{ states.automation | selectattr('state', 'eq', 'off') | list | length }}
+      never_triggered_count: >
+        {% set ns = namespace(items=[]) %}
+        {% for automation in states.automation %}
+          {% set entity_id = automation | attr('entity_id') %}
+          {% set name = automation | attr('name') %}
+          {% if state_attr(entity_id, 'last_triggered') is none %}
+            {% set ns.items = ns.items + [name] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.items | length }}
+      stale_count: >
+        {% set ns = namespace(items=[]) %}
+        {% for automation in states.automation %}
+          {% set entity_id = automation | attr('entity_id') %}
+          {% set name = automation | attr('name') %}
+          {% set last = state_attr(entity_id, 'last_triggered') %}
+          {% if last is not none and (as_timestamp(now()) - as_timestamp(last)) > 2592000 %}
+            {% set ns.items = ns.items + [name] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.items | length }}
+      unavailable_automations: >
+        {{ states.automation | selectattr('state', 'eq', 'unavailable') | map(attribute='name') | list }}
+      disabled_automations: >
+        {{ states.automation | selectattr('state', 'eq', 'off') | map(attribute='name') | list }}
+      never_triggered_automations: >
+        {% set ns = namespace(items=[]) %}
+        {% for automation in states.automation %}
+          {% set entity_id = automation | attr('entity_id') %}
+          {% set name = automation | attr('name') %}
+          {% if state_attr(entity_id, 'last_triggered') is none %}
+            {% set ns.items = ns.items + [name] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.items }}
+      stale_automations: >
+        {% set ns = namespace(items=[]) %}
+        {% for automation in states.automation %}
+          {% set entity_id = automation | attr('entity_id') %}
+          {% set name = automation | attr('name') %}
+          {% set last = state_attr(entity_id, 'last_triggered') %}
+          {% if last is not none and (as_timestamp(now()) - as_timestamp(last)) > 2592000 %}
+            {% set ns.items = ns.items + [name] %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.items }}

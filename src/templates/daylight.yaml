@@ -1,9 +1,15 @@
 sensor:
+  - name: "Cloud Impact"
+    unique_id: cloud_impact
+    unit_of_measurement: "%"
+    state: >
+      {{ state_attr('weather.forecast_home', 'cloud_coverage') | float(0) | round(1) }}
+
   - name: "Natural Light Base"
     unit_of_measurement: "%"
     state: >
       {% set elevation = state_attr('sun.sun', 'elevation') | float %}
-      {% set clouds = state_attr('weather.home', 'cloud_coverage') | float(0) %}
+      {% set clouds = states('sensor.cloud_impact') | float(0) %}
 
       {% if elevation < 0 %}
         0

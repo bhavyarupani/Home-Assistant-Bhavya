@@ -255,6 +255,15 @@ def collect_yaml_defined_entities() -> set[str]:
                 if slug:
                     defined.add(f"sensor.{slug}")
 
+    command_line = ROOT / "src" / "command_line.yaml"
+    if command_line.exists():
+        for line in command_line.read_text(encoding="utf-8", errors="ignore").splitlines():
+            match = NAME_RE.match(line)
+            if match:
+                slug = slugify(match.group(1))
+                if slug:
+                    defined.add(f"sensor.{slug}")
+
     for path in [ROOT / "src" / "scenes.yaml"]:
         if not path.exists():
             continue

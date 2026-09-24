@@ -1,0 +1,48 @@
+- id: "1770846670712"
+  alias: Balcony – Light (Motion + Natural Light)
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id: binary_sensor.balcony_motion_sensor_motion
+      to: "on"
+    - trigger: state
+      entity_id: binary_sensor.balcony_motion_sensor_motion
+      to: clear
+      for: 00:03:00
+    - trigger: state
+      entity_id: binary_sensor.balcony_motion_sensor_motion
+      to: "off"
+      for: 00:03:00
+    - trigger: numeric_state
+      entity_id: sensor.south_room_daylight_score
+      below: 38
+      for: 00:02:00
+    - trigger: state
+      entity_id: input_boolean.poor_natural_light_outside
+  conditions: []
+  actions:
+    - variables:
+        present: "{{ is_state('binary_sensor.balcony_motion_sensor_motion', 'on')
+          }}"
+        poor_light: "{{ is_state('input_boolean.poor_natural_light_outside', 'on')
+          }}"
+        score: "{{ states('sensor.south_room_daylight_score') | float(-1) }}"
+        light_on: "{{ is_state('light.local_balcony_light', 'on') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ present and (poor_light or score < 38) }}"
+          sequence:
+            - condition: template
+              value_template: "{{ not light_on }}"
+            - target:
+                entity_id: light.local_balcony_light
+              action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{ light_on and not present }}"
+          sequence:
+            - action: light.turn_off
+              target:
+                entity_id: light.local_balcony_light
+  mode: restart
