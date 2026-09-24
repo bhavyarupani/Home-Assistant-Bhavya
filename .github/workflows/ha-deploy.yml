@@ -1,4 +1,5 @@
 name: HA deploy
+run-name: HA deploy ${{ inputs.branch }}
 
 on:
   workflow_dispatch:
@@ -16,7 +17,17 @@ jobs:
   deploy:
     name: Deploy ${{ inputs.branch }}
     runs-on: ubuntu-latest
+    timeout-minutes: 12
     steps:
+      - name: Explain SSH reachability requirement
+        run: |
+          cat <<'EOF'
+          This workflow deploys by SSHing from a GitHub-hosted runner into Home Assistant.
+          HA_SSH_HOST:HA_SSH_PORT must be reachable from the public GitHub runner network.
+          If Home Assistant is only reachable on the local LAN or private VPN, run the
+          matching Home Assistant deploy script service from Home Assistant instead.
+          EOF
+
       - name: Deploy branch on Home Assistant
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -24,6 +35,9 @@ jobs:
           port: ${{ secrets.HA_SSH_PORT }}
           username: ${{ secrets.HA_SSH_USER }}
           key: ${{ secrets.HA_SSH_KEY }}
+          timeout: 20s
+          command_timeout: 10m
+          script_stop: true
           script: |
             set -euo pipefail
 
