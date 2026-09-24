@@ -48,4 +48,9 @@ cat > "$JSON_MARKER_FILE" <<EOF
 {"mode":"${MODE}","branch":"${BRANCH}","tag":"${TAG}","sha":"${SHA}","timestamp":"${TS}"}
 EOF
 
+if [ "${HA_DEPLOY_SKIP_RESTART:-0}" = "1" ]; then
+  echo "Skipping Home Assistant restart because HA_DEPLOY_SKIP_RESTART=1"
+  exit 0
+fi
+
 ha core restart
