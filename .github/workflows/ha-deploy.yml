@@ -50,7 +50,8 @@ jobs:
             if [ -w /config/.git ]; then
               bash scripts/ha_branch_deploy.sh "$BRANCH" /config
             elif command -v sudo >/dev/null 2>&1 && sudo -n true >/dev/null 2>&1; then
-              sudo bash scripts/ha_branch_deploy.sh "$BRANCH" /config
+              sudo HA_DEPLOY_SKIP_RESTART=1 bash scripts/ha_branch_deploy.sh "$BRANCH" /config
+              ha core restart
             else
               echo "The SSH user cannot write /config/.git and passwordless sudo is unavailable." >&2
               echo "Fix /config ownership/permissions or update HA_SSH_USER to a deploy-capable user." >&2
