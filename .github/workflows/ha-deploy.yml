@@ -38,6 +38,7 @@ jobs:
           command_timeout: 10m
           script_stop: true
           script: |
+            bash <<'REMOTE_SCRIPT'
             set -euo pipefail
 
             BRANCH="${{ inputs.branch }}"
@@ -98,3 +99,4 @@ jobs:
               echo "Fix /config ownership/permissions or update HA_SSH_USER to a deploy-capable user." >&2
               exit 1
             fi
+            REMOTE_SCRIPT
