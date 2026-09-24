@@ -69,17 +69,19 @@ Available HA scripts:
 
 There is also a nightly Home Assistant automation that deploys `main` at `00:00` local time.
 
-GitHub Actions also includes a manual `HA deploy` workflow for remote branch switching. The workflow requires these repository secrets:
+GitHub Actions also includes a manual `HA deploy` workflow for remote branch switching.
+It runs on the `Bhavyas-Laptop` self-hosted macOS ARM64 runner so SSH stays inside
+the home network. The workflow requires these repository secrets:
 
 - `HA_SSH_HOST`
 - `HA_SSH_PORT`
 - `HA_SSH_USER`
 - `HA_SSH_KEY`
 
-The GitHub workflow SSHes from a GitHub-hosted runner, so `HA_SSH_HOST:HA_SSH_PORT`
-must be reachable from the public GitHub runner network. If the run fails with
-`dial tcp ... i/o timeout`, GitHub could not reach Home Assistant at all; no
-deploy script ran and the running Home Assistant configuration was not changed.
+If the deploy job stays queued, start the `Bhavyas-Laptop` self-hosted runner and
+re-run the workflow. If the run fails with `dial tcp ... i/o timeout`, the runner
+could not reach Home Assistant; no deploy script ran and the running Home Assistant
+configuration was not changed.
 
 For normal home-network testing, prefer running the deploy script from Home
 Assistant itself:
@@ -87,5 +89,5 @@ Assistant itself:
 - `script.deploy_home_assistant_develop` to test `develop`
 - `script.deploy_home_assistant_main` for prod
 
-Use the GitHub workflow only when the SSH endpoint is intentionally exposed
-through a secure public route such as a bastion, VPN runner, or tunnel.
+Use the GitHub workflow when the self-hosted runner is online. Use the Home
+Assistant script services when testing directly from Home Assistant.
