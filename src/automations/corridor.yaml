@@ -1,0 +1,44 @@
+- id: "1769271547835"
+  alias: Corridor – Light
+  description: ""
+  triggers:
+    - trigger: state
+      entity_id:
+        - binary_sensor.corridor_presence_sensor
+      to:
+        - "on"
+    - trigger: state
+      entity_id:
+        - binary_sensor.corridor_presence_sensor
+      to:
+        - "off"
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 10
+  conditions: []
+  actions:
+    - variables:
+        present: "{{ is_state('binary_sensor.corridor_presence_sensor', 'on') }}"
+        light_on: "{{ is_state('light.corridor_ceiling_lamp', 'on') }}"
+    - choose:
+        - conditions:
+            - condition: template
+              value_template: "{{ present }}"
+          sequence:
+            - condition: template
+              value_template: "{{ not light_on }}"
+            - target:
+                entity_id: light.corridor_ceiling_lamp
+              data:
+                color_temp_kelvin: 6500
+                brightness_pct: 100
+              action: light.turn_on
+        - conditions:
+            - condition: template
+              value_template: "{{ (not present) and light_on }}"
+          sequence:
+            - target:
+                entity_id: light.corridor_ceiling_lamp
+              action: light.turn_off
+  mode: restart

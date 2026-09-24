@@ -1,0 +1,86 @@
+- id: "1774099902703"
+  alias: Mandir Cleaning Daily (Vacuum → Mop)
+  description: Clean mandir every morning using ECOVACS API
+  triggers:
+    - at: "07:30:00"
+      trigger: time
+  conditions:
+    - condition: state
+      entity_id: vacuum.kaamwalibai
+      state: docked
+  actions:
+    - target:
+        entity_id: vacuum.kaamwalibai
+      data:
+        command: clean_V2
+        params:
+          act: start
+          content:
+            type: freeClean
+            value: 1,6
+      action: vacuum.send_command
+    - wait_template: "{{ is_state('vacuum.kaamwalibai', 'docked') }}"
+      timeout: 01:30:00
+      continue_on_timeout: false
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: binary_sensor.kaamwalibai_mop_attached
+              state: "on"
+          sequence:
+            - delay: 00:00:02
+            - target:
+                entity_id: vacuum.kaamwalibai
+              data:
+                command: clean_V2
+                params:
+                  act: start
+                  content:
+                    type: freeClean
+                    value: 1,6
+              action: vacuum.send_command
+  mode: single
+- id: "1774101536966"
+  alias: Corridor Cleaning Daily
+  description: Clean corridor every day at 4:30 PM
+  triggers:
+    - at: "16:30:00"
+      trigger: time
+  conditions:
+    - condition: state
+      entity_id: vacuum.kaamwalibai
+      state: docked
+  actions:
+    - target:
+        entity_id: vacuum.kaamwalibai
+      data:
+        command: clean_V2
+        params:
+          act: start
+          content:
+            type: freeClean
+            value: 1,7
+      action: vacuum.send_command
+  mode: single
+- id: "1774101744598"
+  alias: Entrance Cleaning Daily
+  description: Clean entrance every day at 6:40 AM
+  triggers:
+    - at: "06:40:00"
+      trigger: time
+  conditions:
+    - condition: state
+      entity_id: vacuum.kaamwalibai
+      state: docked
+  actions:
+    - target:
+        entity_id: vacuum.kaamwalibai
+      data:
+        command: clean_V2
+        params:
+          act: start
+          content:
+            type: freeClean
+            value: 1,5
+      action: vacuum.send_command
+  mode: single

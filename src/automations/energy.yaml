@@ -1,0 +1,92 @@
+- id: "1765305534323"
+  alias: Energy - Daily Email Summary
+  description: Send a daily electricity report with totals, data quality, and trend insights
+  triggers:
+    - trigger: time
+      at: "21:30:00"
+  conditions: []
+  actions:
+    - action: notify.bhavya_email
+      data:
+        title: "Home Energy - {{ states('sensor.day_en') }} {{ states('sensor.date_en') }}"
+        message: >
+          {% set total = states('sensor.total_electricity_daily') | float(0) %}
+          {% set measured = states('sensor.real_electricity_daily') | float(0) %}
+          {% set estimated = states('sensor.virtual_electricity_daily') | float(0) %}
+          {% set yesterday = state_attr('sensor.total_electricity_daily', 'last_period') | float(0) %}
+          {% set weekly = states('sensor.total_electricity_weekly') | float(0) %}
+          {% set monthly = states('sensor.total_electricity_monthly') | float(0) %}
+          {% set daily_change = states('sensor.total_electricity_daily_change') | float(0) %}
+          {% set weekly_change = states('sensor.total_electricity_weekly_change') | float(0) %}
+          {% set monthly_change = states('sensor.total_electricity_monthly_change') | float(0) %}
+          {% set estimated_share = states('sensor.electricity_estimated_share') | float(0) %}
+          {% set live_power = states('sensor.total_electricity_power') | float(0) %}
+          {% set measured_power = state_attr('sensor.total_electricity_power', 'measured_power_w') | float(0) %}
+          {% set estimated_power = state_attr('sensor.total_electricity_power', 'estimated_power_w') | float(0) %}
+          {% set measured_detail = state_attr('sensor.measured_electricity_power', 'active_detail') %}
+          {% set estimated_detail = state_attr('sensor.virtual_electricity_power', 'active_detail') %}
+          {% set active_estimated = state_attr('sensor.virtual_electricity_power', 'active_entities') | int(0) %}
+          {% set tracked_total = states('sensor.electricity_registry_coverage') | int(0) %}
+          {% set tracked_measured = state_attr('sensor.electricity_registry_coverage', 'measured_devices') | int(0) %}
+          {% set tracked_estimated = state_attr('sensor.electricity_registry_coverage', 'estimated_devices') | int(0) %}
+          {% set data_quality = states('sensor.electricity_data_quality') %}
+          {% set registry_health = states('sensor.electricity_registry_health') %}
+          {% set missing_watts = state_attr('sensor.electricity_registry_health', 'missing_assumed_watt') %}
+          {% set max_bar = [total, yesterday, (weekly / 7 if weekly > 0 else 0)] | max %}
+          {% set scale = 12 / max_bar if max_bar > 0 else 0 %}
+          {% set today_bar = (total * scale) | round(0) | int %}
+          {% set yesterday_bar = (yesterday * scale) | round(0) | int %}
+          {% set week_avg = (weekly / 7) if weekly > 0 else 0 %}
+          {% set week_bar = (week_avg * scale) | round(0) | int %}
+          Hi Bhavya,
+
+          Here is tonight's energy snapshot.
+
+          TODAY
+          Total tracked: {{ total | round(2) }} kWh
+          Measured plugs: {{ measured | round(2) }} kWh
+          Estimated lights/switches: {{ estimated | round(2) }} kWh ({{ estimated_share | round(0) }}%)
+          Live power now: {{ live_power | round(0) }} W
+
+          TREND
+          Today      {{ '█' * today_bar }} {{ total | round(2) }} kWh
+          Yesterday  {{ '█' * yesterday_bar }} {{ yesterday | round(2) }} kWh
+          Week avg   {{ '█' * week_bar }} {{ week_avg | round(2) }} kWh
+
+          Daily change: {{ daily_change | round(1) }}% - {{ states('sensor.total_electricity_daily_verdict') }}
+          This week: {{ weekly | round(2) }} kWh ({{ weekly_change | round(1) }}%) - {{ states('sensor.total_electricity_weekly_verdict') }}
+          This month: {{ monthly | round(1) }} kWh ({{ monthly_change | round(1) }}%) - {{ states('sensor.total_electricity_monthly_verdict') }}
+
+          DATA QUALITY
+          {{ data_quality }}
+          Registry health: {{ registry_health }}
+          Tracked devices: {{ tracked_total }} total ({{ tracked_measured }} measured, {{ tracked_estimated }} estimated)
+          Measured now: {{ measured_power | round(0) }} W
+          Estimated now: {{ estimated_power | round(0) }} W across {{ active_estimated }} active estimated entities
+          Active measured: {{ measured_detail }}
+          Active estimated: {{ estimated_detail }}
+          {% if registry_health != 'OK' %}
+          Missing watt assumptions: {{ missing_watts }}
+          {% endif %}
+
+          {% if total == 0 %}
+          This is still reading 0 kWh. That usually means the running Home Assistant has not loaded the electricity sensors,
+          the source power sensor is unavailable, or the utility meters were just created and have not had time to accumulate.
+          {% elif daily_change > 10 %}
+          Usage is meaningfully higher than yesterday. The fastest thing to check tonight is anything left on through the evening:
+          plugs, monitor/TV gear, fans, and bright grouped lights.
+          {% elif daily_change < -10 %}
+          Nice drop versus yesterday. Whatever changed today is worth repeating: fewer always-on devices, shorter evening lighting, or less plug load.
+          {% else %}
+          Usage is steady. The best next improvement is increasing measured coverage so the report can separate real device loads from estimates.
+          {% endif %}
+
+          SMALL NEXT STEP
+          {% if estimated_share > 50 %}
+          More than half of today's number is estimated. Adding real power sensors for the biggest plugs would make this report much more accurate.
+          {% elif measured == 0 %}
+          Measured plug energy is 0 today. Check sensor.energy_real_power_sensors_w and the plugs feeding it.
+          {% else %}
+          The report has both measured and estimated data. Next useful upgrade would be naming the largest measured contributors individually.
+          {% endif %}
+  mode: single

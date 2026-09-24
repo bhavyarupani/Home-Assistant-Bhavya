@@ -18,6 +18,12 @@ npm run check:ha-refs
 .venv/bin/pre-commit run --all-files
 ```
 
+## Automations
+
+Automations are loaded from `src/automations/` with `!include_dir_merge_list`.
+Add new automations to the closest area file, or use a cross-cutting file such as
+`system.yaml`, `energy.yaml`, `heating.yaml`, `media.yaml`, or `vacuum.yaml`.
+
 ## Entity And Device References
 
 CI checks that referenced Home Assistant entities and `device_id` values are either defined in this repo or listed in:

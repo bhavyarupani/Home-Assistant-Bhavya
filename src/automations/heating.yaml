@@ -1,0 +1,158 @@
+- id: "1765487125446"
+  alias: Heating Minute Counter
+  description: Increment heater active minutes every 1 minute
+  triggers:
+    - trigger: time_pattern
+      minutes: /1
+  conditions: []
+  actions:
+    - action: homeassistant.update_entity
+      target:
+        entity_id:
+          - sensor.bedroom_heater_heating_minutes
+          - sensor.office_heater_heating_minutes
+  mode: single
+- id: "1768425897109"
+  alias: Office Heater - Smart Weekday Heating (Weather + Temp-aware)
+  description: Preheats before 08:50 on workdays (BW holidays respected) if Bhavya's
+    iPhone is at home, then maintains 20C. Skips if you left early. Adapts to outdoor
+    temp and avoids heating if already warm.
+  triggers:
+    - minutes: /10
+      trigger: time_pattern
+    - entity_id: device_tracker.bhavyas_iphone
+      to: home
+      trigger: state
+    - at: 08:50:00
+      trigger: time
+  conditions:
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+  actions:
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: device_tracker.bhavyas_iphone
+              state: not_home
+          sequence:
+            - target:
+                entity_id: climate.office_heater
+              data:
+                hvac_mode: "off"
+              action: climate.set_hvac_mode
+        - conditions:
+            - condition: state
+              entity_id: input_boolean.skip_office_preheat_today
+              state: "on"
+          sequence:
+            - target:
+                entity_id: climate.office_heater
+              data:
+                hvac_mode: "off"
+              action: climate.set_hvac_mode
+        - conditions:
+            - condition: state
+              entity_id: device_tracker.bhavyas_iphone
+              state: home
+            - condition: time
+              before: 08:50:00
+          sequence:
+            - condition: template
+              value_template: "{{ state_attr('climate.office_heater','current_temperature')
+                is number\n   and state_attr('climate.office_heater','current_temperature')
+                < 20.5 }}\n"
+            - variables:
+                outside_ok: "{{ states('sensor.outdoor_temperature') not in ['unknown','unavailable','none','']
+                  }}
+
+                  "
+                outside: "{{ states('sensor.outdoor_temperature') | float(99) }}
+
+                  "
+                preheat_target: "{% if not outside_ok %} 22 {% elif outside < 5 %} 23 {%
+                  elif outside < 12 %} 22 {% else %} 21 {% endif %}
+
+                  "
+            - target:
+                entity_id: climate.office_heater
+              data:
+                hvac_mode: heat
+              action: climate.set_hvac_mode
+            - target:
+                entity_id: climate.office_heater
+              data:
+                temperature: "{{ preheat_target }}"
+              action: climate.set_temperature
+        - conditions:
+            - condition: state
+              entity_id: device_tracker.bhavyas_iphone
+              state: home
+            - condition: time
+              after: 08:50:00
+          sequence:
+            - target:
+                entity_id: climate.office_heater
+              data:
+                hvac_mode: heat
+              action: climate.set_hvac_mode
+            - target:
+                entity_id: climate.office_heater
+              data:
+                temperature: 20
+              action: climate.set_temperature
+  mode: single
+- id: "1769036704899"
+  alias: Bedroom Heater – Eco after 1 hour in bed
+  description: "After being in_bed for 1 hour at night, reduce heating to eco to save
+    gas.
+
+    "
+  triggers:
+    - entity_id: input_select.bedroom_presence_state
+      to: in_bed
+      for:
+        hours: 1
+      trigger: state
+  conditions:
+    - condition: time
+      after: "18:00:00"
+      before: 07:00:00
+  actions:
+    - target:
+        entity_id: climate.bedroom_heater
+      data:
+        temperature: 19
+      action: climate.set_temperature
+  mode: single
+- id: "1769036792996"
+  alias: Bedroom Heater – Day shutdown when not in bed
+  description: "After 06:00, if bedroom presence state is NOT in_bed for 10 minutes,
+    reduce heating to daytime eco so it doesn't run all day.
+
+    "
+  triggers:
+    - entity_id:
+        - input_select.bedroom_presence_state
+      for:
+        minutes: 10
+      trigger: state
+      to:
+        - out_of_bed
+        - awake_in_bed
+        - empty
+  conditions:
+    - condition: time
+      after: 06:00:00
+    - condition: template
+      value_template: "{{ states('input_select.bedroom_presence_state') != 'in_bed'
+        }}
+
+        "
+  actions:
+    - target:
+        entity_id: climate.bedroom_heater
+      data:
+        temperature: 17
+      action: climate.set_temperature
+  mode: single

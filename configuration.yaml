@@ -9,7 +9,7 @@ frontend:
 
 script: !include src/scripts.yaml
 
-automation: !include automations.yaml
+automation: !include_dir_merge_list src/automations
 scene: !include src/scenes.yaml
 
 emulated_hue:
