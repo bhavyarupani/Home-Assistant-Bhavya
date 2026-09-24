@@ -16,16 +16,15 @@ on:
 jobs:
   deploy:
     name: Deploy ${{ inputs.branch }}
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS, ARM64]
     timeout-minutes: 12
     steps:
       - name: Explain SSH reachability requirement
         run: |
           cat <<'EOF'
-          This workflow deploys by SSHing from a GitHub-hosted runner into Home Assistant.
-          HA_SSH_HOST:HA_SSH_PORT must be reachable from the public GitHub runner network.
-          If Home Assistant is only reachable on the local LAN or private VPN, run the
-          matching Home Assistant deploy script service from Home Assistant instead.
+          This workflow deploys from the self-hosted macOS runner so it can reach
+          Home Assistant on the local network. If this job stays queued, start the
+          Bhavyas-Laptop self-hosted runner and re-run the workflow.
           EOF
 
       - name: Deploy branch on Home Assistant
