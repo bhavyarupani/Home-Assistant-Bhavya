@@ -51,13 +51,38 @@ jobs:
                 return 0
               fi
 
-              if command -v docker >/dev/null 2>&1 && sudo -n docker ps --format '{{.Names}}' | grep -qx homeassistant; then
-                sudo docker restart homeassistant
-                return 0
+              echo "HA CLI restart failed; checking restart fallbacks." >&2
+              echo "Available commands:" >&2
+              for cmd in ha docker systemctl service hass; do
+                if command -v "$cmd" >/dev/null 2>&1; then
+                  echo "  $cmd: yes" >&2
+                else
+                  echo "  $cmd: no" >&2
+                fi
+              done
+
+              if command -v docker >/dev/null 2>&1 && sudo -n docker ps --format '{{.Names}}' >/tmp/ha-docker-containers.txt 2>/dev/null; then
+                echo "Docker containers:" >&2
+                sed 's/^/  /' /tmp/ha-docker-containers.txt >&2
+                for container in homeassistant home-assistant hass io-homeassistant-core; do
+                  if grep -qx "$container" /tmp/ha-docker-containers.txt; then
+                    sudo docker restart "$container"
+                    return 0
+                  fi
+                done
+              fi
+
+              for service_name in home-assistant@homeassistant home-assistant homeassistant hass; do
+                if command -v systemctl >/dev/null 2>&1 && sudo -n systemctl restart "$service_name" >/dev/null 2>&1; then
+                  return 0
+                fi
+                if command -v service >/dev/null 2>&1 && sudo -n service "$service_name" restart >/dev/null 2>&1; then
+                  return 0
+                fi
               fi
 
               echo "Home Assistant config was updated, but restart failed." >&2
-              echo "The HA CLI is unauthorized and no sudo docker homeassistant container fallback worked." >&2
+              echo "The HA CLI is unauthorized and no supported restart fallback worked." >&2
               exit 1
             }
 
